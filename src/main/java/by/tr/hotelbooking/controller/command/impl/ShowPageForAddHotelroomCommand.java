@@ -20,15 +20,19 @@ public class ShowPageForAddHotelroomCommand implements Command {
 
     private static Logger logger = Logger.getLogger(ShowPageForAddHotelroomCommand.class);
 
+
+
+    private final static  ShowPageForAddHotelroomCommand instance = new ShowPageForAddHotelroomCommand();
+
     private ShowPageForAddHotelroomCommand(){
 
     }
 
-    private final static  ShowPageForAddHotelroomCommand instance = new ShowPageForAddHotelroomCommand();
-
     public static ShowPageForAddHotelroomCommand getInstance(){
         return instance;
     }
+
+
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) {

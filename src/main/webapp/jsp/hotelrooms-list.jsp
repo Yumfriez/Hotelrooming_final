@@ -20,6 +20,8 @@
 <fmt:message bundle="${loc}" key="local.word.floor" var="floor"/>
 <fmt:message bundle="${loc}" key="local.word.daily_price" var="daily_price"/>
 <fmt:message bundle="${loc}" key="local.word.room_type" var="room_type"/>
+<fmt:message bundle="${loc}" key="local.word.hotelroom_reserved" var="hotelroom_reserved"/>
+<fmt:message bundle="${loc}" key="local.button.order_hotelroom" var="order_hotelroom_button"/>
 <!DOCTYPE html>
 <html>
 <head>
@@ -91,14 +93,33 @@
                                                 <input type="hidden" name="command" value="show_edit_hotelroom_page"/>
                                                 <input class="all-btns" type="submit" value="${edit_button}"/>
                                             </form>
-                                            <form class="button" action="/hotelrooming" method="post">
-                                                <input type="hidden" name="hotelroom_id" value="${hotelroom.id}"/>
-                                                <input type="hidden" name="command" value="remove_hotelroom"/>
-                                                <input type="hidden" name="pagination" value="${currentPageNumber}"/>
-                                                <input class="all-btns" type="submit" value="${delete_button}" onclick="confirm('Вы уверены?')"/>
-                                            </form>
+                                            <c:choose>
+                                                <c:when test="${empty hotelroom.contractId}">
+                                                    <form class="button" action="/hotelrooming" method="post">
+                                                        <input type="hidden" name="hotelroom_id" value="${hotelroom.id}"/>
+                                                        <input type="hidden" name="command" value="remove_hotelroom"/>
+                                                        <input class="all-btns" type="submit" value="${delete_button}" onclick="confirm('Вы уверены?')"/>
+                                                    </form>
+                                                </c:when>
+                                                <c:otherwise>
+                                                    <p class="product-reserved">${hotelroom_reserved}</p>
+                                                </c:otherwise>
+                                            </c:choose>
                                         </c:when>
+
                                         <c:when test="${role eq(user)}">
+                                            <c:choose>
+                                                <c:when test="${empty hotelroom.contractId}">
+                                                    <form class="button" action="/hotelrooming" method="post">
+                                                        <input type="hidden" name="hotelroom_id" value="${hotelroom.id}"/>
+                                                        <input type="hidden" name="command" value="order_hotelroom"/>
+                                                        <input class="all-btns" type="submit" value="${order_hotelroom_button}"/>
+                                                    </form>
+                                                </c:when>
+                                                <c:otherwise>
+                                                    <p class="product-reserved">${hotelroom_reserved}</p>
+                                                </c:otherwise>
+                                            </c:choose>
                                         </c:when>
                                         <c:otherwise>
                                             ERROR

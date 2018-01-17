@@ -16,7 +16,7 @@
                     <input type="submit" class="list-group-item" value="${show_hotelrooms}"/>
                 </form>
                 <form action="/hotelrooming" method="post" accept-charset="UTF-8">
-                    <input type="hidden" name="command" value="make_order"/>
+                    <input type="hidden" name="command" value="show_page_for_make_order"/>
                     <input type="submit" class="list-group-item" value="${make_order}"/>
                 </form>
                 <form action="/hotelrooming" method="post" accept-charset="UTF-8">

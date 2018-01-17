@@ -42,7 +42,7 @@
                     <input type="hidden" name="number" value="${hotelroom.number}">
                     <input type="hidden" name="hotelroom_id" value="${hotelroom.id}"><br/>
                     <div class="field-wrap">
-                        <input type="text" name="places" value="${hotelroom.placesCount}" placeholder="${places_count}*" title="Только цифры (1-99)" pattern="[0-9]{1,2}" required/>
+                        <input type="text" name="places" value="${hotelroom.placesCount}" placeholder="${places_count}*" title="Только цифры (1-9)" pattern="[1-9]{1}" required/>
                     </div>
                     <div class="field-wrap">
                         <input type="text" name="price" value="${hotelroom.dailyPrice}" placeholder="${daily_price}*" title="Введите цену без посторонних символов" pattern="[0-9]+(\.[0-9]+)?" required/>

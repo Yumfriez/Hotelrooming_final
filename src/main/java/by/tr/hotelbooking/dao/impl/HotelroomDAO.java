@@ -172,6 +172,9 @@ public class HotelroomDAO extends AbstractJDBCDao<Hotelroom> {
         hotelroom.setDailyPrice(resultSet.getBigDecimal("daily_price"));
         hotelroom.setFloor(resultSet.getInt("floor"));
         hotelroom.setContractId(resultSet.getInt("contract_id"));
+        if(resultSet.wasNull()){
+            hotelroom.setContractId(null);
+        }
         hotelroom.setImageName(resultSet.getString("imageName"));
         RoomType roomType = new RoomType();
         roomType.setName(resultSet.getString("name"));

@@ -32,6 +32,7 @@ public class CommandInvoker {
         repository.put(CommandName.REMOVE_HOTELROOM, RemoveHotelroomCommand.getInstance());
         repository.put(CommandName.EDIT_HOTELROOM, EditHotelroomCommand.getInstance());
         repository.put(CommandName.MAKE_ORDER, MakeOrderCommand.getInstance());
+        repository.put(CommandName.SHOW_PAGE_FOR_MAKE_ORDER, ShowPageForMakeOrder.getInstance());
     }
 
     public static CommandInvoker getInstance() {

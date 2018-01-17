@@ -80,6 +80,13 @@ img {
     font-weight: 500;
 }
 
+.product-reserved {
+    width: 100%;
+    color: #ff0319;
+    font-size: 20px;
+    font-weight: 500;
+}
+
 #myNavbar input{
     margin-top: 5px;
     -webkit-transition: .5s ease;

@@ -6,14 +6,13 @@
 <c:set var="admin" value="ADMINISTRATOR"/>
 <c:set var="user" value="USER"/>
 <fmt:setBundle basename="by.tr.hotelbooking.localization.front-end" scope="session" var="loc"/>
-<fmt:message bundle="${loc}" key="local.word.hotelnumber" var="hotelroom_number"/>
 <fmt:message bundle="${loc}" key="local.word.places_count" var="places_count"/>
-<fmt:message bundle="${loc}" key="local.word.floor" var="floor"/>
-<fmt:message bundle="${loc}" key="local.word.daily_price" var="daily_price"/>
+<fmt:message bundle="${loc}" key="local.word.min_daily_price" var="min_daily_price"/>
+<fmt:message bundle="${loc}" key="local.word.max_daily_price" var="max_daily_price"/>
 <fmt:message bundle="${loc}" key="local.word.room_type" var="room_type_word"/>
 <fmt:message bundle="${loc}" key="local.word.parameters_label" var="parameters_label"/>
-<fmt:message bundle="${loc}" key="local.word.add_hotelroom_label" var="add_hotelroom_word"/>
-<fmt:message bundle="${loc}" key="local.button.add_hotelroom_button" var="add_hotelroom_button"/>
+<fmt:message bundle="${loc}" key="local.word.make_order_label" var="make_order_label"/>
+<fmt:message bundle="${loc}" key="local.button.make_order_button" var="make_order_button"/>
 <c:set var="command" value="${command}"/>
 <!DOCTYPE html>
 <html>
@@ -32,34 +31,28 @@
     <div class="container header inner">
         <%@include file="parts/header.jsp"%>
         <div class="form">
-            <div class="main_label">${add_hotelroom_word}</div>
+            <div class="main_label">${make_order_label}</div>
             <div class="inputs-wrapper">
                 <h1>${parameters_label}</h1>
                 <form action="/hotelrooming" method="post" accept-charset="utf-8">
                     <input type="hidden" name="command" value="make_order"/><br/>
                     <div class="field-wrap">
                         <label>
-                            ${hotelroom_number}<span class="req">*</span>
-                        </label>
-                        <input type="text" name="number" title="Только цифры (1-999)" pattern="[0-9]{1,3}" required/>
-                    </div>
-                    <div class="field-wrap">
-                        <label>
                             ${places_count}<span class="req">*</span>
                         </label>
-                        <input type="text" name="places" title="Только цифры (1-99)" pattern="[0-9]{1,2}" required/>
+                        <input type="text" name="places" title="Только цифры (1-9)" pattern="[1-9]{1}" required/>
                     </div>
                     <div class="field-wrap">
                         <label>
-                            ${daily_price}<span class="req">*</span>
+                            ${min_daily_price}<span class="req">*</span>
                         </label>
-                        <input type="text" name="price" title="Введите цену без посторонних символов" pattern="[0-9]+(\.[0-9]+)?" required/>
+                        <input type="text" name="min_price" title="Введите цену без посторонних символов" pattern="[0-9]+(\.[0-9]+)?" required/>
                     </div>
                     <div class="field-wrap">
                         <label>
-                            ${floor}<span class="req">*</span>
+                            ${max_daily_price}<span class="req">*</span>
                         </label>
-                        <input type="text" name="floor" title="Только цифры (1-99)" pattern="[0-9]{1,2}" required/>
+                        <input type="text" name="max_price" title="Введите цену без посторонних символов" pattern="[0-9]+(\.[0-9]+)?" required/>
                     </div>
                     <div class="field-wrap">
                         <select name="room_type" required>
@@ -69,7 +62,7 @@
                         </select>
                     </div>
 
-                    <button type="submit" class="button button-block">${add_hotelroom_button}</button>
+                    <button type="submit" class="button button-block">${make_order_button}</button>
                 </form>
             </div>
         </div>
