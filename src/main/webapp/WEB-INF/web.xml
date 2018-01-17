@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
+         version="3.1">
+    <welcome-file-list>
+        <welcome-file>index.jsp</welcome-file>
+    </welcome-file-list>
+    <servlet>
+        <servlet-name>FrontController</servlet-name>
+        <servlet-class>by.tr.hotelbooking.controller.servlet.FrontController</servlet-class>
+        <init-param>
+            <param-name>init_log4j</param-name>
+            <param-value>/WEB-INF/log4j.properties</param-value>
+        </init-param>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>FrontController</servlet-name>
+        <url-pattern>/hotelrooming</url-pattern>
+    </servlet-mapping>
+    <filter>
+        <filter-name>CharacterFilter</filter-name>
+        <filter-class>by.tr.hotelbooking.controller.servlet.CharsetFilter</filter-class>
+        <init-param>
+            <param-name>characterEncoding</param-name>
+            <param-value>utf-8</param-value>
+        </init-param>
+    </filter>
+    <filter-mapping>
+        <filter-name>CharacterFilter</filter-name>
+        <url-pattern>/hotelrooming</url-pattern>
+        <servlet-name>FrontController</servlet-name>
+    </filter-mapping>
+    <context-param>
+        <param-name>upload.location</param-name>
+        <param-value>images/hotelrooms</param-value>
+    </context-param>
+</web-app>
