@@ -36,7 +36,7 @@ public class AddCommentCommand implements Command {
         String login = request.getParameter(RequestParameter.LOGIN.getValue());
 
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        //TODO REFACTOR
+        //REFACTOR
         Date dateIn = null;
         try {
             java.util.Date dateValue = dateFormat.parse(commentDateString);

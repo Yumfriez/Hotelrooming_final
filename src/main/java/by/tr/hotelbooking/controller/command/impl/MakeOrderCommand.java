@@ -47,7 +47,7 @@ public class MakeOrderCommand implements Command {
         BigDecimal minPrice = new BigDecimal(minPriceString);
         BigDecimal maxPrice = new BigDecimal(maxPriceString);
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        //TODO REFACTOR
+        //REFACTOR
         Date dateIn = null;
         try {
             java.util.Date dateValue = dateFormat.parse(dateInString);
@@ -58,7 +58,7 @@ public class MakeOrderCommand implements Command {
         int daysCount = Integer.parseInt(daysCountString);
         int roomTypeId = Integer.parseInt(roomTypeIdString);
 
-        //TODO REFACTOR
+        //REFACTOR
         try {
             orderService.createOrder(placesCount, dateIn, daysCount, roomTypeId,minPrice, maxPrice, userLogin);
             ResponseTypeChooser responseTypeChooser = new ResponseTypeChooser();
