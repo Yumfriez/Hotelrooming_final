@@ -148,7 +148,7 @@ UNLOCK TABLES;
 -- Table structure for table `order`
 --
 
-DROP TABLE IF EXISTS `order`;
+DROP TABLE IF EXISTS orders;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `order` (
@@ -168,10 +168,10 @@ CREATE TABLE `order` (
 -- Dumping data for table `order`
 --
 
-LOCK TABLES `order` WRITE;
-/*!40000 ALTER TABLE `order` DISABLE KEYS */;
-INSERT INTO `order` VALUES (1,2,'2017-12-30',5,'Стандартный',14),(2,4,'2017-12-25',10,'Семейный',10),(3,5,'2017-12-31',2,'Люкс',1),(4,2,'2017-12-24',8,'Бизнес',11),(5,1,'2017-12-25',15,'Бизнес',9);
-/*!40000 ALTER TABLE `order` ENABLE KEYS */;
+LOCK TABLES orders WRITE;
+/*!40000 ALTER TABLE orders DISABLE KEYS */;
+INSERT INTO orders VALUES (1,2,'2017-12-30',5,'Стандартный',14),(2,4,'2017-12-25',10,'Семейный',10),(3,5,'2017-12-31',2,'Люкс',1),(4,2,'2017-12-24',8,'Бизнес',11),(5,1,'2017-12-25',15,'Бизнес',9);
+/*!40000 ALTER TABLE orders ENABLE KEYS */;
 UNLOCK TABLES;
 
 --

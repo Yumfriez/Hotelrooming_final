@@ -17,15 +17,16 @@ import java.io.IOException;
 public class AddHotelroomCommand implements Command {
     private static Logger logger = Logger.getLogger(AddHotelroomCommand.class);
 
+    private final static  AddHotelroomCommand instance = new AddHotelroomCommand();
+
     private AddHotelroomCommand(){
 
     }
 
-    private final static  AddHotelroomCommand instance = new AddHotelroomCommand();
-
     public static AddHotelroomCommand getInstance(){
         return instance;
     }
+
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) {
         HotelroomService hotelroomService = ServiceFactory.getInstance().getHotelroomService();

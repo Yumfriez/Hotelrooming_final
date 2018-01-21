@@ -62,16 +62,25 @@
                             <input type="text" name="floor" title="Только цифры (1-99)" pattern="[0-9]{1,2}" required/>
                         </div>
                         <div class="field-wrap">
+                            <label>
+                                ${room_type_word}<span class="req">*</span>
+                            </label>
                             <select name="room_type" required>
                                 <c:forEach var="room_type" items="${requestScope.roomTypesList}">
                                     <option value="${room_type.id}">${room_type.name}</option>
                                 </c:forEach>
                             </select>
                         </div>
-                        <div class="file-field-wrap button-3d">
-                            <label id="image_label" for="files" >Select Image</label>
-                            <input id="files"  type="file" name="room_image" accept="image/*" required/>
+                        <div class="field-wrap">
+                            <label>
+                                ${hotelroom_image}image<span class="req">*</span>
+                            </label>
+                            <div class="file-field-wrap button-3d">
+                                <label id="image_label" for="files" >Select Image</label>
+                                <input id="files"  type="file" name="room_image" accept="image/*" required/>
+                            </div>
                         </div>
+
 
 
                         <button type="submit" class="button button-block">${add_hotelroom_button}</button>

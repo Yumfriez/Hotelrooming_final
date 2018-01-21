@@ -40,7 +40,7 @@
                         <label>
                             ${places_count}<span class="req">*</span>
                         </label>
-                        <input type="text" name="places" title="Только цифры (1-9)" pattern="[1-9]{1}" required/>
+                        <input type="number" name="places" title="Только цифры (1-9)" min="1" max="9" required/>
                     </div>
                     <div class="field-wrap">
                         <label>
@@ -53,6 +53,18 @@
                             ${max_daily_price}<span class="req">*</span>
                         </label>
                         <input type="text" name="max_price" title="Введите цену без посторонних символов" pattern="[0-9]+(\.[0-9]+)?" required/>
+                    </div>
+                    <div class="field-wrap">
+                        <label>
+                            ${date_in}asdasd<span class="req">*</span>
+                        </label>
+                        <input type="date" name="date_in" title="Выберите дату заселения" required/>
+                    </div>
+                    <div class="field-wrap">
+                        <label>
+                            ${days_count}asdasd<span class="req">*</span>
+                        </label>
+                        <input type="number" name="days_count" title="Введите число от 1 до 365" min="1" max="365" required/>
                     </div>
                     <div class="field-wrap">
                         <select name="room_type" required>

@@ -33,7 +33,7 @@ public class Redirect implements Command {
     public void execute(HttpServletRequest request, HttpServletResponse response) {
         JspPageName jspPageName = null;
         logger.debug("Attempt to restore session");
-        String role = (String) request.getSession().getAttribute(RequestParameter.ROLE.getValue());
+        Object role = request.getSession().getAttribute(RequestParameter.ROLE.getValue());
         if (role != null) {
             jspPageName = JspPageName.ADMIN_USER_PAGE;
         } else {

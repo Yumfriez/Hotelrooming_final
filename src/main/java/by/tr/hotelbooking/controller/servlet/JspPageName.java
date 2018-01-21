@@ -7,7 +7,9 @@ public enum JspPageName {
     HOTELROOMS_PAGE("/jsp/hotelrooms-list.jsp"),
     EDIT_HOTELROOM_PAGE("/jsp/page_for_edit_hotelroom.jsp"),
     ADD_HOTELROOM_PAGE("/jsp/page_for_add_hotelroom.jsp"),
-    MAKE_ORDER_PAGE("/jsp/page_for_make_order.jsp");
+    MAKE_ORDER_PAGE("/jsp/page_for_make_order.jsp"),
+    COMMENTS_PAGE("/jsp/comments.jsp"),
+    ORDERS_PAGE("/jsp/orders-list.jsp");
 
     private String path;
 

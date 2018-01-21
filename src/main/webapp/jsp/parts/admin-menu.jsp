@@ -6,7 +6,7 @@
                     <input type="submit" class="list-group-item" value="${accounts_control}"/>
                 </form>
                 <form action="/hotelrooming" method="get" accept-charset="UTF-8">
-                    <input type="hidden" name="command" value="new_orders"/>
+                    <input type="hidden" name="command" value="show_orders"/>
                     <input type="submit" class="list-group-item" value="${new_orders}"/>
                 </form>
                 <form action="/hotelrooming" method="get" accept-charset="UTF-8">

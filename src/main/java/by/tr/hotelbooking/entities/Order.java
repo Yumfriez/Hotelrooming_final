@@ -1,5 +1,6 @@
 package by.tr.hotelbooking.entities;
 
+import java.math.BigDecimal;
 import java.sql.Date;
 
 public class Order implements Identified{
@@ -9,6 +10,8 @@ public class Order implements Identified{
     private int preferedPlacesCount;
     private Date preferedDateIn;
     private int daysCount;
+    private BigDecimal minPrice;
+    private BigDecimal maxPrice;
     private RoomType roomType;
 
     @Override
@@ -50,6 +53,22 @@ public class Order implements Identified{
 
     public void setDaysCount(int daysCount) {
         this.daysCount = daysCount;
+    }
+
+    public BigDecimal getMinPrice() {
+        return minPrice;
+    }
+
+    public void setMinPrice(BigDecimal minPrice) {
+        this.minPrice = minPrice;
+    }
+
+    public BigDecimal getMaxPrice() {
+        return maxPrice;
+    }
+
+    public void setMaxPrice(BigDecimal maxPrice) {
+        this.maxPrice = maxPrice;
     }
 
     public RoomType getRoomType() {

@@ -56,32 +56,22 @@ h1 {
   text-align: center;
   color: white;
   font-weight: 300;
-  margin: 0 0 40px;
 }
 
 label {
-  position: absolute;
-  -webkit-transform: translateY(6px);
-          transform: translateY(6px);
-  left: 13px;
+  margin-left: 9%;
   color: rgba(255, 255, 255, 0.7);
   -webkit-transition: all 0.25s ease;
   transition: all 0.25s ease;
   -webkit-backface-visibility: hidden;
   pointer-events: none;
-  font-size: 22px;
+  font-size: 20px;
 }
 label .req {
   margin: 2px;
   color: lightyellow;
 }
 
-label.active {
-  -webkit-transform: translateY(50px);
-          transform: translateY(50px);
-  left: 2px;
-  font-size: 14px;
-}
 label.active .req {
   opacity: 0;
 }
@@ -113,15 +103,22 @@ textarea {
 }
 
 .field-wrap {
-  background-color: #333;
+  background-color: rgba(0,0,0,0.6);
+  border-radius: 40px 40px 0 0;
   position: relative;
-  margin-bottom: 30px;
+  margin-bottom: 20px;
 }
 
 .file-field-wrap{
   position: relative;
   margin-bottom: 30px;
   text-align: center;
+}
+
+.file-field-wrap label{
+  position: absolute;
+  left: 8%;
+  top: 20%;
 }
 
 input[type=file],

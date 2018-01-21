@@ -1,7 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<c:set var="command" value="${command}"/>
+<c:set var="command" value="${requestScope.command}"/>
 <fmt:setLocale scope="session" value="${sessionScope.userLocale}"/>
 <c:set var="role" value="${sessionScope.role}"/>
 <c:set var="admin" value="ADMINISTRATOR"/>
