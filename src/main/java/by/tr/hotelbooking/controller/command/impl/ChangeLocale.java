@@ -47,10 +47,13 @@ public class ChangeLocale implements Command {
                 logger.debug("Unauthorized user try to change locale");
                 changeLocaleWithCookies(request, response, locale);
             }
-        } catch (ServiceException e) {
+        } catch (ValidatorException e){
             logger.error(e);
-        } catch (ValidatorException e) {
-            logger.error(e+e.getMessage());
+            request.setAttribute(RequestParameter.INFORMATION.getValue(), e.getMessage());
+        }
+        catch (ServiceException e) {
+            logger.error(e);
+            request.setAttribute(RequestParameter.INFORMATION.getValue(), e.getCause().getMessage());
         }
         ResponseTypeChooser responseTypeChooser = new ResponseTypeChooser();
         responseTypeChooser.doForward(request,response,page.getPath());

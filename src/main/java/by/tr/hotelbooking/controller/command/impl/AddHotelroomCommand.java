@@ -1,6 +1,7 @@
 package by.tr.hotelbooking.controller.command.impl;
 
 import by.tr.hotelbooking.controller.command.Command;
+import by.tr.hotelbooking.controller.servlet.JspPageName;
 import by.tr.hotelbooking.controller.servlet.RequestParameter;
 import by.tr.hotelbooking.controller.servlet.ResponseTypeChooser;
 import by.tr.hotelbooking.controller.utils.StringParser;
@@ -66,10 +67,16 @@ public class AddHotelroomCommand implements Command {
             ResponseTypeChooser responseTypeChooser = new ResponseTypeChooser();
             responseTypeChooser.doRedirect(response, "hotelrooming?command=show_hotelrooms");
 
-        } catch (ServletException | IOException |ServiceException e) {
+        } catch (ServletException | IOException | ValidatorException e) {
             logger.error(e);
-        } catch (ValidatorException e) {
-            logger.error(e+e.getMessage());
+            request.setAttribute(RequestParameter.INFORMATION.getValue(), e.getMessage());
+            ResponseTypeChooser responseTypeChooser = new ResponseTypeChooser();
+            responseTypeChooser.doForward(request,response, JspPageName.ADD_HOTELROOM_PAGE.getPath());
+        } catch ( ServiceException e){
+            logger.error(e);
+            request.setAttribute(RequestParameter.INFORMATION.getValue(), e.getCause().getMessage());
+            ResponseTypeChooser responseTypeChooser = new ResponseTypeChooser();
+            responseTypeChooser.doForward(request,response, JspPageName.ADD_HOTELROOM_PAGE.getPath());
         }
 
     }

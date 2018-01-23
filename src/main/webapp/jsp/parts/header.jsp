@@ -14,7 +14,7 @@
             <ul class="nav navbar-nav">
                 <li>
                     <form action="/hotelrooming" method="post">
-                        <input type="hidden" name="command" value="show_main_page"/>
+                        <input type="hidden" name="command" value="redirect"/>
                         <input type="submit" value="${homepage}"/>
                     </form>
                 </li>

@@ -22,7 +22,7 @@ public class Validator {
         int index=0;
         while (index<length){
             if(null==args[index] || args[index].isEmpty()){
-                throw new ValidatorException("Wrong input (empty string)");
+                throw new ValidatorException("Wrong input: empty string");
             }
             index++;
         }
@@ -33,7 +33,7 @@ public class Validator {
         try {
             checkStringsByPattern(LOGIN_PASSWORD_PATTERN, login);
         }catch (ValidatorException e){
-            throw new ValidatorException(" (wrong login format)", e);
+            throw new ValidatorException(e.getMessage()+" wrong login format");
         }
     }
 
@@ -41,7 +41,7 @@ public class Validator {
         try {
             checkStringsByPattern(LOGIN_PASSWORD_PATTERN, password);
         }catch (ValidatorException e){
-            throw new ValidatorException(" (wrong password format)", e);
+            throw new ValidatorException(e.getMessage()+" wrong password format");
         }
     }
 
@@ -49,7 +49,7 @@ public class Validator {
         try {
             checkStringsByPattern(PRICE_PATTERN, args);
         } catch (ValidatorException e){
-            throw new ValidatorException(" (wrong price format)", e);
+            throw new ValidatorException(e.getMessage()+" wrong price format");
         }
 
     }
@@ -58,7 +58,7 @@ public class Validator {
         try {
             checkStringsByPattern(NUMBER_PATTERN, args);
         } catch (ValidatorException e){
-            throw new ValidatorException(" (wrong number format)", e);
+            throw new ValidatorException(e.getMessage()+" wrong number format");
         }
 
     }
@@ -67,7 +67,7 @@ public class Validator {
         try {
             checkStringsByPattern(EMAIL_PATTERN, args);
         } catch (ValidatorException e){
-            throw new ValidatorException(" (wrong email format)", e);
+            throw new ValidatorException(e.getMessage()+" wrong email format");
         }
 
     }
@@ -80,7 +80,7 @@ public class Validator {
         while (index<length){
             Matcher matcher = pattern.matcher(args[index]);
             if(!matcher.matches()){
-                throw new ValidatorException("Wrong input");
+                throw new ValidatorException("Wrong input:");
             }
             index++;
         }

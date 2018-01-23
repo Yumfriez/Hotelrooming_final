@@ -45,6 +45,9 @@ public class ShowOrdersCommand implements Command {
             responseTypeChooser.doForward(request,response, JspPageName.ORDERS_PAGE.getPath());
         } catch (ServiceException e){
             logger.error(e);
+            request.setAttribute(RequestParameter.INFORMATION.getValue(), e.getCause().getMessage());
+            ResponseTypeChooser responseTypeChooser = new ResponseTypeChooser();
+            responseTypeChooser.doForward(request,response, JspPageName.ADMIN_USER_PAGE.getPath());
         }
 
     }

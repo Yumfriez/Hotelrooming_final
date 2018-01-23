@@ -70,8 +70,14 @@ public class SignUp implements Command {
 
         } catch (ServiceException e) {
             logger.error(e);
-        } catch (ValidatorException e) {
-            logger.error(e+e.getMessage());
+            request.setAttribute(RequestParameter.INFORMATION.getValue(), e.getCause().getMessage());
+            ResponseTypeChooser responseTypeChooser=new ResponseTypeChooser();
+            responseTypeChooser.doForward(request,response, JspPageName.WELCOME_PAGE.getPath());
+        } catch (ValidatorException e){
+            logger.error(e);
+            request.setAttribute(RequestParameter.INFORMATION.getValue(), e.getMessage());
+            ResponseTypeChooser responseTypeChooser=new ResponseTypeChooser();
+            responseTypeChooser.doForward(request,response, JspPageName.WELCOME_PAGE.getPath());
         }
 
     }

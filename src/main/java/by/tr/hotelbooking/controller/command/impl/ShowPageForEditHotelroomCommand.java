@@ -53,8 +53,14 @@ public class ShowPageForEditHotelroomCommand implements Command {
             responseTypeChooser.doForward(request, response, JspPageName.EDIT_HOTELROOM_PAGE.getPath());
         } catch (ServiceException e){
             logger.error(e);
+            request.setAttribute(RequestParameter.INFORMATION.getValue(), e.getCause().getMessage());
+            ResponseTypeChooser responseTypeChooser = new ResponseTypeChooser();
+            responseTypeChooser.doForward(request, response, JspPageName.HOTELROOMS_PAGE.getPath());
         } catch (ValidatorException e) {
-            logger.error(e+e.getMessage());
+            logger.error(e);
+            request.setAttribute(RequestParameter.INFORMATION.getValue(), e.getMessage());
+            ResponseTypeChooser responseTypeChooser = new ResponseTypeChooser();
+            responseTypeChooser.doForward(request, response, JspPageName.HOTELROOMS_PAGE.getPath());
         }
 
     }

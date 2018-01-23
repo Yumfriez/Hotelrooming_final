@@ -1,6 +1,7 @@
 package by.tr.hotelbooking.controller.command.impl;
 
 import by.tr.hotelbooking.controller.command.Command;
+import by.tr.hotelbooking.controller.servlet.JspPageName;
 import by.tr.hotelbooking.controller.servlet.RequestParameter;
 import by.tr.hotelbooking.controller.servlet.ResponseTypeChooser;
 import by.tr.hotelbooking.controller.utils.StringParser;
@@ -45,8 +46,17 @@ public class AddCommentCommand implements Command {
             commentService.addComment(dateIn, login, commentText);
             ResponseTypeChooser responseTypeChooser = new ResponseTypeChooser();
             responseTypeChooser.doRedirect(response,"hotelrooming?command=show_comments");
-        } catch (ParseException | ServiceException | ValidatorException e) {
-           logger.error(e+e.getMessage());
+
+        } catch (ParseException |  ValidatorException e) {
+            logger.error(e);
+            request.setAttribute(RequestParameter.INFORMATION.getValue(), e.getMessage());
+            ResponseTypeChooser responseTypeChooser = new ResponseTypeChooser();
+            responseTypeChooser.doForward(request, response, JspPageName.COMMENTS_PAGE.getPath());
+        } catch (ServiceException e){
+            logger.error(e);
+            request.setAttribute(RequestParameter.INFORMATION.getValue(), e.getCause().getMessage());
+            ResponseTypeChooser responseTypeChooser = new ResponseTypeChooser();
+            responseTypeChooser.doForward(request, response, JspPageName.COMMENTS_PAGE.getPath());
         }
 
     }

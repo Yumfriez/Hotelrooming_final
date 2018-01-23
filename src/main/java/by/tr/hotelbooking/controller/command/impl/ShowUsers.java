@@ -33,6 +33,7 @@ public class ShowUsers implements Command {
             request.setAttribute( RequestParameter.USER_LIST.getValue(), userList);
         } catch (ServiceException e) {
             logger.error(e);
+            request.setAttribute(RequestParameter.INFORMATION.getValue(), e.getCause().getMessage());
         }
         ResponseTypeChooser responseTypeChooser = new ResponseTypeChooser();
         responseTypeChooser.doForward(request,response,JspPageName.USERS_PAGE.getPath());

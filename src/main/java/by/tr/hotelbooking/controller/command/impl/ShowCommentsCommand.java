@@ -32,9 +32,10 @@ public class ShowCommentsCommand implements Command {
 
         CommentService commentService = serviceFactory.getCommentService();
         String pageStringValue = request.getParameter(RequestParameter.PAGINATION.getValue());
+        Object role = request.getSession().getAttribute(RequestParameter.ROLE.getValue());
         try {
-            int recorsCount = commentService.getRecordsCount();
-            int pagesCount = commentService.getPagesCount(recorsCount);
+            int recordsCount = commentService.getRecordsCount();
+            int pagesCount = commentService.getPagesCount(recordsCount);
             int pageNumber = commentService.getPageNumber(pageStringValue);
             List<Comment> commentsList = commentService.getCommentsForPage(pageNumber);
 
@@ -47,6 +48,13 @@ public class ShowCommentsCommand implements Command {
             forwardRedirectChooser.doForward(request, response, JspPageName.COMMENTS_PAGE.getPath());
         }catch (ServiceException e){
             logger.error(e);
+            request.setAttribute(RequestParameter.INFORMATION.getValue(), e.getCause().getMessage());
+            ResponseTypeChooser forwardRedirectChooser = new ResponseTypeChooser();
+            if(null!=role){
+                forwardRedirectChooser.doForward(request, response, JspPageName.ADMIN_USER_PAGE.getPath());
+            }else{
+                forwardRedirectChooser.doForward(request, response, JspPageName.WELCOME_PAGE.getPath());
+            }
         }
 
     }

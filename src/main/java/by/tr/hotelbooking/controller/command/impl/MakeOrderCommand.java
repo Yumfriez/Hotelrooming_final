@@ -1,6 +1,7 @@
 package by.tr.hotelbooking.controller.command.impl;
 
 import by.tr.hotelbooking.controller.command.Command;
+import by.tr.hotelbooking.controller.servlet.JspPageName;
 import by.tr.hotelbooking.controller.servlet.RequestParameter;
 import by.tr.hotelbooking.controller.servlet.ResponseTypeChooser;
 import by.tr.hotelbooking.controller.utils.StringParser;
@@ -63,10 +64,16 @@ public class MakeOrderCommand implements Command {
             orderService.createOrder(placesCount, dateIn, daysCount, roomTypeId,minPrice, maxPrice, userLogin);
             ResponseTypeChooser responseTypeChooser = new ResponseTypeChooser();
             responseTypeChooser.doRedirect(response, "hotelrooming?command=show_user_orders");
-        } catch (ServiceException | ParseException e){
+        } catch (ServiceException e){
             logger.error(e);
-        } catch (ValidatorException e) {
-            logger.error(e+e.getMessage());
+            request.setAttribute(RequestParameter.INFORMATION.getValue(), e.getCause().getMessage());
+            ResponseTypeChooser responseTypeChooser = new ResponseTypeChooser();
+            responseTypeChooser.doForward(request, response, JspPageName.ADMIN_USER_PAGE.getPath());
+        } catch (ValidatorException | ParseException e) {
+            logger.error(e);
+            request.setAttribute(RequestParameter.INFORMATION.getValue(), e.getMessage());
+            ResponseTypeChooser responseTypeChooser = new ResponseTypeChooser();
+            responseTypeChooser.doForward(request, response, JspPageName.ADMIN_USER_PAGE.getPath());
         }
 
 

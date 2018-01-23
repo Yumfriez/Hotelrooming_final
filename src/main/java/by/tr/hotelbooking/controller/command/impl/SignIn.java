@@ -58,14 +58,16 @@ public class SignIn implements Command {
                 request.setAttribute(RequestParameter.INFORMATION.getValue(), "account is blocked");
             }
         } catch (ServiceException e) {
-
             logger.error(e);
             request.setAttribute(RequestParameter.INFORMATION.getValue(), "Wrong login or password");
             ResponseTypeChooser responseTypeChooser=new ResponseTypeChooser();
             responseTypeChooser.doForward(request,response, JspPageName.WELCOME_PAGE.getPath());
 
         } catch (ValidatorException e) {
-            logger.error(e + e.getMessage());
+            logger.error(e);
+            request.setAttribute(RequestParameter.INFORMATION.getValue(), e.getMessage());
+            ResponseTypeChooser responseTypeChooser=new ResponseTypeChooser();
+            responseTypeChooser.doForward(request,response, JspPageName.WELCOME_PAGE.getPath());
         }
 
 

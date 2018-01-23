@@ -74,10 +74,16 @@ public class FindHotelroomsCommand implements Command {
 
             ResponseTypeChooser responseTypeChooser = new ResponseTypeChooser();
             responseTypeChooser.doForward(request, response, JspPageName.HOTELROOMS_PAGE.getPath());
-        } catch (ServiceException | ParseException e) {
+        } catch (ServiceException e) {
             logger.error(e);
-        } catch (ValidatorException e) {
-            logger.error(e+e.getMessage());
+            request.setAttribute(RequestParameter.INFORMATION.getValue(), e.getCause().getMessage());
+            ResponseTypeChooser responseTypeChooser = new ResponseTypeChooser();
+            responseTypeChooser.doForward(request, response, JspPageName.ORDERS_PAGE.getPath());
+        } catch (ValidatorException | ParseException e) {
+            logger.error(e);
+            request.setAttribute(RequestParameter.INFORMATION.getValue(), e.getMessage());
+            ResponseTypeChooser responseTypeChooser = new ResponseTypeChooser();
+            responseTypeChooser.doForward(request, response, JspPageName.ORDERS_PAGE.getPath());
         }
 
     }

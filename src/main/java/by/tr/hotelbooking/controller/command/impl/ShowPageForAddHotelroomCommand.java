@@ -47,6 +47,9 @@ public class ShowPageForAddHotelroomCommand implements Command {
             responseTypeChooser.doForward(request, response, JspPageName.ADD_HOTELROOM_PAGE.getPath());
         } catch (ServiceException e){
             logger.error(e);
+            request.setAttribute(RequestParameter.INFORMATION.getValue(), e.getCause().getMessage());
+            ResponseTypeChooser responseTypeChooser = new ResponseTypeChooser();
+            responseTypeChooser.doForward(request, response, JspPageName.HOTELROOMS_PAGE.getPath());
         }
 
 

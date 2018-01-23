@@ -252,6 +252,7 @@ public class HotelroomServiceImpl implements HotelroomService {
                 Files.copy(input, file.toPath(), StandardCopyOption.REPLACE_EXISTING);
             }
         } catch (IOException e) {
+            e.printStackTrace();
             throw new ServiceException("Imga upload error ", e);
         }
     }

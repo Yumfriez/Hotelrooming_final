@@ -20,7 +20,6 @@ public class CommandInvoker {
         repository.put(CommandName.AFTER_SIGN_UP, AfterSignUp.getInstance());
         repository.put((CommandName.SIGN_UP), SignUp.getInstance());
         repository.put(CommandName.REDIRECT, Redirect.getInstance());
-        repository.put(CommandName.SHOW_MAIN_PAGE, ShowMainPage.getInstance());
         repository.put(CommandName.CHANGE_LOCALE, ChangeLocale.getInstance());
         repository.put(CommandName.EXIT, ExitFromAccount.getInstance());
         repository.put(CommandName.SHOW_USERS, ShowUsers.getInstance());
