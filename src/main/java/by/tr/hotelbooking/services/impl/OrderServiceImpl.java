@@ -27,6 +27,8 @@ public class OrderServiceImpl implements OrderService{
         order.setAccountLogin(userLogin);
         order.setPreferedDateIn(dateIn);
         order.setDaysCount(daysCount);
+        order.setMinPrice(minPrice);
+        order.setMaxPrice(maxPrice);
 
         try {
             OrderDAO orderDAO = daoFactory.getOrderDAO();

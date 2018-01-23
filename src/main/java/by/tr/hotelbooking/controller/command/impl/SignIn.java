@@ -4,6 +4,8 @@ import by.tr.hotelbooking.controller.command.Command;
 import by.tr.hotelbooking.controller.servlet.JspPageName;
 import by.tr.hotelbooking.controller.servlet.RequestParameter;
 import by.tr.hotelbooking.controller.servlet.ResponseTypeChooser;
+import by.tr.hotelbooking.controller.utils.Validator;
+import by.tr.hotelbooking.controller.utils.ValidatorException;
 import by.tr.hotelbooking.entities.User;
 import by.tr.hotelbooking.services.exception.ServiceException;
 import by.tr.hotelbooking.services.factory.ServiceFactory;
@@ -33,6 +35,9 @@ public class SignIn implements Command {
         String login = request.getParameter(RequestParameter.LOGIN.getValue());
         String password = request.getParameter(RequestParameter.PASSWORD.getValue());
         try {
+            Validator.checkIsNotEmpty(login, password);
+            Validator.checkIsValidLogin(login);
+            Validator.checkIsValidPassword(password);
             User user = serviceFactory.getUserService().signIn(login, password);
             if (!user.getIsBlocked()) {
                 if (user.getRole() != null) {
@@ -59,6 +64,8 @@ public class SignIn implements Command {
             ResponseTypeChooser responseTypeChooser=new ResponseTypeChooser();
             responseTypeChooser.doForward(request,response, JspPageName.WELCOME_PAGE.getPath());
 
+        } catch (ValidatorException e) {
+            logger.error(e + e.getMessage());
         }
 
 

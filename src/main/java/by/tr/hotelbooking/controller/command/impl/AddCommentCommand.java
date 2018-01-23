@@ -3,6 +3,9 @@ package by.tr.hotelbooking.controller.command.impl;
 import by.tr.hotelbooking.controller.command.Command;
 import by.tr.hotelbooking.controller.servlet.RequestParameter;
 import by.tr.hotelbooking.controller.servlet.ResponseTypeChooser;
+import by.tr.hotelbooking.controller.utils.StringParser;
+import by.tr.hotelbooking.controller.utils.Validator;
+import by.tr.hotelbooking.controller.utils.ValidatorException;
 import by.tr.hotelbooking.services.CommentService;
 import by.tr.hotelbooking.services.exception.ServiceException;
 import by.tr.hotelbooking.services.factory.ServiceFactory;
@@ -34,24 +37,17 @@ public class AddCommentCommand implements Command {
         String commentText = request.getParameter(RequestParameter.COMMENT_TEXT.getValue());
         String commentDateString = request.getParameter(RequestParameter.COMMENT_DATE.getValue());
         String login = request.getParameter(RequestParameter.LOGIN.getValue());
-
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        //REFACTOR
-        Date dateIn = null;
-        try {
-            java.util.Date dateValue = dateFormat.parse(commentDateString);
-            dateIn = new Date(dateValue.getTime());
+        try{
+            Validator.checkIsNotEmpty(commentText, commentDateString, login);
+            Validator.checkIsValidLogin(login);
+            Date dateIn = StringParser.parseFromStringToDate(commentDateString);
             CommentService commentService = ServiceFactory.getInstance().getCommentService();
             commentService.addComment(dateIn, login, commentText);
             ResponseTypeChooser responseTypeChooser = new ResponseTypeChooser();
             responseTypeChooser.doRedirect(response,"hotelrooming?command=show_comments");
-        } catch (ParseException e) {
-            e.printStackTrace();
-        } catch (ServiceException e){
-            logger.error(e);
+        } catch (ParseException | ServiceException | ValidatorException e) {
+           logger.error(e+e.getMessage());
         }
-
-
 
     }
 }

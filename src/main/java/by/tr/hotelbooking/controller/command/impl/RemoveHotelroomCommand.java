@@ -3,6 +3,9 @@ package by.tr.hotelbooking.controller.command.impl;
 import by.tr.hotelbooking.controller.command.Command;
 import by.tr.hotelbooking.controller.servlet.RequestParameter;
 import by.tr.hotelbooking.controller.servlet.ResponseTypeChooser;
+import by.tr.hotelbooking.controller.utils.StringParser;
+import by.tr.hotelbooking.controller.utils.Validator;
+import by.tr.hotelbooking.controller.utils.ValidatorException;
 import by.tr.hotelbooking.services.HotelroomService;
 import by.tr.hotelbooking.services.exception.ServiceException;
 import by.tr.hotelbooking.services.factory.ServiceFactory;
@@ -28,15 +31,22 @@ public class RemoveHotelroomCommand implements Command {
     public void execute(HttpServletRequest request, HttpServletResponse response) {
 
         HotelroomService hotelroomService = ServiceFactory.getInstance().getHotelroomService();
-
         String idString = request.getParameter(RequestParameter.HOTELROOM_ID.getValue());
 
+
         try {
-            hotelroomService.deleteHotelroom(idString);
+            Validator.checkIsNotEmpty(idString);
+            Validator.checkIsValidNumbers(idString);
+
+            int hotelroomId = StringParser.parseFromStringToInt(idString);
+
+            hotelroomService.deleteHotelroom(hotelroomId);
             ResponseTypeChooser responseTypeChooser = new ResponseTypeChooser();
             responseTypeChooser.doRedirect(response, "hotelrooming?command=show_hotelrooms");
         } catch (ServiceException e) {
             logger.error(e);
+        } catch (ValidatorException e) {
+            logger.error(e+e.getMessage());
         }
 
     }

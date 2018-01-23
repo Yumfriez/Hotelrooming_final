@@ -1,34 +1,37 @@
 package by.tr.hotelbooking.controller.command.impl;
 
 import by.tr.hotelbooking.controller.command.Command;
+import by.tr.hotelbooking.controller.servlet.JspPageName;
 import by.tr.hotelbooking.controller.servlet.RequestParameter;
 import by.tr.hotelbooking.controller.servlet.ResponseTypeChooser;
 import by.tr.hotelbooking.controller.utils.StringParser;
 import by.tr.hotelbooking.controller.utils.Validator;
 import by.tr.hotelbooking.controller.utils.ValidatorException;
-import by.tr.hotelbooking.services.OrderService;
+import by.tr.hotelbooking.entities.Hotelroom;
+import by.tr.hotelbooking.services.HotelroomService;
 import by.tr.hotelbooking.services.exception.ServiceException;
 import by.tr.hotelbooking.services.factory.ServiceFactory;
-import by.tr.hotelbooking.services.impl.OrderServiceImpl;
 import org.apache.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.math.BigDecimal;
 import java.sql.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.List;
 
-public class MakeOrderCommand implements Command {
+public class FindHotelroomsCommand implements Command {
 
-    private static Logger logger = Logger.getLogger(MakeOrderCommand.class);
+    private static Logger logger = Logger.getLogger(FindHotelroomsCommand.class);
 
-    private final static MakeOrderCommand instance = new MakeOrderCommand();
+    private final static FindHotelroomsCommand instance = new FindHotelroomsCommand();
 
-    private MakeOrderCommand(){}
+    private FindHotelroomsCommand(){
 
-    public static MakeOrderCommand getInstance(){
+    }
+
+    public static FindHotelroomsCommand getInstance(){
         return instance;
     }
 
@@ -40,17 +43,16 @@ public class MakeOrderCommand implements Command {
         String maxPriceString = request.getParameter(RequestParameter.MAX_PRICE.getValue());
         String dateInString = request.getParameter(RequestParameter.DATE_IN.getValue());
         String daysCountString = request.getParameter(RequestParameter.DAYS_COUNT.getValue());
+        String clientLogin = request.getParameter(RequestParameter.CLIENT_LOGIN.getValue());
         String roomTypeIdString = request.getParameter(RequestParameter.ROOM_TYPE.getValue());
-        HttpSession currentSession = request.getSession();
-        String userLogin = (String) currentSession.getAttribute(RequestParameter.LOGIN.getValue());
+        String pageStringValue = request.getParameter(RequestParameter.PAGINATION.getValue());
 
         try {
-
             Validator.checkIsNotEmpty(placesCountString, minPriceString, maxPriceString, dateInString,
-                    daysCountString, roomTypeIdString, userLogin);
-            Validator.checkIsValidPrice(minPriceString, maxPriceString);
+                    daysCountString, clientLogin, roomTypeIdString);
             Validator.checkIsValidNumbers(placesCountString, daysCountString, roomTypeIdString);
-            Validator.checkIsValidLogin(userLogin);
+            Validator.checkIsValidPrice(minPriceString, maxPriceString);
+            Validator.checkIsValidLogin(clientLogin);
 
             int placesCount = StringParser.parseFromStringToInt(placesCountString);
             BigDecimal minPrice = StringParser.parseFromStringToBigDecimal(minPriceString);
@@ -59,16 +61,24 @@ public class MakeOrderCommand implements Command {
             int roomTypeId = StringParser.parseFromStringToInt(roomTypeIdString);
             Date dateIn = StringParser.parseFromStringToDate(dateInString);
 
-            OrderService orderService = ServiceFactory.getInstance().getOrderService();
-            orderService.createOrder(placesCount, dateIn, daysCount, roomTypeId,minPrice, maxPrice, userLogin);
+            HotelroomService hotelroomService = ServiceFactory.getInstance().getHotelroomService();
+
+            int pageNumber = hotelroomService.getPageNumber(pageStringValue);
+            int recordsCount = hotelroomService.getRecordsByCriteriaCount(placesCount, minPrice, maxPrice, roomTypeId, dateIn, daysCount);
+            int pagesCount = hotelroomService.getPagesCount(recordsCount);
+            List<Hotelroom> hotelrooms = hotelroomService.findHotelroomsForPage(placesCount, minPrice, maxPrice, roomTypeId, dateIn, daysCount,pageNumber);
+            request.setAttribute(RequestParameter.HOTELROOMS_LIST.getValue(), hotelrooms);
+            request.setAttribute(RequestParameter.PAGES_COUNT.getValue(), pagesCount);
+            request.setAttribute(RequestParameter.CURRENT_PAGE_NUMBER.getValue(), pageNumber);
+            request.setAttribute(RequestParameter.COMMAND.getValue(), RequestParameter.SHOW_HOTELROOMS.getValue());
+
             ResponseTypeChooser responseTypeChooser = new ResponseTypeChooser();
-            responseTypeChooser.doRedirect(response, "hotelrooming?command=show_user_orders");
-        } catch (ServiceException | ParseException e){
+            responseTypeChooser.doForward(request, response, JspPageName.HOTELROOMS_PAGE.getPath());
+        } catch (ServiceException | ParseException e) {
             logger.error(e);
         } catch (ValidatorException e) {
             logger.error(e+e.getMessage());
         }
-
 
     }
 }

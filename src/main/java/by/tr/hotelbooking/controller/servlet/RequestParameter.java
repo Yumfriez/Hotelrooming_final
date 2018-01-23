@@ -25,7 +25,7 @@ public enum RequestParameter {
     HOTELROOM("hotelroom"),
     HOTELROOM_ID("hotelroom_id"),
     NUMBER("number"),
-    PLACES("places"),
+    PLACES("places_count"),
     ROOM_IMAGE("room_image"),
     PRICE("price"),
     FLOOR("floor"),
@@ -41,6 +41,7 @@ public enum RequestParameter {
     COMMENTS_LIST("commentsList"),
     COMMENT_TEXT("comment_text"),
     COMMENT_DATE("comment_date"),
+    CLIENT_LOGIN("client_login"),
     PAGE("page");
 
 

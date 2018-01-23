@@ -5,6 +5,7 @@ import by.tr.hotelbooking.dao.exception.DAOException;
 import by.tr.hotelbooking.dao.factory.DaoFactory;
 import by.tr.hotelbooking.dao.impl.HotelroomDAO;
 import by.tr.hotelbooking.entities.Hotelroom;
+import by.tr.hotelbooking.entities.HotelroomDTO;
 import by.tr.hotelbooking.entities.RoomType;
 import by.tr.hotelbooking.services.HotelroomService;
 import by.tr.hotelbooking.services.exception.ServiceException;
@@ -18,6 +19,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.sql.Date;
+import java.util.Calendar;
 import java.util.List;
 
 public class HotelroomServiceImpl implements HotelroomService {
@@ -35,18 +38,13 @@ public class HotelroomServiceImpl implements HotelroomService {
 
 
     @Override
-    public void addHotelroom(String numberString, String placesCountString, String floorString, String dailyPriceString,
-                             String roomTypeIdString, Part part, String uploadDir) throws ServiceException {
+    public void addHotelroom(int number, int placesCount, int floor, BigDecimal dailyPrice,
+                             int roomTypeId, Part part, String uploadDir) throws ServiceException {
 
         Hotelroom hotelroom = new Hotelroom();
         Dao<Hotelroom> hotelroomDao = daoFactory.getHotelroomDAO();
         try {
 
-            int number = Integer.parseInt(numberString);
-            int floor = Integer.parseInt(floorString);
-            int placesCount = Integer.parseInt(placesCountString);
-            BigDecimal dailyPrice = new BigDecimal(dailyPriceString);
-            int roomTypeId = Integer.parseInt(roomTypeIdString);
             String imageName = Paths.get(part.getSubmittedFileName()).getFileName().toString();
 
             if(!imageName.isEmpty()){
@@ -76,24 +74,18 @@ public class HotelroomServiceImpl implements HotelroomService {
     }
 
     @Override
-    public void editHotelroom(String idString, String numberString, String placesCountString, String floorString, String dailyPriceString,
-                              String roomTypeIdString, Part part, String uploadDir) throws ServiceException {
+    public void editHotelroom(int hotelroomId, int number, int placesCount, int floor,  BigDecimal dailyPrice,
+                              int roomTypeId, Part part, String uploadDir) throws ServiceException {
         Hotelroom hotelroom = new Hotelroom();
         Dao<Hotelroom> hotelroomDao = daoFactory.getHotelroomDAO();
         try {
 
-            int id = Integer.parseInt(idString);
-            int number = Integer.parseInt(numberString);
-            int floor = Integer.parseInt(floorString);
-            int placesCount = Integer.parseInt(placesCountString);
-            BigDecimal dailyPrice = new BigDecimal(dailyPriceString);
-            int roomTypeId = Integer.parseInt(roomTypeIdString);
             String imageName = Paths.get(part.getSubmittedFileName()).getFileName().toString();
 
             if(!imageName.isEmpty()){
                 hotelroom.setImageName(imageName);
             }
-            hotelroom.setId(id);
+            hotelroom.setId(hotelroomId);
             hotelroom.setNumber(number);
             hotelroom.setFloor(floor);
             hotelroom.setPlacesCount(placesCount);
@@ -159,6 +151,61 @@ public class HotelroomServiceImpl implements HotelroomService {
     }
 
     @Override
+    public List<Hotelroom> findHotelroomsForPage(int placesCount, BigDecimal minPrice, BigDecimal maxPrice, int roomTypeId,
+                                                 Date dateIn, int daysCount, int page) throws ServiceException {
+        List<Hotelroom> hotelrooms = null;
+        HotelroomDAO hotelroomDAO = daoFactory.getHotelroomDAO();
+        HotelroomDTO hotelroomDTO = new HotelroomDTO();
+        hotelroomDTO.setMinPrice(minPrice);
+        hotelroomDTO.setMaxPrice(maxPrice);
+        hotelroomDTO.setPlacesCount(placesCount);
+        RoomType roomType = new RoomType();
+        roomType.setId(roomTypeId);
+        hotelroomDTO.setRoomType(roomType);
+        hotelroomDTO.setDateIn(dateIn);
+
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(dateIn);
+        cal.add(Calendar.DAY_OF_YEAR,daysCount);
+        Date dateOut = new Date(cal.getTimeInMillis());
+        hotelroomDTO.setDateOut(dateOut);
+        try {
+
+            hotelrooms = hotelroomDAO.getHotelroomsByParameters(hotelroomDTO, (page-1)*4,4);
+        }  catch (DAOException e) {
+            throw new ServiceException(e);
+        }
+        return hotelrooms;
+    }
+
+    @Override
+    public int getRecordsByCriteriaCount(int placesCount, BigDecimal minPrice, BigDecimal maxPrice, int roomTypeId,
+                                         Date dateIn, int daysCount) throws ServiceException {
+        int num = 0;
+        HotelroomDTO hotelroomDTO = new HotelroomDTO();
+        hotelroomDTO.setMinPrice(minPrice);
+        hotelroomDTO.setMaxPrice(maxPrice);
+        hotelroomDTO.setPlacesCount(placesCount);
+        RoomType roomType = new RoomType();
+        roomType.setId(roomTypeId);
+        hotelroomDTO.setRoomType(roomType);
+        hotelroomDTO.setDateIn(dateIn);
+
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(dateIn);
+        cal.add(Calendar.DAY_OF_YEAR,daysCount);
+        Date dateOut = new Date(cal.getTimeInMillis());
+        hotelroomDTO.setDateOut(dateOut);
+
+        try {
+            num = daoFactory.getHotelroomDAO().getNumberOfHotelroomsByParams(hotelroomDTO);
+        } catch (DAOException e) {
+            throw new ServiceException(e);
+        }
+        return num;
+    }
+
+    @Override
     public int getRecordsCount() throws ServiceException {
         int num = 0;
         try {
@@ -181,10 +228,9 @@ public class HotelroomServiceImpl implements HotelroomService {
     }
 
     @Override
-    public void deleteHotelroom(String idString) throws ServiceException {
+    public void deleteHotelroom(int id) throws ServiceException {
         Dao<Hotelroom> hotelroomDao = null;
         try {
-            int id = Integer.parseInt(idString);
             hotelroomDao = daoFactory.getHotelroomDAO();
             hotelroomDao.delete(id);
         } catch (DAOException e) {

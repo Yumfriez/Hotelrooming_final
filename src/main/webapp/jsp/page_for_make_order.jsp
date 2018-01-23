@@ -12,6 +12,8 @@
 <fmt:message bundle="${loc}" key="local.word.room_type" var="room_type_word"/>
 <fmt:message bundle="${loc}" key="local.word.parameters_label" var="parameters_label"/>
 <fmt:message bundle="${loc}" key="local.word.make_order_label" var="make_order_label"/>
+<fmt:message bundle="${loc}" key="local.word.date_in" var="date_in_label"/>
+<fmt:message bundle="${loc}" key="local.word.days_count" var="days_count_label"/>
 <fmt:message bundle="${loc}" key="local.button.make_order_button" var="make_order_button"/>
 <c:set var="command" value="${command}"/>
 <!DOCTYPE html>
@@ -40,7 +42,7 @@
                         <label>
                             ${places_count}<span class="req">*</span>
                         </label>
-                        <input type="number" name="places" title="Только цифры (1-9)" min="1" max="9" required/>
+                        <input type="number" name="places_count" title="Только цифры (1-9)" min="1" max="9" required/>
                     </div>
                     <div class="field-wrap">
                         <label>
@@ -56,13 +58,13 @@
                     </div>
                     <div class="field-wrap">
                         <label>
-                            ${date_in}asdasd<span class="req">*</span>
+                            ${date_in_label}<span class="req">*</span>
                         </label>
                         <input type="date" name="date_in" title="Выберите дату заселения" required/>
                     </div>
                     <div class="field-wrap">
                         <label>
-                            ${days_count}asdasd<span class="req">*</span>
+                            ${days_count_label}<span class="req">*</span>
                         </label>
                         <input type="number" name="days_count" title="Введите число от 1 до 365" min="1" max="365" required/>
                     </div>

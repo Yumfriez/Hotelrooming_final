@@ -35,7 +35,6 @@ public class ShowCommentsCommand implements Command {
         try {
             int recorsCount = commentService.getRecordsCount();
             int pagesCount = commentService.getPagesCount(recorsCount);
-
             int pageNumber = commentService.getPageNumber(pageStringValue);
             List<Comment> commentsList = commentService.getCommentsForPage(pageNumber);
 

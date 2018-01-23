@@ -47,7 +47,7 @@
                             <label>
                                 ${places_count}<span class="req">*</span>
                             </label>
-                            <input type="text" name="places" title="Только цифры (1-9)" pattern="[1-9]{1}" required/>
+                            <input type="text" name="places_count" title="Только цифры (1-9)" pattern="[1-9]{1}" required/>
                         </div>
                         <div class="field-wrap">
                             <label>

@@ -4,6 +4,8 @@ import by.tr.hotelbooking.controller.command.Command;
 import by.tr.hotelbooking.controller.servlet.JspPageName;
 import by.tr.hotelbooking.controller.servlet.RequestParameter;
 import by.tr.hotelbooking.controller.servlet.ResponseTypeChooser;
+import by.tr.hotelbooking.controller.utils.Validator;
+import by.tr.hotelbooking.controller.utils.ValidatorException;
 import by.tr.hotelbooking.services.UserService;
 import by.tr.hotelbooking.services.exception.ServiceException;
 import by.tr.hotelbooking.services.factory.ServiceFactory;
@@ -35,6 +37,7 @@ public class ChangeLocale implements Command {
         JspPageName page = JspPageName.valueOf((request.getParameter("page")).toUpperCase());
 
         try {
+            Validator.checkIsNotEmpty(locale);
             if (login != null) {
                 logger.debug(login + " try to change locale");
                 userService.updateLocale(login, locale);
@@ -42,16 +45,18 @@ public class ChangeLocale implements Command {
             }
             else {
                 logger.debug("Unauthorized user try to change locale");
-                changeLocaleWithCookies(request, response, locale, page);
+                changeLocaleWithCookies(request, response, locale);
             }
         } catch (ServiceException e) {
             logger.error(e);
+        } catch (ValidatorException e) {
+            logger.error(e+e.getMessage());
         }
         ResponseTypeChooser responseTypeChooser = new ResponseTypeChooser();
         responseTypeChooser.doForward(request,response,page.getPath());
     }
 
-    private void changeLocaleWithCookies(HttpServletRequest request, HttpServletResponse response, String locale, JspPageName page) throws ServiceException {
+    private void changeLocaleWithCookies(HttpServletRequest request, HttpServletResponse response, String locale) throws ServiceException {
         UserService IUserService = serviceFactory.getUserService();
         Cookie cookies[] = request.getCookies();
         boolean hasCookie = false;
@@ -69,7 +74,6 @@ public class ChangeLocale implements Command {
             request.getSession().setAttribute(RequestParameter.WELCOME_LOCALE.getValue(), locale);
             Cookie cookieWelcomeLocale = new Cookie(RequestParameter.WELCOME_LOCALE.getValue(), locale);
             response.addCookie(cookieWelcomeLocale);
-            page = JspPageName.WELCOME_PAGE;
         }
     }
 }

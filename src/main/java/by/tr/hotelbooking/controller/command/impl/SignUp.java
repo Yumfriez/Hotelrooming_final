@@ -4,6 +4,8 @@ import by.tr.hotelbooking.controller.command.Command;
 import by.tr.hotelbooking.controller.servlet.JspPageName;
 import by.tr.hotelbooking.controller.servlet.RequestParameter;
 import by.tr.hotelbooking.controller.servlet.ResponseTypeChooser;
+import by.tr.hotelbooking.controller.utils.Validator;
+import by.tr.hotelbooking.controller.utils.ValidatorException;
 import by.tr.hotelbooking.entities.User;
 import by.tr.hotelbooking.services.UserService;
 import by.tr.hotelbooking.services.exception.ServiceException;
@@ -39,6 +41,11 @@ public class SignUp implements Command {
             String email = request.getParameter(RequestParameter.EMAIL.getValue());
             String name = request.getParameter(RequestParameter.NAME.getValue());
             String lastName = request.getParameter(RequestParameter.LASTNAME.getValue());
+            //TODO VALIDATOR FOR NAME AND LASTNAME
+            Validator.checkIsNotEmpty(login, password);
+            Validator.checkIsValidLogin(login);
+            Validator.checkIsValidPassword(password);
+            Validator.checkIsValidEmail(email);
 
             UserService userService = serviceFactory.getUserService();
             User checkedUser = userService.getUserByLogin(login);
@@ -62,7 +69,9 @@ public class SignUp implements Command {
             }
 
         } catch (ServiceException e) {
-                logger.error(e);
+            logger.error(e);
+        } catch (ValidatorException e) {
+            logger.error(e+e.getMessage());
         }
 
     }

@@ -5,8 +5,10 @@ import by.tr.hotelbooking.dao.exception.ConnectionPoolException;
 import by.tr.hotelbooking.dao.exception.DAOException;
 import by.tr.hotelbooking.dao.pool.ConnectionPool;
 import by.tr.hotelbooking.entities.Hotelroom;
+import by.tr.hotelbooking.entities.HotelroomDTO;
 import by.tr.hotelbooking.entities.RoomType;
 
+import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -35,8 +37,20 @@ public class HotelroomDAO extends AbstractJDBCDao<Hotelroom> {
     private static final String GET_LAST_ID = "SELECT hotelroom.id FROM hotelrooms.hotelroom hotelroom BY hotelroom.id desc limit 1;";
     private static final String CHANGE_HOTELROOM = "UPDATE hotelrooms.hotelroom SET number=?, places_count=?, "+
             "daily_price=?, floor=?, imageName=?, room_type_id=? WHERE id=?";
-    private static final String GET_COUNT = "SELECT count(*) from hotelrooms.hotelroom";
 
+    private static final String GET_HOTELROOM_BY_CRITERIA = "SELECT hotelroom.id, hotelroom.number, hotelroom.places_count, hotelroom.daily_price, "+
+            "hotelroom.floor, hotelroom.contract_id, hotelroom.imageName, room_types.name FROM hotelrooms.hotelroom INNER JOIN hotelrooms.room_types ON " +
+            "hotelroom.room_type_id = room_types.id LEFT JOIN contract ON hotelroom.contract_id = contract.contract_id "+
+            "WHERE hotelroom.places_count>=? AND (hotelroom.daily_price BETWEEN ? AND ?) AND hotelroom.room_type_id = ? "+
+            "AND (contract.contract_id IS NULL OR (date_in>? OR date_out<?))"+
+            "GROUP BY hotelroom.number LIMIT ?,?";
+
+    private static final String GET_COUNT = "SELECT count(*) FROM hotelrooms.hotelroom";
+
+    private static final String GET_COUNT_WITH_PARAMS = "SELECT count(*) FROM hotelrooms.hotelroom INNER JOIN hotelrooms.room_types ON " +
+            "hotelroom.room_type_id = room_types.id LEFT JOIN contract ON hotelroom.contract_id = contract.contract_id "+
+            "WHERE hotelroom.places_count>=? AND (hotelroom.daily_price BETWEEN ? AND ?) AND hotelroom.room_type_id = ? "+
+            "AND (contract.contract_id IS NULL OR (date_in>? OR date_out<?))";
     public HotelroomDAO() {
 
     }
@@ -107,6 +121,42 @@ public class HotelroomDAO extends AbstractJDBCDao<Hotelroom> {
         }
     }
 
+
+    public List<Hotelroom> getHotelroomsByParameters(HotelroomDTO hotelroomDTO, int count, int offset) throws DAOException{
+        ConnectionPool connectionPool = null;
+        Connection connection = null;
+        PreparedStatement preparedStatement =null;
+        ResultSet resultSet = null;
+        List<Hotelroom> hotelrooms = null;
+        try {
+            connectionPool = ConnectionPool.getInstance();
+            connection = connectionPool.retrieve();
+            preparedStatement = connection.prepareStatement(GET_HOTELROOM_BY_CRITERIA);
+            fillFindCriterias(preparedStatement, hotelroomDTO);
+            preparedStatement.setInt(7, count);
+            preparedStatement.setInt(8, offset);
+            resultSet = preparedStatement.executeQuery();
+            hotelrooms = new ArrayList<>();
+            while (resultSet.next()) {
+                Hotelroom hotelroom = new Hotelroom();
+                setHotelroomParameters(hotelroom, resultSet);
+                hotelrooms.add(hotelroom);
+            }
+
+        } catch (ConnectionPoolException e) {
+            throw new DAOException("Unable to give new connection from connection pool",e);
+        } catch (SQLException e) {
+            throw new DAOException("Get all hotelrooms from DB error " + e);
+        } finally {
+            if (connectionPool != null) {
+                connectionPool.putBackConnection(connection, preparedStatement, resultSet);
+            }
+        }
+        return hotelrooms;
+    }
+
+
+
     public List<Hotelroom> getHotelroomsForPage(int pageNumber, int hotelroomsCount) throws DAOException {
         ConnectionPool connectionPool = null;
         Connection connection = null;
@@ -117,7 +167,7 @@ public class HotelroomDAO extends AbstractJDBCDao<Hotelroom> {
             connectionPool = ConnectionPool.getInstance();
             connection = connectionPool.retrieve();
             preparedStatement = connection.prepareStatement(GET_HOTELROOMS_FOR_PAGE);
-            preparedStatement.setInt(1,pageNumber);
+            preparedStatement.setInt(1, pageNumber);
             preparedStatement.setInt(2, hotelroomsCount);
             resultSet = preparedStatement.executeQuery();
             hotelrooms = new ArrayList<>();
@@ -165,6 +215,33 @@ public class HotelroomDAO extends AbstractJDBCDao<Hotelroom> {
         return result;
     }
 
+    public int getNumberOfHotelroomsByParams(HotelroomDTO hotelroomDTO) throws DAOException{
+        ConnectionPool connectionPool = null;
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        int result;
+        try {
+            connectionPool = ConnectionPool.getInstance();
+            connection = connectionPool.retrieve();
+            preparedStatement = connection.prepareStatement(GET_COUNT_WITH_PARAMS);
+            fillFindCriterias(preparedStatement, hotelroomDTO);
+            resultSet = preparedStatement.executeQuery();
+            resultSet.next();
+            result = resultSet.getInt(1);
+
+        } catch (ConnectionPoolException e) {
+            throw new DAOException("Unable to give new connection from connection pool", e);
+        } catch (SQLException e) {
+            throw new DAOException("Hotelrooms counting in DB error "+e);
+        } finally {
+            if (connectionPool != null) {
+                connectionPool.putBackConnection(connection, preparedStatement, resultSet);
+            }
+        }
+        return result;
+    }
+
     private void setHotelroomParameters(Hotelroom hotelroom, ResultSet resultSet) throws SQLException {
         hotelroom.setId(resultSet.getInt("id"));
         hotelroom.setNumber(resultSet.getInt("number"));
@@ -179,6 +256,22 @@ public class HotelroomDAO extends AbstractJDBCDao<Hotelroom> {
         RoomType roomType = new RoomType();
         roomType.setName(resultSet.getString("name"));
         hotelroom.setRoomType(roomType);
+    }
+
+    private void fillFindCriterias(PreparedStatement preparedStatement, HotelroomDTO hotelroomDTO) throws SQLException{
+
+        int placesCount = hotelroomDTO.getPlacesCount();
+        preparedStatement.setInt(1, placesCount);
+        BigDecimal minPrice = hotelroomDTO.getMinPrice();
+        preparedStatement.setBigDecimal(2, minPrice);
+        BigDecimal maxPrice = hotelroomDTO.getMaxPrice();
+        preparedStatement.setBigDecimal(3, maxPrice);
+        RoomType roomType = hotelroomDTO.getRoomType();
+        Integer roomTypeId = roomType.getId();
+        preparedStatement.setInt(4, roomTypeId);
+        preparedStatement.setDate(5, hotelroomDTO.getDateOut());
+        preparedStatement.setDate(6, hotelroomDTO.getDateIn());
+
     }
 
     private void fillNonDeleteStatement(PreparedStatement statement, Hotelroom hotelroom) throws SQLException {

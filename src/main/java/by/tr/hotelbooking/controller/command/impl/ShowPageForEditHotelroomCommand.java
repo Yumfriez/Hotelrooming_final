@@ -4,6 +4,9 @@ import by.tr.hotelbooking.controller.command.Command;
 import by.tr.hotelbooking.controller.servlet.JspPageName;
 import by.tr.hotelbooking.controller.servlet.RequestParameter;
 import by.tr.hotelbooking.controller.servlet.ResponseTypeChooser;
+import by.tr.hotelbooking.controller.utils.StringParser;
+import by.tr.hotelbooking.controller.utils.Validator;
+import by.tr.hotelbooking.controller.utils.ValidatorException;
 import by.tr.hotelbooking.entities.Hotelroom;
 import by.tr.hotelbooking.entities.RoomType;
 import by.tr.hotelbooking.services.HotelroomService;
@@ -40,15 +43,18 @@ public class ShowPageForEditHotelroomCommand implements Command {
 
             HotelroomService hotelroomService = ServiceFactory.getInstance().getHotelroomService();
             String hotelroomIdString = request.getParameter(RequestParameter.HOTELROOM_ID.getValue());
-            Integer hotelroomId = Integer.parseInt(hotelroomIdString);
+            Validator.checkIsNotEmpty(hotelroomIdString);
+            Validator.checkIsValidNumbers(hotelroomIdString);
+            int hotelroomId = StringParser.parseFromStringToInt(hotelroomIdString);
             Hotelroom hotelroom = hotelroomService.getHotelroomForEdit(hotelroomId);
-
             request.setAttribute(RequestParameter.ROOM_TYPES_LIST.getValue(), roomTypeList);
             request.setAttribute(RequestParameter.HOTELROOM.getValue(), hotelroom);
             ResponseTypeChooser responseTypeChooser = new ResponseTypeChooser();
             responseTypeChooser.doForward(request, response, JspPageName.EDIT_HOTELROOM_PAGE.getPath());
         } catch (ServiceException e){
             logger.error(e);
+        } catch (ValidatorException e) {
+            logger.error(e+e.getMessage());
         }
 
     }

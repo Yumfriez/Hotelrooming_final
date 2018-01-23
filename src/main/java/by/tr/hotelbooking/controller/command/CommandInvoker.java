@@ -37,6 +37,7 @@ public class CommandInvoker {
         repository.put(CommandName.SHOW_COMMENTS, ShowCommentsCommand.getInstance());
         repository.put(CommandName.ADD_COMMENT, AddCommentCommand.getInstance());
         repository.put(CommandName.DELETE_COMMENT, DeleteCommentCommand.getInstance());
+        repository.put(CommandName.FIND_HOTELROOMS, FindHotelroomsCommand.getInstance());
     }
 
     public static CommandInvoker getInstance() {

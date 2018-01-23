@@ -20,9 +20,9 @@ public class OrderDAO extends AbstractJDBCDao<Order> {
             " room_types.name FROM hotelrooms.order JOIN hotelrooms.order ON hotelrooms.order.u_id = hotelrooms.account.id "+
             " JOIN hotelrooms.order ON hotelrooms.order.room_type_id = room_types.id";
     private final static String GET_ORDERS_FOR_PAGE = "SELECT account.login, orders.order_id, orders.places_count, orders.date_in,orders.days_count, "+
-            " room_types.name FROM hotelrooms.orders JOIN hotelrooms.orders ON hotelrooms.orders.u_id = hotelrooms.account.u_id "+
-            " JOIN hotelrooms.orders ON hotelrooms.orders.room_type_id = room_types.id GROUP BY orders.order_id LIMIT ?,?";
-    private static final String ADD_ORDER = "INSERT INTO hotelrooms.orders (places_count, date_in, days_count, hotelroom_id, min_daily_price, " +
+            " orders.min_daily_price, orders.max_daily_price, room_types.id, room_types.name FROM hotelrooms.orders JOIN hotelrooms.account ON hotelrooms.orders.u_id = hotelrooms.account.u_id "+
+            " JOIN hotelrooms.room_types ON hotelrooms.orders.room_type_id = room_types.id GROUP BY orders.order_id LIMIT ?,?";
+    private static final String ADD_ORDER = "INSERT INTO hotelrooms.orders (places_count, date_in, days_count, room_type_id, min_daily_price, " +
             " max_daily_price, u_id) VALUES (?, ?, ?, ?, ?, ?, (SELECT u_id FROM hotelrooms.account WHERE account.login=?))";
     private static final String REMOVE_ORDER = "DELETE FROM hotelrooms.order WHERE order_id=?";
     private static final String GET_LAST_ID = "SELECT order.order_id FROM hotelrooms.order ORDER BY order.order_id desc limit 1;";
@@ -74,7 +74,7 @@ public class OrderDAO extends AbstractJDBCDao<Order> {
             connectionPool = ConnectionPool.getInstance();
             connection = connectionPool.retrieve();
             preparedStatement = connection.prepareStatement(GET_ORDERS_FOR_PAGE);
-            preparedStatement.setInt(1,pageNumber);
+            preparedStatement.setInt(1, pageNumber);
             preparedStatement.setInt(2, offset);
             resultSet = preparedStatement.executeQuery();
             orders = new ArrayList<>();
@@ -87,7 +87,7 @@ public class OrderDAO extends AbstractJDBCDao<Order> {
         } catch (ConnectionPoolException e) {
             throw new DAOException("Unable to give new connection from connection pool",e);
         } catch (SQLException e) {
-            throw new DAOException("Get all hotelrooms from DB error ",e);
+            throw new DAOException("Get all orders from DB error " + e);
         } finally {
             if (connectionPool != null) {
                 connectionPool.putBackConnection(connection, preparedStatement, resultSet);
@@ -113,7 +113,7 @@ public class OrderDAO extends AbstractJDBCDao<Order> {
         } catch (ConnectionPoolException e) {
             throw new DAOException("Unable to give new connection from connection pool", e);
         } catch (SQLException e) {
-            throw new DAOException("Hotelrooms counting in DB error ",e);
+            throw new DAOException("Orders counting in DB error " + e);
         } finally {
             if (connectionPool != null) {
                 connectionPool.putBackConnection(connection, preparedStatement, resultSet);
@@ -184,7 +184,8 @@ public class OrderDAO extends AbstractJDBCDao<Order> {
         order.setPreferedPlacesCount(resultSet.getInt("places_count"));
         order.setAccountLogin(resultSet.getString("login"));
         RoomType roomType = new RoomType();
-        roomType.setName("name");
+        roomType.setId(resultSet.getInt("id"));
+        roomType.setName(resultSet.getString("name"));
         order.setRoomType(roomType);
 
     }
