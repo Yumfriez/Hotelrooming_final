@@ -1,14 +1,14 @@
 package by.tr.hotelbooking.controller.command.impl;
 
 import by.tr.hotelbooking.controller.command.Command;
+import by.tr.hotelbooking.controller.servlet.ForwarRedirectChooser;
 import by.tr.hotelbooking.controller.servlet.JspPageName;
+import by.tr.hotelbooking.controller.servlet.RequestCommandParameter;
 import by.tr.hotelbooking.controller.servlet.RequestParameter;
-import by.tr.hotelbooking.controller.servlet.ResponseTypeChooser;
 import by.tr.hotelbooking.entities.Comment;
 import by.tr.hotelbooking.services.CommentService;
 import by.tr.hotelbooking.services.exception.ServiceException;
 import by.tr.hotelbooking.services.factory.ServiceFactory;
-import by.tr.hotelbooking.services.impl.CommentServiceImpl;
 import org.apache.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
@@ -42,18 +42,16 @@ public class ShowCommentsCommand implements Command {
             request.setAttribute(RequestParameter.COMMENTS_LIST.getValue(), commentsList);
             request.setAttribute(RequestParameter.PAGES_COUNT.getValue(), pagesCount);
             request.setAttribute(RequestParameter.CURRENT_PAGE_NUMBER.getValue(), pageNumber);
-            request.setAttribute(RequestParameter.COMMAND.getValue(), RequestParameter.SHOW_COMMENTS.getValue());
+            request.setAttribute(RequestParameter.COMMAND.getValue(), RequestCommandParameter.SHOW_COMMENTS.getValue());
 
-            ResponseTypeChooser forwardRedirectChooser = new ResponseTypeChooser();
-            forwardRedirectChooser.doForward(request, response, JspPageName.COMMENTS_PAGE.getPath());
+            ForwarRedirectChooser.doForward(request, response, JspPageName.COMMENTS_PAGE.getPath());
         }catch (ServiceException e){
             logger.error(e);
             request.setAttribute(RequestParameter.INFORMATION.getValue(), e.getCause().getMessage());
-            ResponseTypeChooser forwardRedirectChooser = new ResponseTypeChooser();
             if(null!=role){
-                forwardRedirectChooser.doForward(request, response, JspPageName.ADMIN_USER_PAGE.getPath());
+                ForwarRedirectChooser.doForward(request, response, JspPageName.ADMIN_USER_PAGE.getPath());
             }else{
-                forwardRedirectChooser.doForward(request, response, JspPageName.WELCOME_PAGE.getPath());
+                ForwarRedirectChooser.doForward(request, response, JspPageName.WELCOME_PAGE.getPath());
             }
         }
 

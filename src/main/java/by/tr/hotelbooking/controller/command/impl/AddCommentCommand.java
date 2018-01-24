@@ -1,9 +1,10 @@
 package by.tr.hotelbooking.controller.command.impl;
 
 import by.tr.hotelbooking.controller.command.Command;
+import by.tr.hotelbooking.controller.servlet.ForwarRedirectChooser;
 import by.tr.hotelbooking.controller.servlet.JspPageName;
+import by.tr.hotelbooking.controller.servlet.RequestCommandParameter;
 import by.tr.hotelbooking.controller.servlet.RequestParameter;
-import by.tr.hotelbooking.controller.servlet.ResponseTypeChooser;
 import by.tr.hotelbooking.controller.utils.StringParser;
 import by.tr.hotelbooking.controller.utils.Validator;
 import by.tr.hotelbooking.controller.utils.ValidatorException;
@@ -16,7 +17,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.sql.Date;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 
 public class AddCommentCommand implements Command {
 
@@ -34,29 +34,27 @@ public class AddCommentCommand implements Command {
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) {
-
+        String servletPath = request.getServletPath();
         String commentText = request.getParameter(RequestParameter.COMMENT_TEXT.getValue());
         String commentDateString = request.getParameter(RequestParameter.COMMENT_DATE.getValue());
         String login = request.getParameter(RequestParameter.LOGIN.getValue());
+
         try{
             Validator.checkIsNotEmpty(commentText, commentDateString, login);
             Validator.checkIsValidLogin(login);
             Date dateIn = StringParser.parseFromStringToDate(commentDateString);
             CommentService commentService = ServiceFactory.getInstance().getCommentService();
             commentService.addComment(dateIn, login, commentText);
-            ResponseTypeChooser responseTypeChooser = new ResponseTypeChooser();
-            responseTypeChooser.doRedirect(response,"hotelrooming?command=show_comments");
+            ForwarRedirectChooser.doRedirect(response, servletPath, RequestCommandParameter.SHOW_COMMENTS);
 
         } catch (ParseException |  ValidatorException e) {
             logger.error(e);
             request.setAttribute(RequestParameter.INFORMATION.getValue(), e.getMessage());
-            ResponseTypeChooser responseTypeChooser = new ResponseTypeChooser();
-            responseTypeChooser.doForward(request, response, JspPageName.COMMENTS_PAGE.getPath());
+            ForwarRedirectChooser.doForward(request, response, JspPageName.ADMIN_USER_PAGE.getPath());
         } catch (ServiceException e){
             logger.error(e);
             request.setAttribute(RequestParameter.INFORMATION.getValue(), e.getCause().getMessage());
-            ResponseTypeChooser responseTypeChooser = new ResponseTypeChooser();
-            responseTypeChooser.doForward(request, response, JspPageName.COMMENTS_PAGE.getPath());
+            ForwarRedirectChooser.doForward(request, response, JspPageName.ADMIN_USER_PAGE.getPath());
         }
 
     }

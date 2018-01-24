@@ -16,8 +16,6 @@ public class CommandInvoker {
 
     private CommandInvoker() {
         repository.put(CommandName.SIGN_IN, SignIn.getInstance());
-        repository.put(CommandName.AFTER_SIGN_IN, AfterSignIn.getInstance());
-        repository.put(CommandName.AFTER_SIGN_UP, AfterSignUp.getInstance());
         repository.put((CommandName.SIGN_UP), SignUp.getInstance());
         repository.put(CommandName.REDIRECT, Redirect.getInstance());
         repository.put(CommandName.CHANGE_LOCALE, ChangeLocale.getInstance());
@@ -27,7 +25,6 @@ public class CommandInvoker {
         repository.put(CommandName.SHOW_PAGE_FOR_ADD_HOTELROOM, ShowPageForAddHotelroomCommand.getInstance());
         repository.put(CommandName.SHOW_EDIT_HOTELROOM_PAGE, ShowPageForEditHotelroomCommand.getInstance());
         repository.put(CommandName.ADD_HOTELROOM, AddHotelroomCommand.getInstance());
-        repository.put(CommandName.AFTER_HOTELROOM_OPERATION, AfterHotelroomOperationCommand.getInstance());
         repository.put(CommandName.REMOVE_HOTELROOM, RemoveHotelroomCommand.getInstance());
         repository.put(CommandName.EDIT_HOTELROOM, EditHotelroomCommand.getInstance());
         repository.put(CommandName.MAKE_ORDER, MakeOrderCommand.getInstance());

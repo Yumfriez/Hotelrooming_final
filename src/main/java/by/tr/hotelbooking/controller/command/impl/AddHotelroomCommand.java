@@ -1,9 +1,10 @@
 package by.tr.hotelbooking.controller.command.impl;
 
 import by.tr.hotelbooking.controller.command.Command;
+import by.tr.hotelbooking.controller.servlet.ForwarRedirectChooser;
 import by.tr.hotelbooking.controller.servlet.JspPageName;
+import by.tr.hotelbooking.controller.servlet.RequestCommandParameter;
 import by.tr.hotelbooking.controller.servlet.RequestParameter;
-import by.tr.hotelbooking.controller.servlet.ResponseTypeChooser;
 import by.tr.hotelbooking.controller.utils.StringParser;
 import by.tr.hotelbooking.controller.utils.Validator;
 import by.tr.hotelbooking.controller.utils.ValidatorException;
@@ -37,7 +38,7 @@ public class AddHotelroomCommand implements Command {
         HotelroomService hotelroomService = ServiceFactory.getInstance().getHotelroomService();
 
         logger.debug(request.getSession().getAttribute(RequestParameter.LOGIN.getValue()+" try to add new hotelroom"));
-
+        String servletPath = request.getServletPath();
         String numberString = request.getParameter(RequestParameter.NUMBER.getValue());
         String placesCountString = request.getParameter(RequestParameter.PLACES.getValue());
         String floorString = request.getParameter(RequestParameter.FLOOR.getValue());
@@ -64,19 +65,16 @@ public class AddHotelroomCommand implements Command {
 
             logger.debug(request.getSession().getAttribute(RequestParameter.LOGIN.getValue()+" added hotelroom"));
 
-            ResponseTypeChooser responseTypeChooser = new ResponseTypeChooser();
-            responseTypeChooser.doRedirect(response, "hotelrooming?command=show_hotelrooms");
+            ForwarRedirectChooser.doRedirect(response, servletPath, RequestCommandParameter.SHOW_HOTELROOMS);
 
         } catch (ServletException | IOException | ValidatorException e) {
             logger.error(e);
             request.setAttribute(RequestParameter.INFORMATION.getValue(), e.getMessage());
-            ResponseTypeChooser responseTypeChooser = new ResponseTypeChooser();
-            responseTypeChooser.doForward(request,response, JspPageName.ADD_HOTELROOM_PAGE.getPath());
-        } catch ( ServiceException e){
+            ForwarRedirectChooser.doForward(request, response, JspPageName.ADMIN_USER_PAGE.getPath());
+        } catch (ServiceException e){
             logger.error(e);
             request.setAttribute(RequestParameter.INFORMATION.getValue(), e.getCause().getMessage());
-            ResponseTypeChooser responseTypeChooser = new ResponseTypeChooser();
-            responseTypeChooser.doForward(request,response, JspPageName.ADD_HOTELROOM_PAGE.getPath());
+            ForwarRedirectChooser.doForward(request, response, JspPageName.ADMIN_USER_PAGE.getPath());
         }
 
     }

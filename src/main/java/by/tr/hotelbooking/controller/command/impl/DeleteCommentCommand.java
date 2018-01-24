@@ -1,9 +1,10 @@
 package by.tr.hotelbooking.controller.command.impl;
 
 import by.tr.hotelbooking.controller.command.Command;
+import by.tr.hotelbooking.controller.servlet.ForwarRedirectChooser;
 import by.tr.hotelbooking.controller.servlet.JspPageName;
+import by.tr.hotelbooking.controller.servlet.RequestCommandParameter;
 import by.tr.hotelbooking.controller.servlet.RequestParameter;
-import by.tr.hotelbooking.controller.servlet.ResponseTypeChooser;
 import by.tr.hotelbooking.controller.utils.StringParser;
 import by.tr.hotelbooking.controller.utils.Validator;
 import by.tr.hotelbooking.controller.utils.ValidatorException;
@@ -32,8 +33,8 @@ public class DeleteCommentCommand implements Command {
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) {
 
+        String servletPath = request.getServletPath();
         String stringCommentId = request.getParameter(RequestParameter.COMMENT_ID.getValue());
-
         CommentService commentService = ServiceFactory.getInstance().getCommentService();
 
         try {
@@ -43,19 +44,15 @@ public class DeleteCommentCommand implements Command {
             int commentId = StringParser.parseFromStringToInt(stringCommentId);
 
             commentService.removeComment(commentId);
-            ResponseTypeChooser responseTypeChooser = new ResponseTypeChooser();
-            responseTypeChooser.doRedirect(response,"hotelrooming?command=show_comments");
+            ForwarRedirectChooser.doRedirect(response,servletPath, RequestCommandParameter.SHOW_COMMENTS);
         }catch (ValidatorException e){
             logger.error(e);
             request.setAttribute(RequestParameter.INFORMATION.getValue(), e.getMessage());
-            ResponseTypeChooser responseTypeChooser = new ResponseTypeChooser();
-            responseTypeChooser.doForward(request, response, JspPageName.COMMENTS_PAGE.getPath());
-        }
-        catch (ServiceException e){
+            ForwarRedirectChooser.doForward(request, response, JspPageName.ADMIN_USER_PAGE.getPath());
+        } catch (ServiceException e){
             logger.error(e);
             request.setAttribute(RequestParameter.INFORMATION.getValue(), e.getCause().getMessage());
-            ResponseTypeChooser responseTypeChooser = new ResponseTypeChooser();
-            responseTypeChooser.doForward(request, response, JspPageName.COMMENTS_PAGE.getPath());
+            ForwarRedirectChooser.doForward(request, response, JspPageName.ADMIN_USER_PAGE.getPath());
         }
 
 

@@ -24,12 +24,6 @@
                         <input type="submit" value="${comments}"/>
                     </form>
                 </li>
-                <li>
-                    <form action="/hotelrooming" method="post" accept-charset="UTF-8">
-                        <input type="hidden" name="command" value="personal"/>
-                        <input type="submit" value="${settings}"/>
-                    </form>
-                </li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 <li>

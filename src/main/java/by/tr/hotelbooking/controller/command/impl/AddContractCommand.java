@@ -1,8 +1,10 @@
 package by.tr.hotelbooking.controller.command.impl;
 
 import by.tr.hotelbooking.controller.command.Command;
+import by.tr.hotelbooking.controller.servlet.ForwarRedirectChooser;
+import by.tr.hotelbooking.controller.servlet.JspPageName;
+import by.tr.hotelbooking.controller.servlet.RequestCommandParameter;
 import by.tr.hotelbooking.controller.servlet.RequestParameter;
-import by.tr.hotelbooking.controller.servlet.ResponseTypeChooser;
 import by.tr.hotelbooking.controller.utils.Validator;
 import by.tr.hotelbooking.controller.utils.ValidatorException;
 import by.tr.hotelbooking.services.ContractService;
@@ -30,7 +32,7 @@ public class AddContractCommand implements Command {
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) {
-
+        String servletPath = request.getServletPath();
         String hotelroomIdString = request.getParameter(RequestParameter.HOTELROOM_ID.getValue());
         String orderIdString = request.getParameter(RequestParameter.ORDER_ID.getValue());
 
@@ -42,20 +44,20 @@ public class AddContractCommand implements Command {
             int orderId = Integer.parseInt(orderIdString);
 
             ContractService contractService = ServiceFactory.getInstance().getContractService();
-
             contractService.addContract(orderId, hotelroomId);
-
             OrderService orderService = ServiceFactory.getInstance().getOrderService();
             orderService.removeOrder(orderId);
 
-
-            ResponseTypeChooser responseTypeChooser = new ResponseTypeChooser();
-            responseTypeChooser.doRedirect(response, "hotelrooming?command=show_orders");
+            ForwarRedirectChooser.doRedirect(response,servletPath, RequestCommandParameter.SHOW_ORDERS);
 
         } catch (ValidatorException e) {
             logger.error(e);
-        } catch (ServiceException e) {
+            request.setAttribute(RequestParameter.INFORMATION.getValue(), e.getMessage());
+            ForwarRedirectChooser.doForward(request, response, JspPageName.ADMIN_USER_PAGE.getPath());
+        } catch (ServiceException e){
             logger.error(e);
+            request.setAttribute(RequestParameter.INFORMATION.getValue(), e.getCause().getMessage());
+            ForwarRedirectChooser.doForward(request, response, JspPageName.ADMIN_USER_PAGE.getPath());
         }
 
     }

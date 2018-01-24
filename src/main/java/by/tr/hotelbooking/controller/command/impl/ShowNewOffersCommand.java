@@ -1,10 +1,7 @@
 package by.tr.hotelbooking.controller.command.impl;
 
 import by.tr.hotelbooking.controller.command.Command;
-import by.tr.hotelbooking.controller.servlet.JspPageName;
-import by.tr.hotelbooking.controller.servlet.RequestParameter;
-import by.tr.hotelbooking.controller.servlet.ResponseTypeChooser;
-import by.tr.hotelbooking.entities.Contract;
+import by.tr.hotelbooking.controller.servlet.*;
 import by.tr.hotelbooking.entities.ContractDTO;
 import by.tr.hotelbooking.services.ContractService;
 import by.tr.hotelbooking.services.exception.ServiceException;
@@ -41,14 +38,12 @@ public class ShowNewOffersCommand implements Command {
             request.setAttribute(RequestParameter.OFFERS_LIST.getValue(), contracts);
             request.setAttribute(RequestParameter.PAGES_COUNT.getValue(), pagesCount);
             request.setAttribute(RequestParameter.CURRENT_PAGE_NUMBER.getValue(), pageNumber);
-            request.setAttribute(RequestParameter.COMMAND.getValue(), RequestParameter.SHOW_NEW_OFFERS.getValue());
-            ResponseTypeChooser responseTypeChooser = new ResponseTypeChooser();
-            responseTypeChooser.doForward(request,response, JspPageName.OFFERS_PAGE.getPath());
+            request.setAttribute(RequestParameter.COMMAND.getValue(), RequestCommandParameter.SHOW_NEW_OFFERS.getValue());
+            ForwarRedirectChooser.doForward(request,response, JspPageName.OFFERS_PAGE.getPath());
         } catch (ServiceException e){
             logger.error(e);
             request.setAttribute(RequestParameter.INFORMATION.getValue(), e.getCause().getMessage());
-            ResponseTypeChooser responseTypeChooser = new ResponseTypeChooser();
-            responseTypeChooser.doForward(request,response, JspPageName.ADMIN_USER_PAGE.getPath());
+            ForwarRedirectChooser.doForward(request,response, JspPageName.ADMIN_USER_PAGE.getPath());
         }
     }
 }

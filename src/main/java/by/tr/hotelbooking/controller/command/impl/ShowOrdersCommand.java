@@ -1,9 +1,9 @@
 package by.tr.hotelbooking.controller.command.impl;
 
 import by.tr.hotelbooking.controller.command.Command;
+import by.tr.hotelbooking.controller.servlet.ForwarRedirectChooser;
 import by.tr.hotelbooking.controller.servlet.JspPageName;
 import by.tr.hotelbooking.controller.servlet.RequestParameter;
-import by.tr.hotelbooking.controller.servlet.ResponseTypeChooser;
 import by.tr.hotelbooking.entities.Order;
 import by.tr.hotelbooking.services.OrderService;
 import by.tr.hotelbooking.services.exception.ServiceException;
@@ -41,13 +41,11 @@ public class ShowOrdersCommand implements Command {
             request.setAttribute(RequestParameter.ORDERS_LIST.getValue(), orders);
             request.setAttribute(RequestParameter.PAGES_COUNT.getValue(), pagesCount);
             request.setAttribute(RequestParameter.CURRENT_PAGE_NUMBER.getValue(), pageNumber);
-            ResponseTypeChooser responseTypeChooser = new ResponseTypeChooser();
-            responseTypeChooser.doForward(request,response, JspPageName.ORDERS_PAGE.getPath());
+            ForwarRedirectChooser.doForward(request,response, JspPageName.ORDERS_PAGE.getPath());
         } catch (ServiceException e){
             logger.error(e);
             request.setAttribute(RequestParameter.INFORMATION.getValue(), e.getCause().getMessage());
-            ResponseTypeChooser responseTypeChooser = new ResponseTypeChooser();
-            responseTypeChooser.doForward(request,response, JspPageName.ADMIN_USER_PAGE.getPath());
+            ForwarRedirectChooser.doForward(request,response, JspPageName.ADMIN_USER_PAGE.getPath());
         }
 
     }

@@ -2,13 +2,13 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <c:set value="alert" var="alert"/>
-<c:set var="command" value="${command}"/>
+<c:set var="command" value="${requestScope.command}"/>
 <!DOCTYPE html>
 <html>
 <head>
-    <link rel="stylesheet" href="/styles/bootstrap.css" type="text/css"/>
-    <link rel="stylesheet" href="/styles/style.css" type="text/css"/>
-    <link rel="stylesheet" href="/styles/headerstyle.css" type="text/css"/>
+    <link rel="stylesheet" href="../styles/bootstrap.css" type="text/css"/>
+    <link rel="stylesheet" href="../styles/style.css" type="text/css"/>
+    <link rel="stylesheet" href="../styles/headerstyle.css" type="text/css"/>
 
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" pageEncoding="utf-8">
     <title>Hotelrooming</title>
@@ -101,14 +101,14 @@
                         <button type="submit" class="button button-block">${sign_up_on_website}</button>
                     </form>
                 </div>
-            </div><!-- tab-content -->
-        </div> <!-- /form -->
+            </div>
+        </div>
 
     </div>
 
 </div>
 <script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
-<script  src="/js/index.js"></script>
+<script  src="../js/index.js"></script>
 </body>
 
 </html>

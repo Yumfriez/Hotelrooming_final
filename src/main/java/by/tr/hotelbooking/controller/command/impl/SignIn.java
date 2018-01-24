@@ -1,9 +1,10 @@
 package by.tr.hotelbooking.controller.command.impl;
 
 import by.tr.hotelbooking.controller.command.Command;
+import by.tr.hotelbooking.controller.servlet.ForwarRedirectChooser;
 import by.tr.hotelbooking.controller.servlet.JspPageName;
+import by.tr.hotelbooking.controller.servlet.RequestCommandParameter;
 import by.tr.hotelbooking.controller.servlet.RequestParameter;
-import by.tr.hotelbooking.controller.servlet.ResponseTypeChooser;
 import by.tr.hotelbooking.controller.utils.Validator;
 import by.tr.hotelbooking.controller.utils.ValidatorException;
 import by.tr.hotelbooking.entities.User;
@@ -32,6 +33,7 @@ public class SignIn implements Command {
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) {
+        String servletPath = request.getServletPath();
         String login = request.getParameter(RequestParameter.LOGIN.getValue());
         String password = request.getParameter(RequestParameter.PASSWORD.getValue());
         try {
@@ -48,26 +50,21 @@ public class SignIn implements Command {
                     session.setAttribute(RequestParameter.ROLE.getValue(), String.valueOf(user.getRole()));
                     session.setAttribute(RequestParameter.PAGE.getValue(), JspPageName.ADMIN_USER_PAGE);
                     session.setAttribute(RequestParameter.USER_LOCALE.getValue(), user.getLocale());
-                    ResponseTypeChooser responseTypeChooser=new ResponseTypeChooser();
-                    responseTypeChooser.doRedirect(response,"hotelrooming?command=after_sign_in");
+                    ForwarRedirectChooser.doRedirect(response,servletPath, RequestCommandParameter.REDIRECT);
                 } else {
                     request.setAttribute(RequestParameter.INFORMATION.getValue(), "error of user identifying");
                 }
             } else {
-
                 request.setAttribute(RequestParameter.INFORMATION.getValue(), "account is blocked");
             }
-        } catch (ServiceException e) {
-            logger.error(e);
-            request.setAttribute(RequestParameter.INFORMATION.getValue(), "Wrong login or password");
-            ResponseTypeChooser responseTypeChooser=new ResponseTypeChooser();
-            responseTypeChooser.doForward(request,response, JspPageName.WELCOME_PAGE.getPath());
-
         } catch (ValidatorException e) {
             logger.error(e);
             request.setAttribute(RequestParameter.INFORMATION.getValue(), e.getMessage());
-            ResponseTypeChooser responseTypeChooser=new ResponseTypeChooser();
-            responseTypeChooser.doForward(request,response, JspPageName.WELCOME_PAGE.getPath());
+            ForwarRedirectChooser.doForward(request,response, JspPageName.WELCOME_PAGE.getPath());
+        } catch (ServiceException e) {
+            logger.error(e);
+            request.setAttribute(RequestParameter.INFORMATION.getValue(), "Wrong login or password");
+            ForwarRedirectChooser.doForward(request,response, JspPageName.WELCOME_PAGE.getPath());
         }
 
 

@@ -14,13 +14,14 @@
 <fmt:message bundle="${loc}" key="local.word.parameters_label" var="parameters_label"/>
 <fmt:message bundle="${loc}" key="local.word.add_hotelroom_label" var="add_hotelroom_word"/>
 <fmt:message bundle="${loc}" key="local.button.add_hotelroom_button" var="add_hotelroom_button"/>
-<c:set var="command" value="${command}"/>
+<fmt:message bundle="${loc}" key="local.word.hotelroom_image" var="hotelroom_image"/>
+<c:set var="command" value="${requestScope.command}"/>
 <!DOCTYPE html>
 <html>
 <head>
-    <link rel="stylesheet" href="/styles/bootstrap.css" type="text/css"/>
-    <link rel="stylesheet" href="/styles/style.css" type="text/css"/>
-    <link rel="stylesheet" href="/styles/headerstyle.css" type="text/css"/>
+    <link rel="stylesheet" href="../styles/bootstrap.css" type="text/css"/>
+    <link rel="stylesheet" href="../styles/style.css" type="text/css"/>
+    <link rel="stylesheet" href="../styles/headerstyle.css" type="text/css"/>
 
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" pageEncoding="utf-8">
     <title>Hotelrooming</title>
@@ -73,7 +74,7 @@
                         </div>
                         <div class="field-wrap">
                             <label>
-                                ${hotelroom_image}image<span class="req">*</span>
+                                ${hotelroom_image}<span class="req">*</span>
                             </label>
                             <div class="file-field-wrap button-3d">
                                 <label id="image_label" for="files" >Select Image</label>
@@ -92,7 +93,7 @@
 
 </div>
 <script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
-<script  src="/js/index.js"></script>
+<script  src="../js/index.js"></script>
 </body>
 
 </html>

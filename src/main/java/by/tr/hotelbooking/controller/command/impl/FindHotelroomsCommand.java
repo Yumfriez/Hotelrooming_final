@@ -1,9 +1,10 @@
 package by.tr.hotelbooking.controller.command.impl;
 
 import by.tr.hotelbooking.controller.command.Command;
+import by.tr.hotelbooking.controller.servlet.ForwarRedirectChooser;
 import by.tr.hotelbooking.controller.servlet.JspPageName;
+import by.tr.hotelbooking.controller.servlet.RequestCommandParameter;
 import by.tr.hotelbooking.controller.servlet.RequestParameter;
-import by.tr.hotelbooking.controller.servlet.ResponseTypeChooser;
 import by.tr.hotelbooking.controller.utils.StringParser;
 import by.tr.hotelbooking.controller.utils.Validator;
 import by.tr.hotelbooking.controller.utils.ValidatorException;
@@ -18,7 +19,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.math.BigDecimal;
 import java.sql.Date;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.List;
 
 public class FindHotelroomsCommand implements Command {
@@ -37,7 +37,6 @@ public class FindHotelroomsCommand implements Command {
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) {
-
         String placesCountString = request.getParameter(RequestParameter.PLACES.getValue());
         String minPriceString = request.getParameter(RequestParameter.MIN_PRICE.getValue());
         String maxPriceString = request.getParameter(RequestParameter.MAX_PRICE.getValue());
@@ -69,24 +68,22 @@ public class FindHotelroomsCommand implements Command {
             int recordsCount = hotelroomService.getRecordsByCriteriaCount(placesCount, minPrice, maxPrice, roomTypeId, dateIn, daysCount);
             int pagesCount = hotelroomService.getPagesCount(recordsCount);
             List<Hotelroom> hotelrooms = hotelroomService.findHotelroomsForPage(placesCount, minPrice, maxPrice, roomTypeId, dateIn, daysCount,pageNumber);
+
             request.setAttribute(RequestParameter.HOTELROOMS_LIST.getValue(), hotelrooms);
             request.setAttribute(RequestParameter.PAGES_COUNT.getValue(), pagesCount);
             request.setAttribute(RequestParameter.CURRENT_PAGE_NUMBER.getValue(), pageNumber);
             request.setAttribute(RequestParameter.ORDER_ID.getValue(), orderId);
-            request.setAttribute(RequestParameter.COMMAND.getValue(), RequestParameter.FIND_HOTELROOMS.getValue());
+            request.setAttribute(RequestParameter.COMMAND.getValue(), RequestCommandParameter.FIND_HOTELROOMS.getValue());
+            ForwarRedirectChooser.doForward(request, response, JspPageName.HOTELROOMS_PAGE.getPath());
 
-            ResponseTypeChooser responseTypeChooser = new ResponseTypeChooser();
-            responseTypeChooser.doForward(request, response, JspPageName.HOTELROOMS_PAGE.getPath());
-        } catch (ServiceException e) {
-            logger.error(e);
-            request.setAttribute(RequestParameter.INFORMATION.getValue(), e.getCause().getMessage());
-            ResponseTypeChooser responseTypeChooser = new ResponseTypeChooser();
-            responseTypeChooser.doRedirect(response, "hotelrooming?command=show_orders");
         } catch (ValidatorException | ParseException e) {
             logger.error(e);
             request.setAttribute(RequestParameter.INFORMATION.getValue(), e.getMessage());
-            ResponseTypeChooser responseTypeChooser = new ResponseTypeChooser();
-            responseTypeChooser.doForward(request, response, JspPageName.ORDERS_PAGE.getPath());
+            ForwarRedirectChooser.doForward(request, response, JspPageName.ADMIN_USER_PAGE.getPath());
+        } catch (ServiceException e){
+            logger.error(e);
+            request.setAttribute(RequestParameter.INFORMATION.getValue(), e.getCause().getMessage());
+            ForwarRedirectChooser.doForward(request, response, JspPageName.ADMIN_USER_PAGE.getPath());
         }
 
     }

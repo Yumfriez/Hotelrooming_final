@@ -2,7 +2,7 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <c:set var="user" value="user"/>
-<c:set var="command" value="${command}"/>
+<c:set var="command" value="${requestScope.command}"/>
 <!DOCTYPE html>
 <html>
 <head>

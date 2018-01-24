@@ -1,9 +1,9 @@
 package by.tr.hotelbooking.controller.command.impl;
 
 import by.tr.hotelbooking.controller.command.Command;
+import by.tr.hotelbooking.controller.servlet.ForwarRedirectChooser;
 import by.tr.hotelbooking.controller.servlet.JspPageName;
 import by.tr.hotelbooking.controller.servlet.RequestParameter;
-import by.tr.hotelbooking.controller.servlet.ResponseTypeChooser;
 import by.tr.hotelbooking.entities.User;
 import by.tr.hotelbooking.services.UserService;
 import by.tr.hotelbooking.services.exception.ServiceException;
@@ -40,8 +40,7 @@ public class Redirect implements Command {
             jspPageName = readCookies(request);
         }
 
-        ResponseTypeChooser responseTypeChooser = new ResponseTypeChooser();
-        responseTypeChooser.doForward(request,response,jspPageName.getPath());
+        ForwarRedirectChooser.doForward(request,response,jspPageName.getPath());
     }
 
     private JspPageName readCookies(HttpServletRequest request) {
@@ -61,8 +60,9 @@ public class Redirect implements Command {
                     session.setAttribute(RequestParameter.ROLE.getValue(), user.getRole());
                     jspPageName = JspPageName.ADMIN_USER_PAGE;
                 } catch (ServiceException e) {
-
                    logger.error(e);
+                   hasCookieLogin = false;
+                   request.setAttribute(RequestParameter.INFORMATION.getValue(), e.getCause().getMessage());
                 }
                 break;
             }

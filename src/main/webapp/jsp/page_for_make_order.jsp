@@ -15,13 +15,13 @@
 <fmt:message bundle="${loc}" key="local.word.date_in" var="date_in_label"/>
 <fmt:message bundle="${loc}" key="local.word.days_count" var="days_count_label"/>
 <fmt:message bundle="${loc}" key="local.button.make_order_button" var="make_order_button"/>
-<c:set var="command" value="${command}"/>
+<c:set var="command" value="${requestScope.command}"/>
 <!DOCTYPE html>
 <html>
 <head>
-    <link rel="stylesheet" href="/styles/bootstrap.css" type="text/css"/>
-    <link rel="stylesheet" href="/styles/style.css" type="text/css"/>
-    <link rel="stylesheet" href="/styles/headerstyle.css" type="text/css"/>
+    <link rel="stylesheet" href="../styles/bootstrap.css" type="text/css"/>
+    <link rel="stylesheet" href="../styles/style.css" type="text/css"/>
+    <link rel="stylesheet" href="../styles/headerstyle.css" type="text/css"/>
 
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" pageEncoding="utf-8">
     <title>Hotelrooming</title>
@@ -85,7 +85,7 @@
 
 </div>
 <script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
-<script  src="/js/index.js"></script>
+<script  src="../js/index.js"></script>
 </body>
 
 </html>

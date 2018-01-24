@@ -1,16 +1,16 @@
 package by.tr.hotelbooking.controller.command.impl;
 
 import by.tr.hotelbooking.controller.command.Command;
+import by.tr.hotelbooking.controller.servlet.ForwarRedirectChooser;
 import by.tr.hotelbooking.controller.servlet.JspPageName;
+import by.tr.hotelbooking.controller.servlet.RequestCommandParameter;
 import by.tr.hotelbooking.controller.servlet.RequestParameter;
-import by.tr.hotelbooking.controller.servlet.ResponseTypeChooser;
 import by.tr.hotelbooking.controller.utils.StringParser;
 import by.tr.hotelbooking.controller.utils.Validator;
 import by.tr.hotelbooking.controller.utils.ValidatorException;
 import by.tr.hotelbooking.services.OrderService;
 import by.tr.hotelbooking.services.exception.ServiceException;
 import by.tr.hotelbooking.services.factory.ServiceFactory;
-import by.tr.hotelbooking.services.impl.OrderServiceImpl;
 import org.apache.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
@@ -19,7 +19,6 @@ import javax.servlet.http.HttpSession;
 import java.math.BigDecimal;
 import java.sql.Date;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 
 public class MakeOrderCommand implements Command {
 
@@ -36,6 +35,7 @@ public class MakeOrderCommand implements Command {
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) {
 
+        String servletPath = request.getServletPath();
         String placesCountString = request.getParameter(RequestParameter.PLACES.getValue());
         String minPriceString = request.getParameter(RequestParameter.MIN_PRICE.getValue());
         String maxPriceString = request.getParameter(RequestParameter.MAX_PRICE.getValue());
@@ -62,18 +62,15 @@ public class MakeOrderCommand implements Command {
 
             OrderService orderService = ServiceFactory.getInstance().getOrderService();
             orderService.createOrder(placesCount, dateIn, daysCount, roomTypeId,minPrice, maxPrice, userLogin);
-            ResponseTypeChooser responseTypeChooser = new ResponseTypeChooser();
-            responseTypeChooser.doRedirect(response, "hotelrooming?command=show_user_orders");
+            ForwarRedirectChooser.doRedirect(response, servletPath, RequestCommandParameter.SHOW_ORDERS);
+        } catch (ValidatorException | ParseException e){
+            logger.error(e);
+            request.setAttribute(RequestParameter.INFORMATION.getValue(), e.getMessage());
+            ForwarRedirectChooser.doForward(request, response, JspPageName.ADMIN_USER_PAGE.getPath());
         } catch (ServiceException e){
             logger.error(e);
             request.setAttribute(RequestParameter.INFORMATION.getValue(), e.getCause().getMessage());
-            ResponseTypeChooser responseTypeChooser = new ResponseTypeChooser();
-            responseTypeChooser.doForward(request, response, JspPageName.ADMIN_USER_PAGE.getPath());
-        } catch (ValidatorException | ParseException e) {
-            logger.error(e);
-            request.setAttribute(RequestParameter.INFORMATION.getValue(), e.getMessage());
-            ResponseTypeChooser responseTypeChooser = new ResponseTypeChooser();
-            responseTypeChooser.doForward(request, response, JspPageName.ADMIN_USER_PAGE.getPath());
+            ForwarRedirectChooser.doForward(request, response, JspPageName.ADMIN_USER_PAGE.getPath());
         }
 
 

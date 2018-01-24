@@ -1,9 +1,9 @@
 package by.tr.hotelbooking.controller.command.impl;
 
 import by.tr.hotelbooking.controller.command.Command;
+import by.tr.hotelbooking.controller.servlet.ForwarRedirectChooser;
 import by.tr.hotelbooking.controller.servlet.JspPageName;
 import by.tr.hotelbooking.controller.servlet.RequestParameter;
-import by.tr.hotelbooking.controller.servlet.ResponseTypeChooser;
 import by.tr.hotelbooking.entities.User;
 import by.tr.hotelbooking.services.exception.ServiceException;
 import by.tr.hotelbooking.services.factory.ServiceFactory;
@@ -31,11 +31,12 @@ public class ShowUsers implements Command {
         try {
             List<User> userList = serviceFactory.getUserService().getAllUsers();
             request.setAttribute( RequestParameter.USER_LIST.getValue(), userList);
+            ForwarRedirectChooser.doForward(request,response, JspPageName.USERS_PAGE.getPath());
         } catch (ServiceException e) {
             logger.error(e);
             request.setAttribute(RequestParameter.INFORMATION.getValue(), e.getCause().getMessage());
+            ForwarRedirectChooser.doForward(request, response, JspPageName.ADMIN_USER_PAGE.getPath());
         }
-        ResponseTypeChooser responseTypeChooser = new ResponseTypeChooser();
-        responseTypeChooser.doForward(request,response,JspPageName.USERS_PAGE.getPath());
+
     }
 }

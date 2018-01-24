@@ -1,9 +1,9 @@
 package by.tr.hotelbooking.controller.command.impl;
 
 import by.tr.hotelbooking.controller.command.Command;
+import by.tr.hotelbooking.controller.servlet.ForwarRedirectChooser;
 import by.tr.hotelbooking.controller.servlet.JspPageName;
 import by.tr.hotelbooking.controller.servlet.RequestParameter;
-import by.tr.hotelbooking.controller.servlet.ResponseTypeChooser;
 import by.tr.hotelbooking.controller.utils.Validator;
 import by.tr.hotelbooking.controller.utils.ValidatorException;
 import by.tr.hotelbooking.services.UserService;
@@ -55,8 +55,7 @@ public class ChangeLocale implements Command {
             logger.error(e);
             request.setAttribute(RequestParameter.INFORMATION.getValue(), e.getCause().getMessage());
         }
-        ResponseTypeChooser responseTypeChooser = new ResponseTypeChooser();
-        responseTypeChooser.doForward(request,response,page.getPath());
+        ForwarRedirectChooser.doForward(request,response,page.getPath());
     }
 
     private void changeLocaleWithCookies(HttpServletRequest request, HttpServletResponse response, String locale) throws ServiceException {

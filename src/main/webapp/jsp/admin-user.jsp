@@ -5,7 +5,7 @@
 <c:set var="admin" value="ADMINISTRATOR"/>
 <c:set var="user" value="USER"/>
 <c:set value="alert" var="alert"/>
-<c:set var="command" value="${command}"/>
+<c:set var="command" value="${requestScope.command}"/>
 <!DOCTYPE html>
 <html>
 <head>
@@ -49,6 +49,11 @@
             ERROR
         </c:otherwise>
     </c:choose>
+                <div class="col-md-4">
+                    <div class="list-group">
+                        <p class="error-message">${requestScope.information}</p>
+                    </div>
+                </div>
             </div>
         </div>
 
