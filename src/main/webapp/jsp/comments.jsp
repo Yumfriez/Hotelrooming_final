@@ -20,7 +20,7 @@
     <link rel="stylesheet" href="../styles/comments.css" type="text/css"/>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 </head>
-<body class="comment-body" onload="getDate()">
+<body class="comment-body">
 <c:choose>
     <c:when test="${role eq(admin) or role eq(user)}">
         <%@include file="parts/header.jsp"%>
@@ -68,7 +68,6 @@
                 <form action="/hotelrooming" method="post">
                     <input type="hidden" name="command" value="add_comment">
                     <input type="hidden" name="login" value="${login}">
-                    <input type="hidden" name="comment_date" id="todayDate" value=""/>
                     <textarea class="comment-field" placeholder="Write your comment here" name="comment_text"></textarea>
                     <button class="comment-button" type="submit">Submit</button>
 
@@ -84,7 +83,6 @@
         <%@include file="parts/pagination.jsp" %>
     </div>
 </div>
-<script src="../js/date-filling.js"></script>
 
 </body>
 </html>

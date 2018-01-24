@@ -5,7 +5,6 @@ import by.tr.hotelbooking.controller.servlet.ForwarRedirectChooser;
 import by.tr.hotelbooking.controller.servlet.JspPageName;
 import by.tr.hotelbooking.controller.servlet.RequestCommandParameter;
 import by.tr.hotelbooking.controller.servlet.RequestParameter;
-import by.tr.hotelbooking.controller.utils.StringParser;
 import by.tr.hotelbooking.controller.utils.Validator;
 import by.tr.hotelbooking.controller.utils.ValidatorException;
 import by.tr.hotelbooking.services.CommentService;
@@ -16,7 +15,6 @@ import org.apache.log4j.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.sql.Date;
-import java.text.ParseException;
 
 public class AddCommentCommand implements Command {
 
@@ -36,18 +34,17 @@ public class AddCommentCommand implements Command {
     public void execute(HttpServletRequest request, HttpServletResponse response) {
         String servletPath = request.getServletPath();
         String commentText = request.getParameter(RequestParameter.COMMENT_TEXT.getValue());
-        String commentDateString = request.getParameter(RequestParameter.COMMENT_DATE.getValue());
         String login = request.getParameter(RequestParameter.LOGIN.getValue());
 
         try{
-            Validator.checkIsNotEmpty(commentText, commentDateString, login);
+            Validator.checkIsNotEmpty(commentText, login);
             Validator.checkIsValidLogin(login);
-            Date dateIn = StringParser.parseFromStringToDate(commentDateString);
+            Date date = new Date(new java.util.Date().getTime());
             CommentService commentService = ServiceFactory.getInstance().getCommentService();
-            commentService.addComment(dateIn, login, commentText);
+            commentService.addComment(date, login, commentText);
             ForwarRedirectChooser.doRedirect(response, servletPath, RequestCommandParameter.SHOW_COMMENTS);
 
-        } catch (ParseException |  ValidatorException e) {
+        } catch (ValidatorException e) {
             logger.error(e);
             request.setAttribute(RequestParameter.INFORMATION.getValue(), e.getMessage());
             ForwarRedirectChooser.doForward(request, response, JspPageName.ADMIN_USER_PAGE.getPath());

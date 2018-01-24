@@ -41,7 +41,6 @@ public enum RequestParameter {
     CONTRACT_ID("contract_id"),
     COMMENTS_LIST("commentsList"),
     COMMENT_TEXT("comment_text"),
-    COMMENT_DATE("comment_date"),
     CLIENT_LOGIN("client_login"),
     CURRENT_DATE("currentDate"),
     PAGE("page");

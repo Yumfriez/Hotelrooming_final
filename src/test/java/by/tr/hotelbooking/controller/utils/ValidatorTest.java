@@ -158,4 +158,41 @@ public class ValidatorTest {
     public void shouldNotThrowExceptionWhenCorrectPasswordFormat(String password) throws ValidatorException{
         Validator.checkIsValidPassword(password);
     }
+
+    @DataProvider
+    public static Object[][] getWrongNameSurnameValues(){
+        return new Object[][] {
+                {"asd", ""},
+                {"12sd", " 123", "23 "},
+                {"fdsfsфафыа"},
+                {"фывфыв asdasdasd"},
+                {"asdasd!agsdgd", "12asgasg asfasd25"},
+                {" "},
+        };
+    }
+
+    @DataProvider
+    public static Object[][] getCorrectNameSurnameValues(){
+        return new Object[][] {
+                {"Jackie", "Chan"},
+                {"vanya", "Fedya", "oleg"},
+                {"Valera"},
+                {"Ramzan"},
+                {"Ruslan"},
+                {"Nikita"},
+        };
+    }
+
+
+    @Test (expected = ValidatorException.class)
+    @UseDataProvider("getWrongNameSurnameValues")
+    public void shouldThrowExceptionWhenWrongNameSurnameFormat(String... values) throws ValidatorException {
+        Validator.checkIsValidName(values);
+    }
+
+    @Test
+    @UseDataProvider("getCorrectNameSurnameValues")
+    public void shouldNotThrowExceptionWhenCorrectNameSurnameFormat(String... values) throws ValidatorException{
+        Validator.checkIsValidName(values);
+    }
 }

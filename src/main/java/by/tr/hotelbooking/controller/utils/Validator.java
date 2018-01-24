@@ -9,6 +9,8 @@ public class Validator {
     private final static String PRICE_PATTERN = "^[0-9]+(\\.[0-9]+)?$";
     private final static String NUMBER_PATTERN = "^[0-9]+$";
     private final static String EMAIL_PATTERN = "^[_A-Za-z0-9-]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
+    private final static String NAME_SURNAME_PATTERN = "^[A-Za-z]{1,}|[А-Яа-я]{1,}$";
+
 
     private Validator(){
 
@@ -70,6 +72,14 @@ public class Validator {
             throw new ValidatorException(e.getMessage()+" wrong email format");
         }
 
+    }
+
+    public static void checkIsValidName(String...args) throws ValidatorException {
+        try {
+            checkStringsByPattern(NAME_SURNAME_PATTERN, args);
+        } catch (ValidatorException e){
+            throw new ValidatorException(e.getMessage()+" wrong name or surname format");
+        }
     }
 
 
