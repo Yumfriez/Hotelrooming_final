@@ -10,7 +10,7 @@
                     <input type="submit" class="list-group-item" value="${new_orders}"/>
                 </form>
                 <form action="/hotelrooming" method="get" accept-charset="UTF-8">
-                    <input type="hidden" name="command" value="current_contracts"/>
+                    <input type="hidden" name="command" value="show_contracts"/>
                     <input type="submit" class="list-group-item" value="${current_contracts}"/>
                 </form>
                 <form action="/hotelrooming" method="get" accept-charset="UTF-8">

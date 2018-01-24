@@ -46,11 +46,12 @@ public class FindHotelroomsCommand implements Command {
         String clientLogin = request.getParameter(RequestParameter.CLIENT_LOGIN.getValue());
         String roomTypeIdString = request.getParameter(RequestParameter.ROOM_TYPE.getValue());
         String pageStringValue = request.getParameter(RequestParameter.PAGINATION.getValue());
+        String orderIdString = request.getParameter(RequestParameter.ORDER_ID.getValue());
 
         try {
             Validator.checkIsNotEmpty(placesCountString, minPriceString, maxPriceString, dateInString,
-                    daysCountString, clientLogin, roomTypeIdString);
-            Validator.checkIsValidNumbers(placesCountString, daysCountString, roomTypeIdString);
+                    daysCountString, clientLogin, roomTypeIdString, orderIdString);
+            Validator.checkIsValidNumbers(placesCountString, daysCountString, roomTypeIdString, orderIdString);
             Validator.checkIsValidPrice(minPriceString, maxPriceString);
             Validator.checkIsValidLogin(clientLogin);
 
@@ -59,6 +60,7 @@ public class FindHotelroomsCommand implements Command {
             BigDecimal maxPrice = StringParser.parseFromStringToBigDecimal(maxPriceString);
             int daysCount = StringParser.parseFromStringToInt(daysCountString);
             int roomTypeId = StringParser.parseFromStringToInt(roomTypeIdString);
+            int orderId = StringParser.parseFromStringToInt(orderIdString);
             Date dateIn = StringParser.parseFromStringToDate(dateInString);
 
             HotelroomService hotelroomService = ServiceFactory.getInstance().getHotelroomService();
@@ -70,7 +72,8 @@ public class FindHotelroomsCommand implements Command {
             request.setAttribute(RequestParameter.HOTELROOMS_LIST.getValue(), hotelrooms);
             request.setAttribute(RequestParameter.PAGES_COUNT.getValue(), pagesCount);
             request.setAttribute(RequestParameter.CURRENT_PAGE_NUMBER.getValue(), pageNumber);
-            request.setAttribute(RequestParameter.COMMAND.getValue(), RequestParameter.SHOW_HOTELROOMS.getValue());
+            request.setAttribute(RequestParameter.ORDER_ID.getValue(), orderId);
+            request.setAttribute(RequestParameter.COMMAND.getValue(), RequestParameter.FIND_HOTELROOMS.getValue());
 
             ResponseTypeChooser responseTypeChooser = new ResponseTypeChooser();
             responseTypeChooser.doForward(request, response, JspPageName.HOTELROOMS_PAGE.getPath());
@@ -78,7 +81,7 @@ public class FindHotelroomsCommand implements Command {
             logger.error(e);
             request.setAttribute(RequestParameter.INFORMATION.getValue(), e.getCause().getMessage());
             ResponseTypeChooser responseTypeChooser = new ResponseTypeChooser();
-            responseTypeChooser.doForward(request, response, JspPageName.ORDERS_PAGE.getPath());
+            responseTypeChooser.doRedirect(response, "hotelrooming?command=show_orders");
         } catch (ValidatorException | ParseException e) {
             logger.error(e);
             request.setAttribute(RequestParameter.INFORMATION.getValue(), e.getMessage());

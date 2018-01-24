@@ -14,7 +14,7 @@ import java.util.List;
 
 public class OrderServiceImpl implements OrderService{
 
-    private DaoFactory daoFactory = new DaoFactory();
+    private DaoFactory daoFactory = DaoFactory.getInstance();
 
     @Override
     public void createOrder(int placesCount, Date dateIn, int daysCount, int roomTypeId,
@@ -54,6 +54,16 @@ public class OrderServiceImpl implements OrderService{
             throw new ServiceException(e);
         }
         return orders;
+    }
+
+    @Override
+    public void removeOrder(int orderId) throws ServiceException {
+        OrderDAO orderDAO= daoFactory.getOrderDAO();
+        try {
+            orderDAO.delete(orderId);
+        } catch (DAOException e) {
+            throw new ServiceException(e);
+        }
     }
 
     @Override

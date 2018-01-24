@@ -17,7 +17,12 @@ public enum RequestParameter {
     USER_LIST("userList"),
     PAGINATION("pagination"),
     SHOW_HOTELROOMS("show_hotelrooms"),
+    FIND_HOTELROOMS("find_hotelrooms"),
+    SHOW_NEW_OFFERS("show_new_offers"),
+    SHOW_USER_CONTRACTS("show_user_contracts"),
+    SHOW_CONTRACTS("show_contracts"),
     SHOW_COMMENTS("show_comments"),
+    SHOW_ORDERS("show_orders"),
     HOTELROOMS_LIST("hotelroomsList"),
     PAGES_COUNT("pages_count"),
     CURRENT_PAGE_NUMBER("currentPageNumber"),
@@ -36,12 +41,16 @@ public enum RequestParameter {
     MIN_PRICE("min_price"),
     MAX_PRICE("max_price"),
     ORDERS_LIST("ordersList"),
-
+    CONTRACTS_LIST("contractsList"),
+    OFFERS_LIST("offersList"),
+    ORDER_ID("order_id"),
     COMMENT_ID("comment_id"),
+    CONTRACT_ID("contract_id"),
     COMMENTS_LIST("commentsList"),
     COMMENT_TEXT("comment_text"),
     COMMENT_DATE("comment_date"),
     CLIENT_LOGIN("client_login"),
+    CURRENT_DATE("currentDate"),
     PAGE("page");
 
 

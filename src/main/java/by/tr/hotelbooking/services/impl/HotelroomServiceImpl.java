@@ -24,7 +24,7 @@ import java.util.Calendar;
 import java.util.List;
 
 public class HotelroomServiceImpl implements HotelroomService {
-    private final DaoFactory daoFactory = new DaoFactory();
+    private final DaoFactory daoFactory = DaoFactory.getInstance();
 
     private static final HotelroomServiceImpl instance = new HotelroomServiceImpl();
 

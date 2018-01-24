@@ -22,9 +22,12 @@ public class OrderDAO extends AbstractJDBCDao<Order> {
     private final static String GET_ORDERS_FOR_PAGE = "SELECT account.login, orders.order_id, orders.places_count, orders.date_in,orders.days_count, "+
             " orders.min_daily_price, orders.max_daily_price, room_types.id, room_types.name FROM hotelrooms.orders JOIN hotelrooms.account ON hotelrooms.orders.u_id = hotelrooms.account.u_id "+
             " JOIN hotelrooms.room_types ON hotelrooms.orders.room_type_id = room_types.id GROUP BY orders.order_id LIMIT ?,?";
+    private final static String GET_ORDER_BY_ID = "SELECT account.login, orders.order_id, orders.places_count, orders.date_in,orders.days_count, "+
+            " orders.min_daily_price, orders.max_daily_price, room_types.id, room_types.name FROM hotelrooms.orders JOIN hotelrooms.account ON hotelrooms.orders.u_id = hotelrooms.account.u_id "+
+            " JOIN hotelrooms.room_types ON hotelrooms.orders.room_type_id = room_types.id WHERE orders.order_id = ?";
     private static final String ADD_ORDER = "INSERT INTO hotelrooms.orders (places_count, date_in, days_count, room_type_id, min_daily_price, " +
             " max_daily_price, u_id) VALUES (?, ?, ?, ?, ?, ?, (SELECT u_id FROM hotelrooms.account WHERE account.login=?))";
-    private static final String REMOVE_ORDER = "DELETE FROM hotelrooms.order WHERE order_id=?";
+    private static final String REMOVE_ORDER = "DELETE FROM hotelrooms.orders WHERE order_id=?";
     private static final String GET_LAST_ID = "SELECT order.order_id FROM hotelrooms.order ORDER BY order.order_id desc limit 1;";
     private static final String CHANGE_ORDER = "UPDATE hotelrooms.order SET places_count=?, date_in=?"+
             "days_count=?, hotelroom_class=? WHERE u_id=(SELECT u_id FROM hotelrooms.account WHERE login=?)";
@@ -41,7 +44,7 @@ public class OrderDAO extends AbstractJDBCDao<Order> {
 
     @Override
     protected String getSelectByPKQuery() {
-        return null;
+        return GET_ORDER_BY_ID;
     }
 
     @Override

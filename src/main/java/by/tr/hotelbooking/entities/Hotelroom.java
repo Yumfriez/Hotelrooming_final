@@ -8,7 +8,6 @@ public class Hotelroom implements Identified{
     private int number;
     private int placesCount;
     private int floor;
-    private Integer contractId;
     private BigDecimal dailyPrice;
     private RoomType roomType;
     private String imageName;
@@ -52,14 +51,6 @@ public class Hotelroom implements Identified{
 
     public void setFloor(int floor) {
         this.floor = floor;
-    }
-
-    public Integer getContractId() {
-        return contractId;
-    }
-
-    public void setContractId(Integer contractId) {
-        this.contractId = contractId;
     }
 
     public BigDecimal getDailyPrice() {

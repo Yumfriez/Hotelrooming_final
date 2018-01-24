@@ -3,7 +3,7 @@ package by.tr.hotelbooking.entities;
 import java.math.BigDecimal;
 import java.sql.Date;
 
-public class Contract implements Identified{
+public class ContractDTO implements Identified {
 
     private int id;
     private String accountLogin;
@@ -11,7 +11,10 @@ public class Contract implements Identified{
     private Date dateOut;
     private BigDecimal totalPrice;
     private int hotelroomNumber;
-    private boolean acceptStatus;
+    private int placesCount;
+    private int floor;
+    private RoomType roomType;
+    private String imageName;
 
     @Override
     public Integer getId() {
@@ -62,11 +65,35 @@ public class Contract implements Identified{
         this.hotelroomNumber = hotelroomNumber;
     }
 
-    public boolean isAcceptStatus() {
-        return acceptStatus;
+    public int getPlacesCount() {
+        return placesCount;
     }
 
-    public void setAcceptStatus(boolean acceptStatus) {
-        this.acceptStatus = acceptStatus;
+    public void setPlacesCount(int placesCount) {
+        this.placesCount = placesCount;
+    }
+
+    public int getFloor() {
+        return floor;
+    }
+
+    public void setFloor(int floor) {
+        this.floor = floor;
+    }
+
+    public RoomType getRoomType() {
+        return roomType;
+    }
+
+    public void setRoomType(RoomType roomType) {
+        this.roomType = roomType;
+    }
+
+    public String getImageName() {
+        return imageName;
+    }
+
+    public void setImageName(String imageName) {
+        this.imageName = imageName;
     }
 }

@@ -2,6 +2,7 @@ package by.tr.hotelbooking.services.factory;
 
 
 import by.tr.hotelbooking.services.CommentService;
+import by.tr.hotelbooking.services.ContractService;
 import by.tr.hotelbooking.services.OrderService;
 import by.tr.hotelbooking.services.impl.*;
 
@@ -13,6 +14,7 @@ public class ServiceFactory {
     private final RoomTypeServiceImpl roomTypeService = RoomTypeServiceImpl.getInstance();
     private final OrderService orderService = new OrderServiceImpl();
     private final CommentService commentService = new CommentServiceImpl();
+    private final ContractService contractService = new ContractServiceImpl();
 
 
     private ServiceFactory() {
@@ -38,5 +40,8 @@ public class ServiceFactory {
         return commentService;
     }
 
+    public ContractService getContractService() {
+        return contractService;
+    }
 }
 

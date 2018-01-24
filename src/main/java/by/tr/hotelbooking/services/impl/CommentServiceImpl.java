@@ -12,7 +12,7 @@ import java.util.List;
 
 public class CommentServiceImpl implements CommentService {
 
-    private DaoFactory daoFactory = new DaoFactory();
+    private DaoFactory daoFactory = DaoFactory.getInstance();
 
     @Override
     public void addComment(Date commentDate, String userLogin, String commentText) throws ServiceException {

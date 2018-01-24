@@ -37,6 +37,13 @@ public class CommandInvoker {
         repository.put(CommandName.ADD_COMMENT, AddCommentCommand.getInstance());
         repository.put(CommandName.DELETE_COMMENT, DeleteCommentCommand.getInstance());
         repository.put(CommandName.FIND_HOTELROOMS, FindHotelroomsCommand.getInstance());
+        repository.put(CommandName.ADD_CONTRACT, AddContractCommand.getInstance());
+        repository.put(CommandName.ACCEPT_CONTRACT, AcceptContractCommand.getInstance());
+        repository.put(CommandName.DECLINE_CONTRACT, DeclineContractCommand.getInstance());
+        repository.put(CommandName.SHOW_CONTRACTS, ShowContractsCommand.getInstance());
+        repository.put(CommandName.SHOW_USER_CONTRACTS, ShowUserContractsCommand.getInstance());
+        repository.put(CommandName.SHOW_NEW_OFFERS, ShowNewOffersCommand.getInstance());
+        repository.put(CommandName.CANCEL_ORDER, CancelOrderCommand.getInstance());
     }
 
     public static CommandInvoker getInstance() {

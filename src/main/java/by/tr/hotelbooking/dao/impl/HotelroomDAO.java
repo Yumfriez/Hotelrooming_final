@@ -19,13 +19,13 @@ import java.util.List;
 public class HotelroomDAO extends AbstractJDBCDao<Hotelroom> {
 
     private final static String GET_HOTELROOMS_FOR_PAGE = "SELECT hotelroom.id, hotelroom.number, hotelroom.places_count, hotelroom.daily_price, "+
-            "hotelroom.floor, hotelroom.contract_id, hotelroom.imageName, room_types.name FROM hotelrooms.hotelroom INNER JOIN hotelrooms.room_types ON " +
+            "hotelroom.floor, hotelroom.imageName, room_types.name FROM hotelrooms.hotelroom INNER JOIN hotelrooms.room_types ON " +
             "hotelroom.room_type_id = room_types.id GROUP BY hotelroom.number LIMIT ?,?";
     private final static String GET_HOTELROOM_BY_ID = "SELECT hotelroom.id, hotelroom.number, hotelroom.places_count, hotelroom.daily_price, "+
-            "hotelroom.floor, hotelroom.contract_id, hotelroom.imageName, room_types.name FROM hotelrooms.hotelroom INNER JOIN hotelrooms.room_types ON " +
+            "hotelroom.floor, hotelroom.imageName, room_types.name FROM hotelrooms.hotelroom INNER JOIN hotelrooms.room_types ON " +
             "hotelroom.room_type_id = room_types.id WHERE hotelroom.id=?";
     private final static String GET_ALL_HOTELROOMS = "SELECT hotelroom.id, hotelroom.number, hotelroom.places_count, hotelroom.daily_price, "+
-            "hotelroom.floor, hotelroom.contract_id, hotelroom.imageName, room_types.name FROM hotelrooms.hotelroom INNER JOIN hotelrooms.room_types ON " +
+            "hotelroom.floor, hotelroom.imageName, room_types.name FROM hotelrooms.hotelroom INNER JOIN hotelrooms.room_types ON " +
             "hotelroom.room_type_id = room_types.id";
     private final static String GET_FREE_HOTELROOMS = "SELECT hotelroom.id, hotelroom.number, hotelroom.class, hotelroom.places_count, hotelroom.daily_price, "+
             "hotelroom.floor, hotelroom.contract_id FROM hotelrooms.hotelroom WHERE hotelroom.contract_id IS NULL";
@@ -39,8 +39,8 @@ public class HotelroomDAO extends AbstractJDBCDao<Hotelroom> {
             "daily_price=?, floor=?, imageName=?, room_type_id=? WHERE id=?";
 
     private static final String GET_HOTELROOM_BY_CRITERIA = "SELECT hotelroom.id, hotelroom.number, hotelroom.places_count, hotelroom.daily_price, "+
-            "hotelroom.floor, hotelroom.contract_id, hotelroom.imageName, room_types.name FROM hotelrooms.hotelroom INNER JOIN hotelrooms.room_types ON " +
-            "hotelroom.room_type_id = room_types.id LEFT JOIN contract ON hotelroom.contract_id = contract.contract_id "+
+            "hotelroom.floor, hotelroom.imageName, room_types.name FROM hotelrooms.hotelroom INNER JOIN hotelrooms.room_types ON " +
+            "hotelroom.room_type_id = room_types.id LEFT JOIN contract ON hotelroom.id = contract.contract_id "+
             "WHERE hotelroom.places_count>=? AND (hotelroom.daily_price BETWEEN ? AND ?) AND hotelroom.room_type_id = ? "+
             "AND (contract.contract_id IS NULL OR (date_in>? OR date_out<?))"+
             "GROUP BY hotelroom.number LIMIT ?,?";
@@ -48,7 +48,7 @@ public class HotelroomDAO extends AbstractJDBCDao<Hotelroom> {
     private static final String GET_COUNT = "SELECT count(*) FROM hotelrooms.hotelroom";
 
     private static final String GET_COUNT_WITH_PARAMS = "SELECT count(*) FROM hotelrooms.hotelroom INNER JOIN hotelrooms.room_types ON " +
-            "hotelroom.room_type_id = room_types.id LEFT JOIN contract ON hotelroom.contract_id = contract.contract_id "+
+            "hotelroom.room_type_id = room_types.id LEFT JOIN contract ON hotelroom.id = contract.contract_id "+
             "WHERE hotelroom.places_count>=? AND (hotelroom.daily_price BETWEEN ? AND ?) AND hotelroom.room_type_id = ? "+
             "AND (contract.contract_id IS NULL OR (date_in>? OR date_out<?))";
     public HotelroomDAO() {
@@ -248,10 +248,6 @@ public class HotelroomDAO extends AbstractJDBCDao<Hotelroom> {
         hotelroom.setPlacesCount(resultSet.getInt("places_count"));
         hotelroom.setDailyPrice(resultSet.getBigDecimal("daily_price"));
         hotelroom.setFloor(resultSet.getInt("floor"));
-        hotelroom.setContractId(resultSet.getInt("contract_id"));
-        if(resultSet.wasNull()){
-            hotelroom.setContractId(null);
-        }
         hotelroom.setImageName(resultSet.getString("imageName"));
         RoomType roomType = new RoomType();
         roomType.setName(resultSet.getString("name"));

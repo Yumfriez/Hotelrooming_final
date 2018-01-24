@@ -14,6 +14,8 @@ public class UserServiceImpl implements UserService {
 
     private static final UserServiceImpl instance = new UserServiceImpl();
 
+    private DaoFactory daoFactory = DaoFactory.getInstance();
+
     private UserServiceImpl() {
 
     }
@@ -22,7 +24,7 @@ public class UserServiceImpl implements UserService {
         return instance;
     }
 
-    private DaoFactory daoFactory = new DaoFactory();
+
 
     @Override
     public User signUp(String login, String password, String name, String surname, String email, String locale) throws ServiceException {

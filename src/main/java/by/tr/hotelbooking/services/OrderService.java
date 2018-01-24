@@ -16,4 +16,5 @@ public interface OrderService {
     int getPageNumber(String stringPageValue);
     int getPagesCount(int recordsCount) throws ServiceException;
     List<Order> getOrdersFromPage(int page) throws ServiceException;
+    void removeOrder(int orderId) throws ServiceException;
 }

@@ -4,8 +4,14 @@ import by.tr.hotelbooking.dao.impl.*;
 
 public class DaoFactory {
 
-    public DaoFactory() {
+    private final static DaoFactory instance = new DaoFactory();
 
+    private DaoFactory() {
+
+    }
+
+    public static DaoFactory getInstance() {
+        return instance;
     }
 
     public CommentDAO getCommentDAO(){

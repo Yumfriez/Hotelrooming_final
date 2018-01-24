@@ -11,7 +11,7 @@ import by.tr.hotelbooking.services.exception.ServiceException;
 import java.util.List;
 
 public class RoomTypeServiceImpl implements RoomTypeService {
-    private final DaoFactory daoFactory = new DaoFactory();
+    private final DaoFactory daoFactory = DaoFactory.getInstance();
 
     private final static RoomTypeServiceImpl instance = new RoomTypeServiceImpl();
 

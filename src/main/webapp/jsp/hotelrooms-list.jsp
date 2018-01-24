@@ -2,6 +2,8 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <c:set var="command" value="${requestScope.command}"/>
+<c:set var="show_hotelrooms" value="show_hotelrooms"/>
+<c:set var="find_hotelrooms" value="find_hotelrooms"/>
 <fmt:setLocale scope="session" value="${sessionScope.userLocale}"/>
 <c:set var="role" value="${sessionScope.role}"/>
 <c:set var="admin" value="ADMINISTRATOR"/>
@@ -22,6 +24,7 @@
 <fmt:message bundle="${loc}" key="local.word.room_type" var="room_type"/>
 <fmt:message bundle="${loc}" key="local.word.hotelroom_reserved" var="hotelroom_reserved"/>
 <fmt:message bundle="${loc}" key="local.button.order_hotelroom" var="order_hotelroom_button"/>
+<fmt:message bundle="${loc}" key="local.button.send_contract" var="send_contract_button"/>
 <!DOCTYPE html>
 <html>
 <head>
@@ -43,6 +46,7 @@
             <c:choose>
                 <c:when test="${role eq(admin)}">
                     <%@include file="parts/admin-menu.jsp"%>
+                    <c:if test="${command eq(show_hotelrooms)}">
                     <div class="col-md-4">
                         <div class="list-group">
                             <form action="/hotelrooming" method="get" accept-charset="UTF-8">
@@ -51,6 +55,7 @@
                             </form>
                         </div>
                     </div>
+                    </c:if>
                 </c:when>
                 <c:when test="${role eq(user)}">
                     <%@include file="parts/user-menu.jsp"%>
@@ -87,43 +92,42 @@
                                 <p class="product-price"> <b>${daily_price}: </b>${hotelroom.dailyPrice}<br/></p>
                                 <div id="button_under_hotelroom">
                                     <c:choose>
-                                        <c:when test="${role eq(admin)}">
-                                            <form class="button" action="/hotelrooming" method="post">
-                                                <input type="hidden" name="hotelroom_id" value="${hotelroom.id}"/>
-                                                <input type="hidden" name="command" value="show_edit_hotelroom_page"/>
-                                                <input class="all-btns" type="submit" value="${edit_button}"/>
-                                            </form>
+                                        <c:when test="${command eq(show_hotelrooms)}">
                                             <c:choose>
-                                                <c:when test="${empty hotelroom.contractId}">
+                                                <c:when test="${role eq(admin)}">
+                                                    <form class="button" action="/hotelrooming" method="post">
+                                                        <input type="hidden" name="hotelroom_id" value="${hotelroom.id}"/>
+                                                        <input type="hidden" name="command" value="show_edit_hotelroom_page"/>
+                                                        <input class="all-btns" type="submit" value="${edit_button}"/>
+                                                    </form>
                                                     <form class="button" action="/hotelrooming" method="post">
                                                         <input type="hidden" name="hotelroom_id" value="${hotelroom.id}"/>
                                                         <input type="hidden" name="command" value="remove_hotelroom"/>
                                                         <input class="all-btns" type="submit" value="${delete_button}" onclick="confirm('Вы уверены?')"/>
                                                     </form>
                                                 </c:when>
+                                                <c:when test="${role eq(user)}">
+                                                </c:when>
                                                 <c:otherwise>
-                                                    <p class="product-reserved">${hotelroom_reserved}</p>
+                                                    ERROR
                                                 </c:otherwise>
                                             </c:choose>
                                         </c:when>
-
-                                        <c:when test="${role eq(user)}">
+                                        <c:when test="${command eq(find_hotelrooms)}">
                                             <c:choose>
-                                                <c:when test="${empty hotelroom.contractId}">
+                                                <c:when test="${role eq(admin)}">
                                                     <form class="button" action="/hotelrooming" method="post">
                                                         <input type="hidden" name="hotelroom_id" value="${hotelroom.id}"/>
-                                                        <input type="hidden" name="command" value="order_hotelroom"/>
-                                                        <input class="all-btns" type="submit" value="${order_hotelroom_button}"/>
+                                                        <input type="hidden" name="order_id" value="${requestScope.order_id}">
+                                                        <input type="hidden" name="command" value="add_contract"/>
+                                                        <input class="all-btns" type="submit" value="${send_contract_button}"/>
                                                     </form>
                                                 </c:when>
                                                 <c:otherwise>
-                                                    <p class="product-reserved">${hotelroom_reserved}</p>
+                                                    ERROR
                                                 </c:otherwise>
                                             </c:choose>
                                         </c:when>
-                                        <c:otherwise>
-                                            ERROR
-                                        </c:otherwise>
                                     </c:choose>
                                 </div>
                             </div>
