@@ -33,25 +33,24 @@ public class SignUp implements Command {
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) {
-        User user = null;
-        try {
 
-            String servletPath = request.getServletPath();
-            String login = request.getParameter(RequestParameter.LOGIN.getValue());
-            String password = request.getParameter(RequestParameter.PASSWORD.getValue());
-            String email = request.getParameter(RequestParameter.EMAIL.getValue());
-            String name = request.getParameter(RequestParameter.NAME.getValue());
-            String lastName = request.getParameter(RequestParameter.LASTNAME.getValue());
-            //TODO VALIDATOR FOR NAME AND LASTNAME
-            Validator.checkIsNotEmpty(login, password);
+        String servletPath = request.getServletPath();
+        String login = request.getParameter(RequestParameter.LOGIN.getValue());
+        String password = request.getParameter(RequestParameter.PASSWORD.getValue());
+        String email = request.getParameter(RequestParameter.EMAIL.getValue());
+        String name = request.getParameter(RequestParameter.NAME.getValue());
+        String lastName = request.getParameter(RequestParameter.LASTNAME.getValue());
+        try {
+            Validator.checkIsNotEmpty(login, password, email, name, lastName);
             Validator.checkIsValidLogin(login);
             Validator.checkIsValidPassword(password);
             Validator.checkIsValidEmail(email);
+            Validator.checkIsValidName(name, lastName);
 
             UserService userService = serviceFactory.getUserService();
             User checkedUser = userService.getUserByLogin(login);
             if (checkedUser==null){
-                user = userService.signUp(login, password, name, lastName, email, request.getLocale().toString());
+                User user = userService.signUp(login, password, name, lastName, email, request.getLocale().toString());
 
                 HttpSession session = request.getSession(true);
                 session.setAttribute(RequestParameter.LOGIN.getValue(), user.getLogin());

@@ -12,6 +12,7 @@ import by.tr.hotelbooking.entities.Hotelroom;
 import by.tr.hotelbooking.services.HotelroomService;
 import by.tr.hotelbooking.services.exception.ServiceException;
 import by.tr.hotelbooking.services.factory.ServiceFactory;
+import by.tr.hotelbooking.services.utils.LogicException;
 import org.apache.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
@@ -76,7 +77,7 @@ public class FindHotelroomsCommand implements Command {
             request.setAttribute(RequestParameter.COMMAND.getValue(), RequestCommandParameter.FIND_HOTELROOMS.getValue());
             ForwarRedirectChooser.doForward(request, response, JspPageName.HOTELROOMS_PAGE.getPath());
 
-        } catch (ValidatorException | ParseException e) {
+        } catch (ValidatorException | ParseException | LogicException e) {
             logger.error(e);
             request.setAttribute(RequestParameter.INFORMATION.getValue(), e.getMessage());
             ForwarRedirectChooser.doForward(request, response, JspPageName.ADMIN_USER_PAGE.getPath());

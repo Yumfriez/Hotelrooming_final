@@ -7,6 +7,8 @@ import by.tr.hotelbooking.entities.Order;
 import by.tr.hotelbooking.entities.RoomType;
 import by.tr.hotelbooking.services.OrderService;
 import by.tr.hotelbooking.services.exception.ServiceException;
+import by.tr.hotelbooking.services.utils.LogicException;
+import by.tr.hotelbooking.services.utils.LogicValidator;
 
 import java.math.BigDecimal;
 import java.sql.Date;
@@ -18,7 +20,14 @@ public class OrderServiceImpl implements OrderService{
 
     @Override
     public void createOrder(int placesCount, Date dateIn, int daysCount, int roomTypeId,
-                            BigDecimal minPrice, BigDecimal maxPrice, String userLogin) throws ServiceException {
+                            BigDecimal minPrice, BigDecimal maxPrice, String userLogin) throws ServiceException, LogicException {
+        LogicValidator.checkPlacesCount(placesCount);
+        LogicValidator.checkPrice(minPrice);
+        LogicValidator.checkPrice(maxPrice);
+        LogicValidator.checkMinAndMaxPrices(minPrice, maxPrice);
+        LogicValidator.checkDaysCount(daysCount);
+        LogicValidator.checkDateIn(dateIn);
+
         Order order = new Order();
         RoomType roomType = new RoomType();
         roomType.setId(roomTypeId);

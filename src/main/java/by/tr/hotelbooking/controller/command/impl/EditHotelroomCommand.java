@@ -14,6 +14,7 @@ import by.tr.hotelbooking.services.HotelroomService;
 import by.tr.hotelbooking.services.RoomTypeService;
 import by.tr.hotelbooking.services.exception.ServiceException;
 import by.tr.hotelbooking.services.factory.ServiceFactory;
+import by.tr.hotelbooking.services.utils.LogicException;
 import org.apache.log4j.Logger;
 
 import javax.servlet.ServletException;
@@ -71,7 +72,7 @@ public class EditHotelroomCommand implements Command {
             logger.debug(request.getSession().getAttribute(RequestParameter.LOGIN.getValue()+" edited hotelroom"));
             ForwarRedirectChooser.doRedirect(response, servletPath, RequestCommandParameter.SHOW_HOTELROOMS);
 
-        } catch (ServletException | IOException |  ValidatorException e) {
+        } catch (ServletException | IOException |  ValidatorException | LogicException e) {
             logger.error(e);
             request.setAttribute(RequestParameter.INFORMATION.getValue(), e.getMessage());
             goToPreviousPage(request, response, hotelroomIdString);

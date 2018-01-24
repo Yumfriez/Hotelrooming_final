@@ -11,6 +11,7 @@ import by.tr.hotelbooking.controller.utils.ValidatorException;
 import by.tr.hotelbooking.services.OrderService;
 import by.tr.hotelbooking.services.exception.ServiceException;
 import by.tr.hotelbooking.services.factory.ServiceFactory;
+import by.tr.hotelbooking.services.utils.LogicException;
 import org.apache.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
@@ -63,7 +64,7 @@ public class MakeOrderCommand implements Command {
             OrderService orderService = ServiceFactory.getInstance().getOrderService();
             orderService.createOrder(placesCount, dateIn, daysCount, roomTypeId,minPrice, maxPrice, userLogin);
             ForwarRedirectChooser.doRedirect(response, servletPath, RequestCommandParameter.SHOW_ORDERS);
-        } catch (ValidatorException | ParseException e){
+        } catch (ValidatorException | ParseException | LogicException e){
             logger.error(e);
             request.setAttribute(RequestParameter.INFORMATION.getValue(), e.getMessage());
             ForwarRedirectChooser.doForward(request, response, JspPageName.ADMIN_USER_PAGE.getPath());

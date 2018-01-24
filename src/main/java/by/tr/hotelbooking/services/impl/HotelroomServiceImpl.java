@@ -9,6 +9,8 @@ import by.tr.hotelbooking.entities.HotelroomDTO;
 import by.tr.hotelbooking.entities.RoomType;
 import by.tr.hotelbooking.services.HotelroomService;
 import by.tr.hotelbooking.services.exception.ServiceException;
+import by.tr.hotelbooking.services.utils.LogicException;
+import by.tr.hotelbooking.services.utils.LogicValidator;
 
 import javax.servlet.http.Part;
 import java.io.File;
@@ -39,11 +41,16 @@ public class HotelroomServiceImpl implements HotelroomService {
 
     @Override
     public void addHotelroom(int number, int placesCount, int floor, BigDecimal dailyPrice,
-                             int roomTypeId, Part part, String uploadDir) throws ServiceException {
+                             int roomTypeId, Part part, String uploadDir) throws ServiceException, LogicException {
 
         Hotelroom hotelroom = new Hotelroom();
         Dao<Hotelroom> hotelroomDao = daoFactory.getHotelroomDAO();
         try {
+
+            LogicValidator.checkHotelroomNumber(number);
+            LogicValidator.checkHotelroomFloor(floor);
+            LogicValidator.checkPlacesCount(placesCount);
+            LogicValidator.checkPrice(dailyPrice);
 
             String imageName = Paths.get(part.getSubmittedFileName()).getFileName().toString();
 
@@ -75,10 +82,15 @@ public class HotelroomServiceImpl implements HotelroomService {
 
     @Override
     public void editHotelroom(int hotelroomId, int number, int placesCount, int floor,  BigDecimal dailyPrice,
-                              int roomTypeId, Part part, String uploadDir) throws ServiceException {
+                              int roomTypeId, Part part, String uploadDir) throws ServiceException, LogicException {
         Hotelroom hotelroom = new Hotelroom();
         Dao<Hotelroom> hotelroomDao = daoFactory.getHotelroomDAO();
         try {
+
+            LogicValidator.checkHotelroomNumber(number);
+            LogicValidator.checkHotelroomFloor(floor);
+            LogicValidator.checkPlacesCount(placesCount);
+            LogicValidator.checkPrice(dailyPrice);
 
             String imageName = Paths.get(part.getSubmittedFileName()).getFileName().toString();
 
@@ -152,7 +164,15 @@ public class HotelroomServiceImpl implements HotelroomService {
 
     @Override
     public List<Hotelroom> findHotelroomsForPage(int placesCount, BigDecimal minPrice, BigDecimal maxPrice, int roomTypeId,
-                                                 Date dateIn, int daysCount, int page) throws ServiceException {
+                                                 Date dateIn, int daysCount, int page) throws ServiceException, LogicException {
+
+        LogicValidator.checkPlacesCount(placesCount);
+        LogicValidator.checkPrice(minPrice);
+        LogicValidator.checkPrice(maxPrice);
+        LogicValidator.checkMinAndMaxPrices(minPrice, maxPrice);
+        LogicValidator.checkDaysCount(daysCount);
+        LogicValidator.checkDateIn(dateIn);
+
         List<Hotelroom> hotelrooms = null;
         HotelroomDAO hotelroomDAO = daoFactory.getHotelroomDAO();
         HotelroomDTO hotelroomDTO = new HotelroomDTO();
@@ -180,7 +200,14 @@ public class HotelroomServiceImpl implements HotelroomService {
 
     @Override
     public int getRecordsByCriteriaCount(int placesCount, BigDecimal minPrice, BigDecimal maxPrice, int roomTypeId,
-                                         Date dateIn, int daysCount) throws ServiceException {
+                                         Date dateIn, int daysCount) throws ServiceException, LogicException {
+        LogicValidator.checkPlacesCount(placesCount);
+        LogicValidator.checkPrice(minPrice);
+        LogicValidator.checkPrice(maxPrice);
+        LogicValidator.checkMinAndMaxPrices(minPrice, maxPrice);
+        LogicValidator.checkDaysCount(daysCount);
+        LogicValidator.checkDateIn(dateIn);
+
         int num = 0;
         HotelroomDTO hotelroomDTO = new HotelroomDTO();
         hotelroomDTO.setMinPrice(minPrice);

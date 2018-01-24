@@ -11,6 +11,7 @@ import by.tr.hotelbooking.controller.utils.ValidatorException;
 import by.tr.hotelbooking.services.HotelroomService;
 import by.tr.hotelbooking.services.exception.ServiceException;
 import by.tr.hotelbooking.services.factory.ServiceFactory;
+import by.tr.hotelbooking.services.utils.LogicException;
 import org.apache.log4j.Logger;
 
 import javax.servlet.ServletException;
@@ -67,7 +68,7 @@ public class AddHotelroomCommand implements Command {
 
             ForwarRedirectChooser.doRedirect(response, servletPath, RequestCommandParameter.SHOW_HOTELROOMS);
 
-        } catch (ServletException | IOException | ValidatorException e) {
+        } catch (ServletException | IOException | ValidatorException | LogicException e) {
             logger.error(e);
             request.setAttribute(RequestParameter.INFORMATION.getValue(), e.getMessage());
             ForwarRedirectChooser.doForward(request, response, JspPageName.ADMIN_USER_PAGE.getPath());
