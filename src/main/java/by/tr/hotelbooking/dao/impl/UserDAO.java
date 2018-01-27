@@ -1,6 +1,6 @@
 package by.tr.hotelbooking.dao.impl;
 
-import by.tr.hotelbooking.dao.AbstractJDBCDao;
+import by.tr.hotelbooking.dao.AbstractDao;
 import by.tr.hotelbooking.dao.exception.ConnectionPoolException;
 import by.tr.hotelbooking.dao.exception.DAOException;
 import by.tr.hotelbooking.dao.pool.ConnectionPool;
@@ -14,7 +14,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UserDAO extends AbstractJDBCDao<User> {
+public class UserDAO extends AbstractDao<User> {
     private static final String SIGN_IN = "SELECT u_id, login, pass, name, surname, email, role, block_status, locale "+
             " FROM hotelrooms.account WHERE login=? AND pass=?";
     private static final String SIGN_UP = "INSERT INTO hotelrooms.account (login, pass, name, surname, " +
@@ -153,10 +153,6 @@ public class UserDAO extends AbstractJDBCDao<User> {
         return null;
     }
 
-    @Override
-    protected String getLastAdded() {
-        return GET_LAST_ID;
-    }
 
     @Override
     protected List<User> parseResultSet(ResultSet rs) throws DAOException {

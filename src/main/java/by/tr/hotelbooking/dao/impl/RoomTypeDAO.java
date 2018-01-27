@@ -1,6 +1,6 @@
 package by.tr.hotelbooking.dao.impl;
 
-import by.tr.hotelbooking.dao.AbstractJDBCDao;
+import by.tr.hotelbooking.dao.AbstractDao;
 import by.tr.hotelbooking.dao.exception.DAOException;
 import by.tr.hotelbooking.entities.RoomType;
 
@@ -10,7 +10,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RoomTypeDAO extends AbstractJDBCDao<RoomType>{
+public class RoomTypeDAO extends AbstractDao<RoomType> {
 
     private final static String getAllRoomTypesQuery = "SELECT room_types.id, room_types.name "+
             "FROM room_types GROUP BY room_types.id";
@@ -40,10 +40,6 @@ public class RoomTypeDAO extends AbstractJDBCDao<RoomType>{
         return null;
     }
 
-    @Override
-    protected String getLastAdded() {
-        return null;
-    }
 
     @Override
     protected List<RoomType> parseResultSet(ResultSet rs) throws DAOException {

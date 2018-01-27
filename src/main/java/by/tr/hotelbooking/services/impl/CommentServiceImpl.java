@@ -49,7 +49,7 @@ public class CommentServiceImpl implements CommentService {
     public int getRecordsCount() throws ServiceException {
         int num = 0;
         try {
-            num = daoFactory.getCommentDAO().getNumberOfComments();
+            num = daoFactory.getCommentDAO().getRecordsCount();
         } catch (DAOException e) {
             throw new ServiceException(e);
         }
@@ -78,7 +78,7 @@ public class CommentServiceImpl implements CommentService {
         List<Comment> commentList;
         try {
             CommentDAO commentDAO = daoFactory.getCommentDAO();
-            commentList = commentDAO.getCommentsForPage((page-1)*10,10);
+            commentList = commentDAO.getRecordsWithOffset((page-1)*10,10);
         }  catch (DAOException e) {
             throw new ServiceException(e);
         }

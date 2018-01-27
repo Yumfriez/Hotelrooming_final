@@ -52,7 +52,7 @@ public class ContractServiceImpl implements ContractService {
         List<Contract> contracts = null;
         try {
             ContractDAO contractDAO = daoFactory.getContractDAO();
-            contracts = contractDAO.getContractsForPage((page-1)*10,10);
+            contracts = contractDAO.getRecordsWithOffset((page-1)*10,10);
         }  catch (DAOException e) {
             throw new ServiceException(e);
         }
@@ -68,7 +68,7 @@ public class ContractServiceImpl implements ContractService {
     public int getRecordsCount() throws ServiceException {
         int num = 0;
         try {
-            num = daoFactory.getContractDAO().getNumberOfContracts();
+            num = daoFactory.getContractDAO().getRecordsCount();
         } catch (DAOException e) {
             throw new ServiceException(e);
         }

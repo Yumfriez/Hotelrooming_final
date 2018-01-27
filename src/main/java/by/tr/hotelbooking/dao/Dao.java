@@ -2,7 +2,6 @@ package by.tr.hotelbooking.dao;
 
 import by.tr.hotelbooking.dao.exception.DAOException;
 
-import java.io.Serializable;
 import java.util.List;
 
 public interface Dao<T> {

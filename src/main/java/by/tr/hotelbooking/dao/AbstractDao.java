@@ -5,16 +5,15 @@ import by.tr.hotelbooking.dao.exception.DAOException;
 import by.tr.hotelbooking.dao.pool.ConnectionPool;
 import by.tr.hotelbooking.entities.Identified;
 
-import java.io.Serializable;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
-public abstract class AbstractJDBCDao<T extends Identified> implements Dao<T> {
+public abstract class AbstractDao<T extends Identified> implements Dao<T> {
 
-    public AbstractJDBCDao() {
+    public AbstractDao() {
 
     }
 
@@ -23,7 +22,6 @@ public abstract class AbstractJDBCDao<T extends Identified> implements Dao<T> {
     protected abstract String getAddQuery();
     protected abstract String getUpdateQuery();
     protected abstract String getDeleteQuery();
-    protected abstract String getLastAdded();
 
     protected abstract List<T> parseResultSet(ResultSet rs) throws DAOException;
     protected abstract void prepareStatementForInsert(PreparedStatement statement, T object) throws DAOException;
@@ -89,6 +87,7 @@ public abstract class AbstractJDBCDao<T extends Identified> implements Dao<T> {
         }
 
     }
+
 
     @Override
     public void update(T entity) throws DAOException {

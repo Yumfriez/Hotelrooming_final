@@ -1,20 +1,17 @@
 package by.tr.hotelbooking.dao.impl;
 
-import by.tr.hotelbooking.dao.AbstractJDBCDao;
-import by.tr.hotelbooking.dao.exception.ConnectionPoolException;
+import by.tr.hotelbooking.dao.AbstractPaginalDao;
 import by.tr.hotelbooking.dao.exception.DAOException;
-import by.tr.hotelbooking.dao.pool.ConnectionPool;
 import by.tr.hotelbooking.entities.Order;
 import by.tr.hotelbooking.entities.RoomType;
 
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class OrderDAO extends AbstractJDBCDao<Order> {
+public class OrderDAO extends AbstractPaginalDao<Order> {
 
     private final static String GET_ALL_ORDERS = "SELECT account.login, order.order_id, order.places_count, order.date_in, order.days_count, "+
             " room_types.name FROM hotelrooms.order JOIN hotelrooms.order ON hotelrooms.order.u_id = hotelrooms.account.id "+
@@ -63,90 +60,28 @@ public class OrderDAO extends AbstractJDBCDao<Order> {
     }
 
     @Override
-    protected String getLastAdded() {
-        return GET_LAST_ID;
+    protected String getRecordsWithOffsetQuery() {
+        return GET_ORDERS_FOR_PAGE;
     }
 
-    public List<Order> getOrdersForPage(int pageNumber, int offset) throws DAOException {
-        ConnectionPool connectionPool = null;
-        Connection connection = null;
-        PreparedStatement preparedStatement =null;
-        ResultSet resultSet = null;
-        List<Order> orders;
+    @Override
+    protected String getRecordsCountQuery() {
+        return GET_COUNT;
+    }
+
+    @Override
+    protected List<Order> parseResultSet(ResultSet resultSet) throws DAOException {
+        List<Order> orders = new ArrayList<>();
         try {
-            connectionPool = ConnectionPool.getInstance();
-            connection = connectionPool.retrieve();
-            preparedStatement = connection.prepareStatement(GET_ORDERS_FOR_PAGE);
-            preparedStatement.setInt(1, pageNumber);
-            preparedStatement.setInt(2, offset);
-            resultSet = preparedStatement.executeQuery();
-            orders = new ArrayList<>();
             while (resultSet.next()) {
                 Order order = new Order();
                 setOrderParameters(order, resultSet);
                 orders.add(order);
             }
-
-        } catch (ConnectionPoolException e) {
-            throw new DAOException("Unable to give new connection from connection pool",e);
-        } catch (SQLException e) {
-            throw new DAOException("Get all orders from DB error " + e);
-        } finally {
-            if (connectionPool != null) {
-                connectionPool.putBackConnection(connection, preparedStatement, resultSet);
-            }
-        }
-        return orders;
-    }
-
-    public int getNumberOfOrders() throws DAOException{
-        ConnectionPool connectionPool = null;
-        Connection connection = null;
-        PreparedStatement preparedStatement = null;
-        ResultSet resultSet = null;
-        int result;
-        try {
-            connectionPool = ConnectionPool.getInstance();
-            connection = connectionPool.retrieve();
-            preparedStatement = connection.prepareStatement(GET_COUNT);
-            resultSet = preparedStatement.executeQuery();
-            resultSet.next();
-            result = resultSet.getInt(1);
-
-        } catch (ConnectionPoolException e) {
-            throw new DAOException("Unable to give new connection from connection pool", e);
-        } catch (SQLException e) {
-            throw new DAOException("Orders counting in DB error " + e);
-        } finally {
-            if (connectionPool != null) {
-                connectionPool.putBackConnection(connection, preparedStatement, resultSet);
-            }
-        }
-        return result;
-    }
-
-    @Override
-    protected List<Order> parseResultSet(ResultSet rs) throws DAOException {
-        List<Order> result = new ArrayList<>();
-        try {
-            while (rs.next()) {
-                Order order=new Order();
-                order.setId(rs.getInt("id"));
-                order.setPreferedPlacesCount(rs.getInt("places_count"));
-                order.setPreferedDateIn(rs.getDate("date_in"));
-                order.setDaysCount(rs.getInt("days_count"));
-                order.setMinPrice(rs.getBigDecimal("min_daily_price"));
-                order.setMaxPrice(rs.getBigDecimal("max_daily_price"));
-                RoomType roomType = new RoomType();
-                roomType.setName(rs.getString("name"));
-                order.setRoomType(roomType);
-                order.setAccountLogin(rs.getString("login"));
-                result.add(order);
-            }
         } catch (SQLException e) {
             throw new DAOException(e);
         }
-        return result;
+        return orders;
     }
 
     @Override

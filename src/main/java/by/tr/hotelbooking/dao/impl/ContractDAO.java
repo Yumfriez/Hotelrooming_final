@@ -1,6 +1,6 @@
 package by.tr.hotelbooking.dao.impl;
 
-import by.tr.hotelbooking.dao.AbstractJDBCDao;
+import by.tr.hotelbooking.dao.AbstractPaginalDao;
 import by.tr.hotelbooking.dao.exception.ConnectionPoolException;
 import by.tr.hotelbooking.dao.exception.DAOException;
 import by.tr.hotelbooking.dao.pool.ConnectionPool;
@@ -13,10 +13,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
-public class ContractDAO extends AbstractJDBCDao<Contract> {
+public class ContractDAO extends AbstractPaginalDao<Contract> {
 
     private final static String GET_ALL_CONTRACTS = "SELECT account.login, account.name, account.surname, contract.contract_id, "+
             "contract.date_in, contract.date_out, contract.total_price FROM hotelrooms.account JOIN hotelrooms.contract "+
@@ -43,36 +42,9 @@ public class ContractDAO extends AbstractJDBCDao<Contract> {
     private static final String ADD_CONTRACT = "INSERT INTO hotelrooms.contract (date_in, date_out, total_price, u_id, hotelroom_id) "+
             "VALUES (?, ?, ?, (SELECT u_id FROM account WHERE login=?), (SELECT id FROM hotelroom WHERE number=?))";
     private static final String GET_COUNT = "SELECT count(*) from hotelrooms.contract";
-    private static final String GET_LAST_ID = "SELECT contract.contract_id FROM hotelrooms.contract ORDER BY contract.contract_id desc limit 1;";
     private static final String SET_CONTRACT_ACCEPTED_QUERY = "UPDATE contract SET accept_status = TRUE WHERE contract_id=?";
 
     public ContractDAO(){
-    }
-
-    public int getNumberOfContracts() throws DAOException{
-        ConnectionPool connectionPool = null;
-        Connection connection = null;
-        PreparedStatement preparedStatement = null;
-        ResultSet resultSet = null;
-        int result;
-        try {
-            connectionPool = ConnectionPool.getInstance();
-            connection = connectionPool.retrieve();
-            preparedStatement = connection.prepareStatement(GET_COUNT);
-            resultSet = preparedStatement.executeQuery();
-            resultSet.next();
-            result = resultSet.getInt(1);
-
-        } catch (ConnectionPoolException e) {
-            throw new DAOException("Unable to give new connection from connection pool", e);
-        } catch (SQLException e) {
-            throw new DAOException("Contracts counting in DB error " + e);
-        } finally {
-            if (connectionPool != null) {
-                connectionPool.putBackConnection(connection, preparedStatement, resultSet);
-            }
-        }
-        return result;
     }
 
     public List<ContractDTO> getNonAcceptedContractsForPageByLogin(int pageNumber, int offset, String login) throws DAOException {
@@ -137,38 +109,6 @@ public class ContractDAO extends AbstractJDBCDao<Contract> {
         return contractList;
     }
 
-    public List<Contract> getContractsForPage(int pageNumber, int offset) throws DAOException {
-        ConnectionPool connectionPool = null;
-        Connection connection = null;
-        PreparedStatement preparedStatement =null;
-        ResultSet resultSet = null;
-        List<Contract> contractList;
-        try {
-            connectionPool = ConnectionPool.getInstance();
-            connection = connectionPool.retrieve();
-            preparedStatement = connection.prepareStatement(GET_CONTRACTS_FOR_PAGE);
-            preparedStatement.setInt(1, pageNumber);
-            preparedStatement.setInt(2, offset);
-            resultSet = preparedStatement.executeQuery();
-            contractList = new ArrayList<>();
-            while (resultSet.next()) {
-                Contract contract = new Contract();
-                setContractParameters(contract, resultSet);
-                contractList.add(contract);
-            }
-
-        } catch (ConnectionPoolException e) {
-            throw new DAOException("Unable to give new connection from connection pool",e);
-        } catch (SQLException e) {
-            throw new DAOException("Get contracts from DB for page error ",e);
-        } finally {
-            if (connectionPool != null) {
-                connectionPool.putBackConnection(connection, preparedStatement, resultSet);
-            }
-        }
-        return contractList;
-    }
-
     @Override
     protected String getSelectQuery() {
         return GET_ALL_CONTRACTS;
@@ -195,8 +135,13 @@ public class ContractDAO extends AbstractJDBCDao<Contract> {
     }
 
     @Override
-    protected String getLastAdded() {
-        return GET_LAST_ID;
+    protected String getRecordsWithOffsetQuery() {
+        return GET_CONTRACTS_FOR_PAGE;
+    }
+
+    @Override
+    protected String getRecordsCountQuery() {
+        return GET_COUNT;
     }
 
     @Override
@@ -283,5 +228,6 @@ public class ContractDAO extends AbstractJDBCDao<Contract> {
         }
 
     }
+
 
 }

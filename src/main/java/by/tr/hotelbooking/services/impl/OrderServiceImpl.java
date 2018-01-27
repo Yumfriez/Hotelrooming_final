@@ -58,7 +58,7 @@ public class OrderServiceImpl implements OrderService{
         List<Order> orders = null;
         try {
             OrderDAO orderDAO = daoFactory.getOrderDAO();
-            orders = orderDAO.getOrdersForPage((page-1)*10,10);
+            orders = orderDAO.getRecordsWithOffset((page-1)*10,10);
         }  catch (DAOException e) {
             throw new ServiceException(e);
         }
@@ -79,7 +79,7 @@ public class OrderServiceImpl implements OrderService{
     public int getRecordsCount() throws ServiceException {
         int num = 0;
         try {
-            num = daoFactory.getOrderDAO().getNumberOfOrders();
+            num = daoFactory.getOrderDAO().getRecordsCount();
         } catch (DAOException e) {
             throw new ServiceException(e);
         }

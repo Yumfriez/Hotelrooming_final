@@ -155,7 +155,7 @@ public class HotelroomServiceImpl implements HotelroomService {
         List<Hotelroom> hotelrooms = null;
         try {
             HotelroomDAO hotelroomDAO = daoFactory.getHotelroomDAO();
-            hotelrooms = hotelroomDAO.getHotelroomsForPage((page-1)*4,4);
+            hotelrooms = hotelroomDAO.getRecordsWithOffset((page-1)*4,4);
         }  catch (DAOException e) {
             throw new ServiceException(e);
         }
@@ -236,7 +236,7 @@ public class HotelroomServiceImpl implements HotelroomService {
     public int getRecordsCount() throws ServiceException {
         int num = 0;
         try {
-            num = daoFactory.getHotelroomDAO().getNumberOfHotelrooms();
+            num = daoFactory.getHotelroomDAO().getRecordsCount();
         } catch (DAOException e) {
             throw new ServiceException(e);
         }
@@ -280,7 +280,7 @@ public class HotelroomServiceImpl implements HotelroomService {
             }
         } catch (IOException e) {
             e.printStackTrace();
-            throw new ServiceException("Imga upload error ", e);
+            throw new ServiceException("Image upload error ", e);
         }
     }
 
