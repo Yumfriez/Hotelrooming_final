@@ -52,11 +52,7 @@
                     <c:forEach var="offer" items="${requestScope.offersList}">
                         <div class="col-sm-6">
                             <div class="product">
-                                <form action="/hotelrooming" method="post">
-                                    <input type="hidden" name="command" value="show_hotelroom"/>
-                                    <input type="hidden" name="hotelroom_id" value="${offer.id}"/>
-                                    <input id="room_number" type="submit" value="${hotelroom_number}: ${offer.hotelroomNumber}"/>
-                                </form>
+                                <div class="main_label">${hotelroom_number}: ${offer.hotelroomNumber}</div>
                                 <div class="product-img">
                                     <img class="hotelroom_image" src="${pageContext.request.contextPath}/images/hotelrooms/${offer.imageName}"
                                          alt="${offer.roomType.name}">
@@ -73,13 +69,13 @@
                                     <form class="button" action="/hotelrooming" method="post">
                                         <input type="hidden" name="contract_id" value="${offer.id}"/>
                                         <input type="hidden" name="command" value="accept_contract"/>
-                                        <input class="all-btns" type="submit" value="${accept_button}"/>
+                                        <input class="green-butt" type="submit" value="${accept_button}"/>
                                     </form>
 
                                     <form class="button" action="/hotelrooming" method="post">
                                         <input type="hidden" name="contract_id" value="${offer.id}"/>
                                         <input type="hidden" name="command" value="decline_contract"/>
-                                        <input class="all-btns" type="submit" value="${decline_button}"/>
+                                        <input class="red-butt" type="submit" value="${decline_button}"/>
                                     </form>
 
                                 </div>

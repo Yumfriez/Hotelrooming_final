@@ -19,6 +19,8 @@
     <fmt:message bundle="${loc}" key="local.menu.current_contracts" var="current_contracts"/>
     <fmt:message bundle="${loc}" key="local.menu.hotelrooms_control" var="hotelrooms_control"/>
     <fmt:message bundle="${loc}" key="local.menu.log_out" var="log_out"/>
+    <fmt:message bundle="${loc}" key="local.button.block" var="block_button"/>
+    <fmt:message bundle="${loc}" key="local.button.unblock" var="unblock_button"/>
     <link rel="stylesheet" href="../styles/bootstrap.css" type="text/css"/>
     <link rel="stylesheet" href="../styles/style.css" type="text/css"/>
     <link rel="stylesheet" href="../styles/headerstyle.css" type="text/css"/>
@@ -56,7 +58,27 @@
                                         <td>${user.name}</td>
                                         <td>${user.surname}</td>
                                         <td>${user.email}</td>
-                                        <td>${user.isBlocked}</td>
+                                        <td>
+                                            <c:choose>
+                                                <c:when test="${user.isBlocked == true}">
+                                                    <form class="button" action="/hotelrooming" method="post">
+                                                        <input type="hidden" name="login" value="${user.login}"/>
+                                                        <input type="hidden" name="command" value="unblock_user"/>
+                                                        <input class="green-butt" type="submit" value="${unblock_button}"/>
+                                                    </form>
+                                                </c:when>
+                                                <c:when test="${user.isBlocked == false}">
+                                                    <form class="button" action="/hotelrooming" method="post">
+                                                        <input type="hidden" name="login" value="${user.login}"/>
+                                                        <input type="hidden" name="command" value="block_user"/>
+                                                        <input class="red-butt" type="submit" value="${block_button}"/>
+                                                    </form>
+                                                </c:when>
+                                                <c:otherwise>
+                                                    ERROR
+                                                </c:otherwise>
+                                            </c:choose>
+                                         </td>
                                     </tr>
                                 </c:forEach>
                                 </tbody>

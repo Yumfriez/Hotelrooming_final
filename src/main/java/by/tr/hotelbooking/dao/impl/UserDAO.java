@@ -12,7 +12,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
 public class UserDAO extends AbstractJDBCDao<User> {
@@ -28,8 +27,29 @@ public class UserDAO extends AbstractJDBCDao<User> {
     private static final String GET_USER_BY_LOGIN = "SELECT u_id, login, pass, name, surname, email, role, block_status, locale " +
             "FROM hotelrooms.account WHERE login=?";
     private static final String UPDATE_LOCALE = "UPDATE hotelrooms.account SET locale=? WHERE login=?";
+    private static final String UPDATE_BLOCK_STATUS = "UPDATE account SET block_status = ? WHERE login = ?";
 
     public UserDAO() {
+    }
+    
+    public void setBlockStatus(String login, boolean blockStatus) throws DAOException {
+        ConnectionPool connectionPool=null;
+        Connection connection=null;
+        PreparedStatement preparedStatement=null;
+        try {
+            connectionPool=ConnectionPool.getInstance();
+            connection=connectionPool.retrieve();
+            preparedStatement = connection.prepareStatement(UPDATE_BLOCK_STATUS);
+            preparedStatement.setBoolean(1, blockStatus);
+            preparedStatement.setString(2, login);
+            preparedStatement.executeUpdate();
+        }catch (SQLException e){
+            throw new DAOException("Block user operation error in DB ", e);
+        }finally {
+            if (connectionPool != null) {
+                connectionPool.putBackConnection(connection, preparedStatement);
+            }
+        }
     }
 
     public User signIn(User user) throws DAOException{

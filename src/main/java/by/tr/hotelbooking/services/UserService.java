@@ -15,4 +15,6 @@ public interface UserService {
     void updateLocale(String userLogin, String locale) throws ServiceException;
 
     List<User> getAllUsers() throws ServiceException;
+    
+    void changeBlockStatus(String userLogin, boolean blockStatus) throws ServiceException;
 }

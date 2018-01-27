@@ -225,3 +225,15 @@ select{
   position:relative;
   top:4px;
 }
+
+.red-butt{
+  background-color: darkred;
+}
+
+.green-butt{
+  background-color: green;
+}
+
+.red-butt:hover, .green-butt:hover{
+    border: 2px solid yellow;
+}

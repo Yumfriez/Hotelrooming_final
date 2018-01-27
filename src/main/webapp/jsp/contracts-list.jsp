@@ -38,11 +38,11 @@
 
 
 </head>
-<body>
+<body onload="$('#table').stacktable();">
 <div class="content">
     <%@include file="parts/header.jsp"%>
     <div class="container">
-        <table id="table" class="tablesorter orders-table">
+        <table id="table" class="tablesorter orders-table stacktable large-only">
             <thead>
             <tr>
                 <th>${user_login_label}</th>
@@ -102,6 +102,7 @@
     </div>
 </div>
 <script src="../js/jquery-3.2.1.js"></script>
+<script src="../js/stacktable.js"></script>
 <script src="../js/jquery.tablesorter.js"></script>
 <script type="text/javascript">
     $(document).ready(function() {

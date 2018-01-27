@@ -16,3 +16,12 @@
     border-radius: 5px;
     color: black;
 }
+
+
+.stacktable.large-only { display: table; }
+.stacktable.small-only { display: none; }
+
+@media (max-width: 540px) {
+    .stacktable.large-only { display: none; }
+    .stacktable.small-only { display: table; }
+}

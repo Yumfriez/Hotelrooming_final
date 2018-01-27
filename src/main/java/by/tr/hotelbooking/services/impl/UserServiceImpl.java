@@ -1,6 +1,5 @@
 package by.tr.hotelbooking.services.impl;
 
-import by.tr.hotelbooking.dao.Dao;
 import by.tr.hotelbooking.dao.exception.DAOException;
 import by.tr.hotelbooking.dao.factory.DaoFactory;
 import by.tr.hotelbooking.dao.impl.UserDAO;
@@ -78,13 +77,23 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<User> getAllUsers() throws ServiceException {
 
-        Dao<User> dao = daoFactory.getUserDAO();
+        UserDAO userDAO = daoFactory.getUserDAO();
         List<User> userList = null;
         try {
-            userList = dao.getAll();
+            userList = userDAO.getAll();
         }  catch (DAOException e) {
             throw new ServiceException(e);
         }
         return userList;
+    }
+
+    @Override
+    public void changeBlockStatus(String userLogin, boolean blockStatus) throws ServiceException {
+        UserDAO userDAO = daoFactory.getUserDAO();
+        try {
+            userDAO.setBlockStatus(userLogin, blockStatus);
+        }catch (DAOException e){
+            throw new ServiceException(e);
+        }
     }
 }

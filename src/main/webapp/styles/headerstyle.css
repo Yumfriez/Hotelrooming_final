@@ -43,7 +43,7 @@ img {
     margin-bottom: 20px;
 }
 .product:hover {
-    box-shadow: 0 0 25px rgba(255,255,255,1);
+    box-shadow: 0 0 25px 15px rgba(255,255,255,1);
 }
 .product-img {
     min-height: 200px;

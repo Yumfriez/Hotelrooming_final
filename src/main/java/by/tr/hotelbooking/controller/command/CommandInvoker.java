@@ -41,6 +41,9 @@ public class CommandInvoker {
         repository.put(CommandName.SHOW_USER_CONTRACTS, ShowUserContractsCommand.getInstance());
         repository.put(CommandName.SHOW_NEW_OFFERS, ShowNewOffersCommand.getInstance());
         repository.put(CommandName.CANCEL_ORDER, CancelOrderCommand.getInstance());
+        repository.put(CommandName.CANCEL_CONTRACT, CancelContractCommand.getInstance());
+        repository.put(CommandName.BLOCK_USER, BlockUserCommand.getInstance());
+        repository.put(CommandName.UNBLOCK_USER, UnBlockUserCommand.getInstance());
     }
 
     public static CommandInvoker getInstance() {

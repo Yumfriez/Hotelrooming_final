@@ -53,9 +53,12 @@ public class SignIn implements Command {
                     ForwarRedirectChooser.doRedirect(response,servletPath, RequestCommandParameter.REDIRECT);
                 } else {
                     request.setAttribute(RequestParameter.INFORMATION.getValue(), "error of user identifying");
+                    ForwarRedirectChooser.doForward(request, response, JspPageName.WELCOME_PAGE.getPath());
                 }
             } else {
                 request.setAttribute(RequestParameter.INFORMATION.getValue(), "account is blocked");
+                ForwarRedirectChooser.doForward(request, response, JspPageName.WELCOME_PAGE.getPath());
+
             }
         } catch (ValidatorException e) {
             logger.error(e);

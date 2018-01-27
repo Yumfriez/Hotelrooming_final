@@ -8,6 +8,7 @@ public enum  RequestCommandParameter {
     SHOW_CONTRACTS("show_contracts"),
     SHOW_COMMENTS("show_comments"),
     REDIRECT("redirect"),
+    SHOW_USERS("show_users"),
     SHOW_ORDERS("show_orders");
 
     private String value;
