@@ -39,9 +39,6 @@ public class EditHotelroomCommand implements Command {
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) {
-
-        HotelroomService hotelroomService = ServiceFactory.getInstance().getHotelroomService();
-
         logger.debug(request.getSession().getAttribute(RequestParameter.LOGIN.getValue()+" try to edit hotelroom"));
         String servletPath = request.getServletPath();
         String hotelroomIdString = request.getParameter(RequestParameter.HOTELROOM_ID.getValue());
@@ -51,6 +48,7 @@ public class EditHotelroomCommand implements Command {
         String dailyPriceString = request.getParameter(RequestParameter.PRICE.getValue());
         String roomTypeIdString = request.getParameter(RequestParameter.ROOM_TYPE.getValue());
         String uploadDir = request.getServletContext().getRealPath("/");
+        String foldersForFiles = request.getServletContext().getInitParameter("upload.location");
 
         try{
             Part part = request.getPart(RequestParameter.ROOM_IMAGE.getValue());
@@ -67,8 +65,10 @@ public class EditHotelroomCommand implements Command {
             BigDecimal dailyPrice = StringParser.parseFromStringToBigDecimal(dailyPriceString);
             int roomTypeId = StringParser.parseFromStringToInt(roomTypeIdString);
 
+            HotelroomService hotelroomService = ServiceFactory.getInstance().getHotelroomService();
             hotelroomService.editHotelroom(hotelroomId, number, placesCount, floor, dailyPrice,
-                    roomTypeId, part, uploadDir);
+                    roomTypeId, part, uploadDir+foldersForFiles);
+
             logger.debug(request.getSession().getAttribute(RequestParameter.LOGIN.getValue()+" edited hotelroom"));
             ForwarRedirectChooser.doRedirect(response, servletPath, RequestCommandParameter.SHOW_HOTELROOMS);
 
@@ -85,17 +85,22 @@ public class EditHotelroomCommand implements Command {
     }
 
     private void goToPreviousPage(HttpServletRequest request, HttpServletResponse response, String hotelroomIdString){
-        HotelroomService hotelroomService = ServiceFactory.getInstance().getHotelroomService();
         try {
             Validator.checkIsNotEmpty(hotelroomIdString);
             Validator.checkIsValidNumbers(hotelroomIdString);
+
             int hotelroomId = StringParser.parseFromStringToInt(hotelroomIdString);
+
+            HotelroomService hotelroomService = ServiceFactory.getInstance().getHotelroomService();
             Hotelroom hotelroom = hotelroomService.getHotelroomForEdit(hotelroomId);
+
             RoomTypeService roomTypeService = ServiceFactory.getInstance().getRoomTypeService();
             List<RoomType> roomTypeList = roomTypeService.getAllRoomTypes();
+
             request.setAttribute(RequestParameter.ROOM_TYPES_LIST.getValue(), roomTypeList);
             request.setAttribute(RequestParameter.HOTELROOM.getValue(), hotelroom);
             ForwarRedirectChooser.doForward(request, response, JspPageName.EDIT_HOTELROOM_PAGE.getPath());
+
         } catch (ValidatorException e){
             logger.error(e);
             request.setAttribute(RequestParameter.INFORMATION.getValue(), e.getMessage());

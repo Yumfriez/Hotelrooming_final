@@ -43,6 +43,7 @@ public enum RequestParameter {
     COMMENT_TEXT("comment_text"),
     CLIENT_LOGIN("client_login"),
     CURRENT_DATE("currentDate"),
+    FILES_DIRECTORY("filesPath"),
     PAGE("page");
 
 

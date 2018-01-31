@@ -2,6 +2,7 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <c:set var="command" value="${requestScope.command}"/>
+<c:set var="files_directory" value="${requestScope.filesPath}"/>
 <fmt:setLocale scope="session" value="${sessionScope.userLocale}"/>
 <c:set var="role" value="${sessionScope.role}"/>
 <c:set var="admin" value="ADMINISTRATOR"/>
@@ -54,7 +55,7 @@
                             <div class="product">
                                 <div class="main_label">${hotelroom_number}: ${offer.hotelroomNumber}</div>
                                 <div class="product-img">
-                                    <img class="hotelroom_image" src="${pageContext.request.contextPath}/images/hotelrooms/${offer.imageName}"
+                                    <img class="hotelroom_image" src="${pageContext.request.contextPath}${files_directory}${offer.imageName}"
                                          alt="${offer.roomType.name}">
                                 </div>
                                 <p class="product-title">

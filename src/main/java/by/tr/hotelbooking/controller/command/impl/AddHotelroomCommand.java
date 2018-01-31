@@ -36,8 +36,6 @@ public class AddHotelroomCommand implements Command {
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) {
-        HotelroomService hotelroomService = ServiceFactory.getInstance().getHotelroomService();
-
         logger.debug(request.getSession().getAttribute(RequestParameter.LOGIN.getValue()+" try to add new hotelroom"));
         String servletPath = request.getServletPath();
         String numberString = request.getParameter(RequestParameter.NUMBER.getValue());
@@ -46,6 +44,7 @@ public class AddHotelroomCommand implements Command {
         String dailyPriceString = request.getParameter(RequestParameter.PRICE.getValue());
         String roomTypeIdString = request.getParameter(RequestParameter.ROOM_TYPE.getValue());
         String uploadDir = request.getServletContext().getRealPath("/");
+        String foldersForFiles = request.getServletContext().getInitParameter("upload.location");
 
         try{
             Part part = request.getPart(RequestParameter.ROOM_IMAGE.getValue());
@@ -61,8 +60,9 @@ public class AddHotelroomCommand implements Command {
             BigDecimal dailyPrice = StringParser.parseFromStringToBigDecimal(dailyPriceString);
             int roomTypeId = StringParser.parseFromStringToInt(roomTypeIdString);
 
+            HotelroomService hotelroomService = ServiceFactory.getInstance().getHotelroomService();
             hotelroomService.addHotelroom(number, placesCount, floor, dailyPrice,
-                    roomTypeId, part, uploadDir);
+                    roomTypeId, part, uploadDir+foldersForFiles);
 
             logger.debug(request.getSession().getAttribute(RequestParameter.LOGIN.getValue()+" added hotelroom"));
 

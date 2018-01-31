@@ -39,9 +39,12 @@ public class AddCommentCommand implements Command {
         try{
             Validator.checkIsNotEmpty(commentText, login);
             Validator.checkIsValidLogin(login);
+
             Date date = new Date(new java.util.Date().getTime());
+
             CommentService commentService = ServiceFactory.getInstance().getCommentService();
             commentService.addComment(date, login, commentText);
+
             ForwarRedirectChooser.doRedirect(response, servletPath, RequestCommandParameter.SHOW_COMMENTS);
 
         } catch (ValidatorException e) {

@@ -31,7 +31,6 @@ public class RemoveHotelroomCommand implements Command {
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) {
-        HotelroomService hotelroomService = ServiceFactory.getInstance().getHotelroomService();
         String servletPath= request.getServletPath();
         String idString = request.getParameter(RequestParameter.HOTELROOM_ID.getValue());
 
@@ -41,7 +40,9 @@ public class RemoveHotelroomCommand implements Command {
 
             int hotelroomId = StringParser.parseFromStringToInt(idString);
 
+            HotelroomService hotelroomService = ServiceFactory.getInstance().getHotelroomService();
             hotelroomService.deleteHotelroom(hotelroomId);
+
             ForwarRedirectChooser.doRedirect(response, servletPath, RequestCommandParameter.SHOW_HOTELROOMS);
 
         } catch (ValidatorException e) {

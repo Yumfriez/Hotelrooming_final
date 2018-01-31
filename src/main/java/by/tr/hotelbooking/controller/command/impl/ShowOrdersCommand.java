@@ -29,19 +29,19 @@ public class ShowOrdersCommand implements Command {
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) {
-
-        OrderService orderService = ServiceFactory.getInstance().getOrderService();
-
         try {
+            OrderService orderService = ServiceFactory.getInstance().getOrderService();
             int recordsCount = orderService.getRecordsCount();
             int pagesCount = orderService.getPagesCount(recordsCount);
             String pageStringValue = request.getParameter(RequestParameter.PAGINATION.getValue());
             int pageNumber = orderService.getPageNumber(pageStringValue);
             List<Order> orders = orderService.getOrdersFromPage(pageNumber);
+
             request.setAttribute(RequestParameter.ORDERS_LIST.getValue(), orders);
             request.setAttribute(RequestParameter.PAGES_COUNT.getValue(), pagesCount);
             request.setAttribute(RequestParameter.CURRENT_PAGE_NUMBER.getValue(), pageNumber);
             ForwarRedirectChooser.doForward(request,response, JspPageName.ORDERS_PAGE.getPath());
+
         } catch (ServiceException e){
             logger.error(e);
             request.setAttribute(RequestParameter.INFORMATION.getValue(), e.getCause().getMessage());

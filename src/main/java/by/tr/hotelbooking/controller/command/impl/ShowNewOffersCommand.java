@@ -27,19 +27,24 @@ public class ShowNewOffersCommand implements Command {
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) {
-        ContractService contractService = ServiceFactory.getInstance().getContractService();
         String userLogin = (String) request.getSession().getAttribute(RequestParameter.LOGIN.getValue());
+        String uploadDirectory = request.getServletContext().getInitParameter("upload.location");
+
         try {
+            ContractService contractService = ServiceFactory.getInstance().getContractService();
             int recordsCount = contractService.getRecordsCount();
             int pagesCount = contractService.getPagesCount(recordsCount);
             String pageStringValue = request.getParameter(RequestParameter.PAGINATION.getValue());
             int pageNumber = contractService.getPageNumber(pageStringValue);
             List<ContractDTO> contracts = contractService.getNewUserOffers(pageNumber, userLogin);
+
             request.setAttribute(RequestParameter.OFFERS_LIST.getValue(), contracts);
             request.setAttribute(RequestParameter.PAGES_COUNT.getValue(), pagesCount);
             request.setAttribute(RequestParameter.CURRENT_PAGE_NUMBER.getValue(), pageNumber);
             request.setAttribute(RequestParameter.COMMAND.getValue(), RequestCommandParameter.SHOW_NEW_OFFERS.getValue());
+            request.setAttribute(RequestParameter.FILES_DIRECTORY.getValue(), uploadDirectory);
             ForwarRedirectChooser.doForward(request,response, JspPageName.OFFERS_PAGE.getPath());
+
         } catch (ServiceException e){
             logger.error(e);
             request.setAttribute(RequestParameter.INFORMATION.getValue(), e.getCause().getMessage());

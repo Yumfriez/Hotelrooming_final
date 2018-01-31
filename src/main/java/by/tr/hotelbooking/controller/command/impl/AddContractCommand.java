@@ -45,6 +45,7 @@ public class AddContractCommand implements Command {
 
             ContractService contractService = ServiceFactory.getInstance().getContractService();
             contractService.addContract(orderId, hotelroomId);
+
             OrderService orderService = ServiceFactory.getInstance().getOrderService();
             orderService.removeOrder(orderId);
 

@@ -35,20 +35,24 @@ public class ShowPageForEditHotelroomCommand implements Command {
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) {
-
         try {
+            String hotelroomIdString = request.getParameter(RequestParameter.HOTELROOM_ID.getValue());
+
+            Validator.checkIsNotEmpty(hotelroomIdString);
+            Validator.checkIsValidNumbers(hotelroomIdString);
+
+            int hotelroomId = StringParser.parseFromStringToInt(hotelroomIdString);
+
+            HotelroomService hotelroomService = ServiceFactory.getInstance().getHotelroomService();
+            Hotelroom hotelroom = hotelroomService.getHotelroomForEdit(hotelroomId);
+
             RoomTypeService roomTypeService = ServiceFactory.getInstance().getRoomTypeService();
             List<RoomType> roomTypeList = roomTypeService.getAllRoomTypes();
 
-            HotelroomService hotelroomService = ServiceFactory.getInstance().getHotelroomService();
-            String hotelroomIdString = request.getParameter(RequestParameter.HOTELROOM_ID.getValue());
-            Validator.checkIsNotEmpty(hotelroomIdString);
-            Validator.checkIsValidNumbers(hotelroomIdString);
-            int hotelroomId = StringParser.parseFromStringToInt(hotelroomIdString);
-            Hotelroom hotelroom = hotelroomService.getHotelroomForEdit(hotelroomId);
             request.setAttribute(RequestParameter.ROOM_TYPES_LIST.getValue(), roomTypeList);
             request.setAttribute(RequestParameter.HOTELROOM.getValue(), hotelroom);
             ForwarRedirectChooser.doForward(request, response, JspPageName.EDIT_HOTELROOM_PAGE.getPath());
+
         } catch (ServiceException e){
             logger.error(e);
             request.setAttribute(RequestParameter.INFORMATION.getValue(), e.getCause().getMessage());

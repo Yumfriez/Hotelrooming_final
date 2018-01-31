@@ -30,8 +30,6 @@ public class BlockUserCommand implements Command {
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) {
-        UserService userService = ServiceFactory.getInstance().getUserService();
-
         String servletPath = request.getServletPath();
         String userLogin = request.getParameter(RequestParameter.LOGIN.getValue());
 
@@ -39,8 +37,11 @@ public class BlockUserCommand implements Command {
             Validator.checkIsNotEmpty(userLogin);
             Validator.checkIsValidLogin(userLogin);
 
+            UserService userService = ServiceFactory.getInstance().getUserService();
             userService.changeBlockStatus(userLogin, true);
+
             ForwarRedirectChooser.doRedirect(response, servletPath, RequestCommandParameter.SHOW_USERS);
+
         } catch (ValidatorException e) {
             logger.error(e);
             request.setAttribute(RequestParameter.INFORMATION.getValue(), e.getMessage());

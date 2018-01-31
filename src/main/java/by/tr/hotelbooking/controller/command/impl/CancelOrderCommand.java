@@ -32,16 +32,19 @@ public class CancelOrderCommand implements Command{
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) {
         String servletPath = request.getServletPath();
-        OrderService orderService = ServiceFactory.getInstance().getOrderService();
         String orderIdString = request.getParameter(RequestParameter.ORDER_ID.getValue());
 
         try {
             Validator.checkIsNotEmpty(orderIdString);
             Validator.checkIsValidNumbers(orderIdString);
+
             int orderId = StringParser.parseFromStringToInt(orderIdString);
 
+            OrderService orderService = ServiceFactory.getInstance().getOrderService();
             orderService.removeOrder(orderId);
+
             ForwarRedirectChooser.doRedirect(response, servletPath, RequestCommandParameter.SHOW_ORDERS);
+
         } catch (ValidatorException e) {
             logger.error(e);
             request.setAttribute(RequestParameter.INFORMATION.getValue(), e.getMessage());

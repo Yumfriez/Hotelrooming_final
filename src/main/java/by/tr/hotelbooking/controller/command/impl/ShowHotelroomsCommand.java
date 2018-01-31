@@ -30,6 +30,8 @@ public class ShowHotelroomsCommand implements Command {
     }
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) {
+        String uploadDirectory = request.getServletContext().getInitParameter("upload.location");
+
         try {
             HotelroomService hotelroomService = serviceFactory.getHotelroomService();
             int recordsCount = hotelroomService.getRecordsCount();
@@ -37,11 +39,14 @@ public class ShowHotelroomsCommand implements Command {
             String pageStringValue = request.getParameter(RequestParameter.PAGINATION.getValue());
             int pageNumber = hotelroomService.getPageNumber(pageStringValue);
             List<Hotelroom> hotelrooms = hotelroomService.getHotelroomsFromPage(pageNumber);
+
             request.setAttribute(RequestParameter.HOTELROOMS_LIST.getValue(), hotelrooms);
             request.setAttribute(RequestParameter.PAGES_COUNT.getValue(), pagesCount);
             request.setAttribute(RequestParameter.CURRENT_PAGE_NUMBER.getValue(), pageNumber);
             request.setAttribute(RequestParameter.COMMAND.getValue(), RequestCommandParameter.SHOW_HOTELROOMS.getValue());
+            request.setAttribute(RequestParameter.FILES_DIRECTORY.getValue(), uploadDirectory);
             ForwarRedirectChooser.doForward(request,response, JspPageName.HOTELROOMS_PAGE.getPath());
+
         } catch (ServiceException e) {
             logger.error(e);
             request.setAttribute(RequestParameter.INFORMATION.getValue(), e.getCause().getMessage());

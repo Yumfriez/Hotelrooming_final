@@ -37,6 +37,7 @@ public class ShowPageForMakeOrder implements Command {
 
             request.setAttribute(RequestParameter.ROOM_TYPES_LIST.getValue(), roomTypeList);
             ForwarRedirectChooser.doForward(request, response, JspPageName.MAKE_ORDER_PAGE.getPath());
+
         } catch (ServiceException e){
             logger.error(e);
             request.setAttribute(RequestParameter.INFORMATION.getValue(), e.getCause().getMessage());

@@ -47,7 +47,6 @@ public class MakeOrderCommand implements Command {
         String userLogin = (String) currentSession.getAttribute(RequestParameter.LOGIN.getValue());
 
         try {
-
             Validator.checkIsNotEmpty(placesCountString, minPriceString, maxPriceString, dateInString,
                     daysCountString, roomTypeIdString, userLogin);
             Validator.checkIsValidPrice(minPriceString, maxPriceString);
@@ -63,7 +62,9 @@ public class MakeOrderCommand implements Command {
 
             OrderService orderService = ServiceFactory.getInstance().getOrderService();
             orderService.createOrder(placesCount, dateIn, daysCount, roomTypeId,minPrice, maxPrice, userLogin);
+
             ForwarRedirectChooser.doRedirect(response, servletPath, RequestCommandParameter.SHOW_ORDERS);
+
         } catch (ValidatorException | ParseException | LogicException e){
             logger.error(e);
             request.setAttribute(RequestParameter.INFORMATION.getValue(), e.getMessage());
@@ -73,7 +74,5 @@ public class MakeOrderCommand implements Command {
             request.setAttribute(RequestParameter.INFORMATION.getValue(), e.getCause().getMessage());
             ForwarRedirectChooser.doForward(request, response, JspPageName.ADMIN_USER_PAGE.getPath());
         }
-
-
     }
 }

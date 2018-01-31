@@ -5,6 +5,7 @@ public enum  RequestCommandParameter {
     FIND_HOTELROOMS("find_hotelrooms"),
     SHOW_NEW_OFFERS("show_new_offers"),
     SHOW_USER_CONTRACTS("show_user_contracts"),
+    SHOW_EDIT_HOTELROOM_PAGE("show_edit_hotelroom_page"),
     SHOW_CONTRACTS("show_contracts"),
     SHOW_COMMENTS("show_comments"),
     REDIRECT("redirect"),

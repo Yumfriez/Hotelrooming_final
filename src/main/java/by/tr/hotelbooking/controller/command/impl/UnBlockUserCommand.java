@@ -41,6 +41,7 @@ public class UnBlockUserCommand implements Command {
 
             userService.changeBlockStatus(userLogin, false);
             ForwarRedirectChooser.doRedirect(response, servletPath, RequestCommandParameter.SHOW_USERS);
+
         } catch (ValidatorException e) {
             logger.error(e);
             request.setAttribute(RequestParameter.INFORMATION.getValue(), e.getMessage());

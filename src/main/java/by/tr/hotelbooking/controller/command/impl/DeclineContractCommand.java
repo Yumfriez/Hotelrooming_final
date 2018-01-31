@@ -31,18 +31,20 @@ public class DeclineContractCommand implements Command {
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) {
-
         String servletPath = request.getServletPath();
-        ContractService contractService = ServiceFactory.getInstance().getContractService();
         String contractIdString = request.getParameter(RequestParameter.CONTRACT_ID.getValue());
 
         try {
             Validator.checkIsNotEmpty(contractIdString);
             Validator.checkIsValidNumbers(contractIdString);
+
             int contractId = StringParser.parseFromStringToInt(contractIdString);
 
+            ContractService contractService = ServiceFactory.getInstance().getContractService();
             contractService.declineContract(contractId);
+
             ForwarRedirectChooser.doRedirect(response, servletPath, RequestCommandParameter.SHOW_NEW_OFFERS);
+
         } catch (ValidatorException e) {
             logger.error(e);
             request.setAttribute(RequestParameter.INFORMATION.getValue(), e.getMessage());

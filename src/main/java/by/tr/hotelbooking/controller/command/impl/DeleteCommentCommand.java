@@ -32,10 +32,8 @@ public class DeleteCommentCommand implements Command {
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) {
-
         String servletPath = request.getServletPath();
         String stringCommentId = request.getParameter(RequestParameter.COMMENT_ID.getValue());
-        CommentService commentService = ServiceFactory.getInstance().getCommentService();
 
         try {
             Validator.checkIsNotEmpty(stringCommentId);
@@ -43,8 +41,11 @@ public class DeleteCommentCommand implements Command {
 
             int commentId = StringParser.parseFromStringToInt(stringCommentId);
 
+            CommentService commentService = ServiceFactory.getInstance().getCommentService();
             commentService.removeComment(commentId);
+
             ForwarRedirectChooser.doRedirect(response,servletPath, RequestCommandParameter.SHOW_COMMENTS);
+
         }catch (ValidatorException e){
             logger.error(e);
             request.setAttribute(RequestParameter.INFORMATION.getValue(), e.getMessage());
@@ -54,7 +55,5 @@ public class DeleteCommentCommand implements Command {
             request.setAttribute(RequestParameter.INFORMATION.getValue(), e.getCause().getMessage());
             ForwarRedirectChooser.doForward(request, response, JspPageName.ADMIN_USER_PAGE.getPath());
         }
-
-
     }
 }

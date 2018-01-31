@@ -20,7 +20,6 @@ public class Redirect implements Command {
     private static Logger logger = Logger.getLogger(Redirect.class);
 
     private static final Redirect instance = new Redirect();
-    private ServiceFactory serviceFactory = ServiceFactory.getInstance();
 
     private Redirect() {
     }
@@ -31,9 +30,9 @@ public class Redirect implements Command {
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) {
-        JspPageName jspPageName = null;
         logger.debug("Attempt to restore session");
         Object role = request.getSession().getAttribute(RequestParameter.ROLE.getValue());
+        JspPageName jspPageName;
         if (role != null) {
             jspPageName = JspPageName.ADMIN_USER_PAGE;
         } else {
@@ -45,37 +44,46 @@ public class Redirect implements Command {
 
     private JspPageName readCookies(HttpServletRequest request) {
         logger.debug("Reading data from coockies...");
-        JspPageName jspPageName = null;
+        JspPageName jspPageName = JspPageName.WELCOME_PAGE;
         Cookie cookies[] = request.getCookies();
         boolean hasCookieLogin = false;
-        for (Cookie cookie : cookies) {
-            if (cookie.getName().equals(RequestParameter.LOGIN.getValue())) {
+        String loginAttributeName = RequestParameter.LOGIN.getValue();
+        for(Cookie cookie: cookies){
+            if (loginAttributeName.equals(cookie.getName())) {
                 hasCookieLogin = true;
                 try {
-                    UserService userService = serviceFactory.getUserService();
-                    User user = userService.getUserByLogin(cookie.getValue());
-                    HttpSession session = request.getSession();
-                    session.setAttribute(RequestParameter.LOGIN.getValue(), user.getLogin());
-                    session.setAttribute(RequestParameter.USER_LOCALE.getValue(), user.getLocale());
-                    session.setAttribute(RequestParameter.ROLE.getValue(), user.getRole());
+                    fillSessionAttributes(request, cookie);
                     jspPageName = JspPageName.ADMIN_USER_PAGE;
+
                 } catch (ServiceException e) {
-                   logger.error(e);
-                   hasCookieLogin = false;
-                   request.setAttribute(RequestParameter.INFORMATION.getValue(), e.getCause().getMessage());
+                    logger.error(e);
+                    hasCookieLogin = false;
+                    request.setAttribute(RequestParameter.INFORMATION.getValue(), e.getCause().getMessage());
                 }
                 break;
             }
         }
         if (!hasCookieLogin) {
-            for (Cookie cookie : cookies) {
-                if (cookie.getName().equals(RequestParameter.WELCOME_LOCALE.getValue())) {
-                    request.getSession().setAttribute(RequestParameter.WELCOME_LOCALE.getValue(), cookie.getName());
-                    break;
-                }
-            }
-            jspPageName = JspPageName.WELCOME_PAGE;
+            setWelcomePageLocale(request, cookies);
         }
         return jspPageName;
+    }
+
+    private void fillSessionAttributes(HttpServletRequest request, Cookie cookie) throws ServiceException{
+        UserService userService = ServiceFactory.getInstance().getUserService();
+        User user = userService.getUserByLogin(cookie.getValue());
+        HttpSession session = request.getSession();
+        session.setAttribute(RequestParameter.LOGIN.getValue(), user.getLogin());
+        session.setAttribute(RequestParameter.USER_LOCALE.getValue(), user.getLocale());
+        session.setAttribute(RequestParameter.ROLE.getValue(), user.getRole());
+    }
+
+    private void setWelcomePageLocale(HttpServletRequest request,Cookie[] cookies){
+        for (Cookie cookie : cookies) {
+            if (cookie.getName().equals(RequestParameter.WELCOME_LOCALE.getValue())) {
+                request.getSession().setAttribute(RequestParameter.WELCOME_LOCALE.getValue(), cookie.getName());
+                break;
+            }
+        }
     }
 }

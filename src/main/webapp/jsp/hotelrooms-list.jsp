@@ -4,6 +4,7 @@
 <c:set var="command" value="${requestScope.command}"/>
 <c:set var="show_hotelrooms" value="show_hotelrooms"/>
 <c:set var="find_hotelrooms" value="find_hotelrooms"/>
+<c:set var="files_directory" value="${requestScope.filesPath}"/>
 <fmt:setLocale scope="session" value="${sessionScope.userLocale}"/>
 <c:set var="role" value="${sessionScope.role}"/>
 <c:set var="admin" value="ADMINISTRATOR"/>
@@ -80,7 +81,7 @@
                                     <input type="hidden" name="command" value="show_hotelroom"/>
                                     <input type="hidden" name="hotelroom_id" value="${hotelroom.id}"/>
                                     <input class="hotelroom_image" type="image"
-                                           src="${pageContext.request.contextPath}/images/hotelrooms/${hotelroom.imageName}"
+                                           src="${pageContext.request.contextPath}${files_directory}${hotelroom.imageName}"
                                            alt="${hotelroom.roomType.name}"/>
                                 </form>
                             </div>

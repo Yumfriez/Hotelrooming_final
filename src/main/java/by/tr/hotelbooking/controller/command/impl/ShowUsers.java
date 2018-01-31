@@ -31,7 +31,9 @@ public class ShowUsers implements Command {
         try {
             List<User> userList = serviceFactory.getUserService().getAllUsers();
             request.setAttribute( RequestParameter.USER_LIST.getValue(), userList);
+
             ForwarRedirectChooser.doForward(request,response, JspPageName.USERS_PAGE.getPath());
+
         } catch (ServiceException e) {
             logger.error(e);
             request.setAttribute(RequestParameter.INFORMATION.getValue(), e.getCause().getMessage());

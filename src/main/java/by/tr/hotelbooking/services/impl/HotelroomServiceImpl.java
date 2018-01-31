@@ -268,9 +268,9 @@ public class HotelroomServiceImpl implements HotelroomService {
     private void uploadImage(Part filePart, String fileName, String uploadDir) throws ServiceException {
         try {
 
-            File dir = new File(uploadDir+"images"+File.separator+"hotelrooms");
+            File dir = new File(uploadDir);
             if (!dir.exists()) {
-                Path path = Paths.get(uploadDir+"images"+File.separator+"hotelrooms");
+                Path path = Paths.get(uploadDir);
                 Files.createDirectories(path);
             }
             File file = new File(dir, fileName);

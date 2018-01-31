@@ -22,7 +22,6 @@ public class SignUp implements Command {
     private static Logger logger = Logger.getLogger(SignUp.class);
 
     private static final SignUp instance = new SignUp();
-    private ServiceFactory serviceFactory = ServiceFactory.getInstance();
 
     private SignUp() {
     }
@@ -47,8 +46,9 @@ public class SignUp implements Command {
             Validator.checkIsValidEmail(email);
             Validator.checkIsValidName(name, lastName);
 
-            UserService userService = serviceFactory.getUserService();
+            UserService userService = ServiceFactory.getInstance().getUserService();
             User checkedUser = userService.getUserByLogin(login);
+
             if (checkedUser==null){
                 User user = userService.signUp(login, password, name, lastName, email, request.getLocale().toString());
 

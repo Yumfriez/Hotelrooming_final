@@ -47,6 +47,7 @@ public class FindHotelroomsCommand implements Command {
         String roomTypeIdString = request.getParameter(RequestParameter.ROOM_TYPE.getValue());
         String pageStringValue = request.getParameter(RequestParameter.PAGINATION.getValue());
         String orderIdString = request.getParameter(RequestParameter.ORDER_ID.getValue());
+        String uploadDirectory = request.getServletContext().getInitParameter("upload.location");
 
         try {
             Validator.checkIsNotEmpty(placesCountString, minPriceString, maxPriceString, dateInString,
@@ -64,7 +65,6 @@ public class FindHotelroomsCommand implements Command {
             Date dateIn = StringParser.parseFromStringToDate(dateInString);
 
             HotelroomService hotelroomService = ServiceFactory.getInstance().getHotelroomService();
-
             int pageNumber = hotelroomService.getPageNumber(pageStringValue);
             int recordsCount = hotelroomService.getRecordsByCriteriaCount(placesCount, minPrice, maxPrice, roomTypeId, dateIn, daysCount);
             int pagesCount = hotelroomService.getPagesCount(recordsCount);
@@ -75,6 +75,7 @@ public class FindHotelroomsCommand implements Command {
             request.setAttribute(RequestParameter.CURRENT_PAGE_NUMBER.getValue(), pageNumber);
             request.setAttribute(RequestParameter.ORDER_ID.getValue(), orderId);
             request.setAttribute(RequestParameter.COMMAND.getValue(), RequestCommandParameter.FIND_HOTELROOMS.getValue());
+            request.setAttribute(RequestParameter.FILES_DIRECTORY.getValue(), uploadDirectory);
             ForwarRedirectChooser.doForward(request, response, JspPageName.HOTELROOMS_PAGE.getPath());
 
         } catch (ValidatorException | ParseException | LogicException e) {

@@ -20,7 +20,6 @@ public class ChangeLocale implements Command {
     private static Logger logger = Logger.getLogger(ChangeLocale.class);
 
     private static final ChangeLocale instance = new ChangeLocale();
-    private ServiceFactory serviceFactory = ServiceFactory.getInstance();
 
     private ChangeLocale() {
     }
@@ -31,7 +30,7 @@ public class ChangeLocale implements Command {
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) {
-        UserService userService = serviceFactory.getUserService();
+
         String locale = request.getParameter(RequestParameter.LOCALE.getValue());
         String login = (String) request.getSession().getAttribute(RequestParameter.LOGIN.getValue());
         JspPageName page = JspPageName.valueOf((request.getParameter("page")).toUpperCase());
@@ -40,7 +39,9 @@ public class ChangeLocale implements Command {
             Validator.checkIsNotEmpty(locale);
             if (login != null) {
                 logger.debug(login + " try to change locale");
+                UserService userService = ServiceFactory.getInstance().getUserService();
                 userService.updateLocale(login, locale);
+
                 request.getSession().setAttribute(RequestParameter.USER_LOCALE.getValue(), locale);
             }
             else {
@@ -59,14 +60,16 @@ public class ChangeLocale implements Command {
     }
 
     private void changeLocaleWithCookies(HttpServletRequest request, HttpServletResponse response, String locale) throws ServiceException {
-        UserService IUserService = serviceFactory.getUserService();
         Cookie cookies[] = request.getCookies();
         boolean hasCookie = false;
         logger.debug("Reading coockies...");
         for (Cookie cookie : cookies) {
             if (cookie.getName().equals(RequestParameter.LOGIN.getValue())) {
                 hasCookie = true;
-                IUserService.updateLocale(cookie.getValue(), locale);
+
+                UserService userService = ServiceFactory.getInstance().getUserService();
+                userService.updateLocale(cookie.getValue(), locale);
+
                 request.getSession().setAttribute(RequestParameter.USER_LOCALE.getValue(), locale);
                 break;
             }

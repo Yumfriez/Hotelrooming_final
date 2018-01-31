@@ -28,18 +28,15 @@ public class ShowPageForAddHotelroomCommand implements Command {
         return instance;
     }
 
-
-
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) {
-
-
         try {
             RoomTypeService roomTypeService = ServiceFactory.getInstance().getRoomTypeService();
             List<RoomType> roomTypeList = roomTypeService.getAllRoomTypes();
 
             request.setAttribute(RequestParameter.ROOM_TYPES_LIST.getValue(), roomTypeList);
             ForwarRedirectChooser.doForward(request, response, JspPageName.ADD_HOTELROOM_PAGE.getPath());
+
         } catch (ServiceException e){
             logger.error(e);
             request.setAttribute(RequestParameter.INFORMATION.getValue(), e.getCause().getMessage());

@@ -21,19 +21,17 @@ public class ShowCommentsCommand implements Command {
 
     private final static ShowCommentsCommand instance = new ShowCommentsCommand();
 
-    private ServiceFactory serviceFactory = ServiceFactory.getInstance();
-
     public static ShowCommentsCommand getInstance(){
         return instance;
     }
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) {
-
-        CommentService commentService = serviceFactory.getCommentService();
         String pageStringValue = request.getParameter(RequestParameter.PAGINATION.getValue());
         Object role = request.getSession().getAttribute(RequestParameter.ROLE.getValue());
+
         try {
+            CommentService commentService = ServiceFactory.getInstance().getCommentService();
             int recordsCount = commentService.getRecordsCount();
             int pagesCount = commentService.getPagesCount(recordsCount);
             int pageNumber = commentService.getPageNumber(pageStringValue);
@@ -54,6 +52,5 @@ public class ShowCommentsCommand implements Command {
                 ForwarRedirectChooser.doForward(request, response, JspPageName.WELCOME_PAGE.getPath());
             }
         }
-
     }
 }

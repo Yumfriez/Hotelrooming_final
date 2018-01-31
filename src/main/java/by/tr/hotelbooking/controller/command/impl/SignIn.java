@@ -8,6 +8,7 @@ import by.tr.hotelbooking.controller.servlet.RequestParameter;
 import by.tr.hotelbooking.controller.utils.Validator;
 import by.tr.hotelbooking.controller.utils.ValidatorException;
 import by.tr.hotelbooking.entities.User;
+import by.tr.hotelbooking.services.UserService;
 import by.tr.hotelbooking.services.exception.ServiceException;
 import by.tr.hotelbooking.services.factory.ServiceFactory;
 import org.apache.log4j.Logger;
@@ -22,7 +23,6 @@ public class SignIn implements Command {
     private static Logger logger = Logger.getLogger(SignIn.class);
 
     private static SignIn instance = new SignIn();
-    private ServiceFactory serviceFactory = ServiceFactory.getInstance();
 
     private SignIn() {
     }
@@ -40,17 +40,22 @@ public class SignIn implements Command {
             Validator.checkIsNotEmpty(login, password);
             Validator.checkIsValidLogin(login);
             Validator.checkIsValidPassword(password);
-            User user = serviceFactory.getUserService().signIn(login, password);
+
+            UserService userService = ServiceFactory.getInstance().getUserService();
+            User user = userService.signIn(login, password);
+
             if (!user.getIsBlocked()) {
                 if (user.getRole() != null) {
                     Cookie cookieLogin = new Cookie(RequestParameter.LOGIN.getValue(), user.getLogin());
                     response.addCookie(cookieLogin);
                     HttpSession session = request.getSession(true);
+
                     session.setAttribute(RequestParameter.LOGIN.getValue(), user.getLogin());
                     session.setAttribute(RequestParameter.ROLE.getValue(), String.valueOf(user.getRole()));
                     session.setAttribute(RequestParameter.PAGE.getValue(), JspPageName.ADMIN_USER_PAGE);
                     session.setAttribute(RequestParameter.USER_LOCALE.getValue(), user.getLocale());
                     ForwarRedirectChooser.doRedirect(response,servletPath, RequestCommandParameter.REDIRECT);
+
                 } else {
                     request.setAttribute(RequestParameter.INFORMATION.getValue(), "error of user identifying");
                     ForwarRedirectChooser.doForward(request, response, JspPageName.WELCOME_PAGE.getPath());

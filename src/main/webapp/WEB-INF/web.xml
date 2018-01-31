@@ -33,6 +33,6 @@
     </filter-mapping>
     <context-param>
         <param-name>upload.location</param-name>
-        <param-value>images/hotelrooms</param-value>
+        <param-value>/images/hotelrooms/</param-value>
     </context-param>
 </web-app>
