@@ -79,7 +79,7 @@
                         <c:choose>
                             <c:when test="${role eq(admin)}">
                                 <td>
-                                    <form action="/hotelrooming" method="post">
+                                    <form action="hotelrooming" method="post">
                                         <input type="hidden" name="command" value="cancel_contract">
                                         <input type="hidden" name="contract_id" value="${contract.id}">
                                         <input class="orders-button" type="submit" value="${cancel_order_button}">

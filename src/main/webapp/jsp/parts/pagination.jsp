@@ -3,7 +3,7 @@
     <tr>
         <c:if test="${currentPageNumber != 1}">
             <td>
-                <form action="/hotelrooming" method="post">
+                <form action="hotelrooming" method="post">
                     <input type="hidden" name="command" value="${command}"/>
                     <input type="hidden" name="pagination" value="${currentPageNumber - 1}"/>
                     <input type="hidden" name="page" value="user_page"/>
@@ -18,7 +18,7 @@
                 </c:when>
                 <c:otherwise>
                     <td>
-                        <form action="/hotelrooming" method="post">
+                        <form action="hotelrooming" method="post">
                             <input type="hidden" name="command" value="${command}"/>
                             <input type="hidden" name="pagination" value="${i}"/>
                             <input type="hidden" name="page" value="user_page"/>
@@ -30,7 +30,7 @@
         </c:forEach>
         <c:if test="${currentPageNumber lt pages_count}">
             <td>
-                <form action="/hotelrooming" method="post">
+                <form action="hotelrooming" method="post">
                     <input type="hidden" name="command" value="${command}"/>
                     <input type="hidden" name="pagination" value="${currentPageNumber + 1}"/>
                     <input type="hidden" name="page" value="user_page"/>

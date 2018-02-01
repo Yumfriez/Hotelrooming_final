@@ -14,7 +14,7 @@
 </script>
 <body onload="doRedirect();">
 Loading...
-<form class="myform" action="/hotelrooming" method="post">
+<form class="myform" action="hotelrooming" method="post">
     <input type="hidden" name="information" value="${requestScope.information}"/>
     <input type="hidden" name="command" value="redirect"/>
     <input id="redirect" style="visibility:hidden;" type="submit"/>

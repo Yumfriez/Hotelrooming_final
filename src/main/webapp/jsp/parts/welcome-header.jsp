@@ -8,13 +8,13 @@
         <div class="navbar-collapse" id="myNavbar">
             <ul class="nav navbar-nav">
                 <li>
-                    <form action="/hotelrooming" method="post">
+                    <form action="hotelrooming" method="post">
                         <input type="hidden" name="command" value="redirect"/>
                         <input type="submit" value="${homepage}"/>
                     </form>
                 </li>
                 <li>
-                    <form action="/hotelrooming" method="post">
+                    <form action="hotelrooming" method="post">
                         <input type="hidden" name="command" value="show_comments"/>
                         <input type="submit" value="${comments}"/>
                     </form>
@@ -22,7 +22,7 @@
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 <li>
-                    <form action="/hotelrooming" method="post">
+                    <form action="hotelrooming" method="post">
                         <input class="lang_ru" type="hidden" name="command" value="change_locale"/>
                         <input class="lang_ru" type="hidden" name="locale" value="ru"/>
                         <input type="hidden" name="page" value="welcome_page"/>
@@ -31,7 +31,7 @@
                 </li>
 
                 <li>
-                    <form action="/hotelrooming" method="post">
+                    <form action="hotelrooming" method="post">
                         <input class="lang_en" type="hidden" name="command" value="change_locale"/>
                         <input class="lang_en" type="hidden" name="locale" value="en"/>
                         <input type="hidden" name="page" value="welcome_page"/>

@@ -43,7 +43,7 @@
             <div class="tab-content">
                 <div id="login">
                     <h1>${in_label}</h1>
-                    <form action="/hotelrooming" method="post" accept-charset="utf-8">
+                    <form action="hotelrooming" method="post" accept-charset="utf-8">
                         <input type="hidden" name="command" value="sign_in"/>
                         <div class="field-wrap">
                             <label>
@@ -63,7 +63,7 @@
                 </div>
                 <div id="signup">
                     <h1>${up_label}</h1>
-                    <form action="/hotelrooming" method="post" accept-charset="utf-8">
+                    <form action="hotelrooming" method="post" accept-charset="utf-8">
                         <input type="hidden" name="command" value="sign_up"/>
                         <div class="top-row">
                             <div class="field-wrap">

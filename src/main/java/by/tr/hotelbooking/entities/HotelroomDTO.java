@@ -73,4 +73,32 @@ public class HotelroomDTO implements Identified{
     public void setDateOut(Date dateOut) {
         this.dateOut = dateOut;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        HotelroomDTO that = (HotelroomDTO) o;
+
+        if (placesCount != that.placesCount) return false;
+        if (!id.equals(that.id)) return false;
+        if (!roomType.equals(that.roomType)) return false;
+        if (!minPrice.equals(that.minPrice)) return false;
+        if (!maxPrice.equals(that.maxPrice)) return false;
+        if (!dateIn.equals(that.dateIn)) return false;
+        return dateOut.equals(that.dateOut);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id.hashCode();
+        result = 31 * result + placesCount;
+        result = 31 * result + roomType.hashCode();
+        result = 31 * result + minPrice.hashCode();
+        result = 31 * result + maxPrice.hashCode();
+        result = 31 * result + dateIn.hashCode();
+        result = 31 * result + dateOut.hashCode();
+        return result;
+    }
 }

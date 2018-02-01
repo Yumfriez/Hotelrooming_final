@@ -67,13 +67,13 @@
                                 <p class="product-desc"><b>${room_type}: </b>${offer.roomType.name}<br/></p>
                                 <p class="product-price"> <b>${total_price_label}: </b>${offer.totalPrice}<br/></p>
                                 <div id="button_under_hotelroom">
-                                    <form class="button" action="/hotelrooming" method="post">
+                                    <form class="button" action="hotelrooming" method="post">
                                         <input type="hidden" name="contract_id" value="${offer.id}"/>
                                         <input type="hidden" name="command" value="accept_contract"/>
                                         <input class="green-butt" type="submit" value="${accept_button}"/>
                                     </form>
 
-                                    <form class="button" action="/hotelrooming" method="post">
+                                    <form class="button" action="hotelrooming" method="post">
                                         <input type="hidden" name="contract_id" value="${offer.id}"/>
                                         <input type="hidden" name="command" value="decline_contract"/>
                                         <input class="red-butt" type="submit" value="${decline_button}"/>

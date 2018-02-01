@@ -78,4 +78,34 @@ public class Order implements Identified{
     public void setRoomType(RoomType roomType) {
         this.roomType = roomType;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Order order = (Order) o;
+
+        if (preferedPlacesCount != order.preferedPlacesCount) return false;
+        if (daysCount != order.daysCount) return false;
+        if (!id.equals(order.id)) return false;
+        if (!accountLogin.equals(order.accountLogin)) return false;
+        if (!preferedDateIn.equals(order.preferedDateIn)) return false;
+        if (!minPrice.equals(order.minPrice)) return false;
+        if (!maxPrice.equals(order.maxPrice)) return false;
+        return roomType.equals(order.roomType);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id.hashCode();
+        result = 31 * result + accountLogin.hashCode();
+        result = 31 * result + preferedPlacesCount;
+        result = 31 * result + preferedDateIn.hashCode();
+        result = 31 * result + daysCount;
+        result = 31 * result + minPrice.hashCode();
+        result = 31 * result + maxPrice.hashCode();
+        result = 31 * result + roomType.hashCode();
+        return result;
+    }
 }

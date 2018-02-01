@@ -66,7 +66,7 @@
                     <c:choose>
                         <c:when test="${role eq(admin)}">
                             <td>
-                                <form action="/hotelrooming" method="post">
+                                <form action="hotelrooming" method="post">
                                     <input type="hidden" name="command" value="find_hotelrooms">
                                     <input type="hidden" name="order_id" value="${order.id}">
                                     <input type="hidden" name="room_type" value="${order.roomType.id}">
@@ -80,7 +80,7 @@
                                 </form>
                             </td>
                             <td>
-                                <form action="/hotelrooming" method="post">
+                                <form action="hotelrooming" method="post">
                                     <input type="hidden" name="command" value="cancel_order">
                                     <input type="hidden" name="order_id" value="${order.id}">
                                     <input class="orders-button" type="submit" value="${cancel_order_button}">
@@ -89,7 +89,7 @@
                         </c:when>
                         <c:when test="${role eq(user)}">
                             <td>
-                                <form action="/hotelrooming" method="post">
+                                <form action="hotelrooming" method="post">
                                     <input type="hidden" name="command" value="cancel_order">
                                     <input type="hidden" name="order_id" value="${order.id}">
                                     <input class="orders-button" type="submit" value="${cancel_order_button}">

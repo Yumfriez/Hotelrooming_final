@@ -96,4 +96,38 @@ public class ContractDTO implements Identified {
     public void setImageName(String imageName) {
         this.imageName = imageName;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        ContractDTO that = (ContractDTO) o;
+
+        if (id != that.id) return false;
+        if (hotelroomNumber != that.hotelroomNumber) return false;
+        if (placesCount != that.placesCount) return false;
+        if (floor != that.floor) return false;
+        if (!accountLogin.equals(that.accountLogin)) return false;
+        if (!dateIn.equals(that.dateIn)) return false;
+        if (!dateOut.equals(that.dateOut)) return false;
+        if (!totalPrice.equals(that.totalPrice)) return false;
+        if (!roomType.equals(that.roomType)) return false;
+        return imageName.equals(that.imageName);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id;
+        result = 31 * result + accountLogin.hashCode();
+        result = 31 * result + dateIn.hashCode();
+        result = 31 * result + dateOut.hashCode();
+        result = 31 * result + totalPrice.hashCode();
+        result = 31 * result + hotelroomNumber;
+        result = 31 * result + placesCount;
+        result = 31 * result + floor;
+        result = 31 * result + roomType.hashCode();
+        result = 31 * result + imageName.hashCode();
+        return result;
+    }
 }

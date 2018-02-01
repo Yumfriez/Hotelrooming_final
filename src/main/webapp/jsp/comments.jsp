@@ -42,7 +42,7 @@
                     <span class="date-info">${comment.commentDate}</span>
                     <c:choose>
                         <c:when test="${role eq(admin)}">
-                            <form action="/hotelrooming" method="post">
+                            <form action="hotelrooming" method="post">
                                 <input type="hidden" name="command" value="delete_comment">
                                 <input type="hidden" name="comment_id" value="${comment.id}">
                                 <input class="delete-button" type="submit" title="Delete comment" value="x"/>
@@ -50,7 +50,7 @@
                         </c:when>
                         <c:when test="${role eq(user)}">
                             <c:if test="${login eq comment.accountLogin}">
-                                <form action="/hotelrooming" method="post">
+                                <form action="hotelrooming" method="post">
                                     <input type="hidden" name="command" value="delete_comment">
                                     <input type="hidden" name="comment_id" value="${comment.id}">
                                     <input class="delete-button" type="submit" title="Delete comment" value="x"/>
@@ -65,7 +65,7 @@
         <c:if test="${not empty login and role eq(user)}">
             <li class="write-new">
 
-                <form action="/hotelrooming" method="post">
+                <form action="hotelrooming" method="post">
                     <input type="hidden" name="command" value="add_comment">
                     <input type="hidden" name="login" value="${login}">
                     <textarea class="comment-field" placeholder="Write your comment here" name="comment_text"></textarea>

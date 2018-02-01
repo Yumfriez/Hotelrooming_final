@@ -35,4 +35,34 @@
         <param-name>upload.location</param-name>
         <param-value>/images/hotelrooms/</param-value>
     </context-param>
+    <security-constraint>
+        <display-name>Restrict access to JSP pages</display-name>
+        <web-resource-collection>
+            <web-resource-name>
+                Restrict access to JSP pages
+            </web-resource-name>
+            <url-pattern>/jsp/*</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <description>
+                With no roles defined, no access granted
+            </description>
+        </auth-constraint>
+    </security-constraint>
+    <error-page>
+        <error-code>403</error-code>
+        <location>/jsp/error/error.jsp</location>
+    </error-page>
+    <error-page>
+        <error-code>404</error-code>
+        <location>/jsp/error/error.jsp</location>
+    </error-page>
+    <error-page>
+        <error-code>500</error-code>
+        <location>/jsp/error/error.jsp</location>
+    </error-page>
+    <error-page>
+        <error-code>503</error-code>
+        <location>/jsp/error/error.jsp</location>
+    </error-page>
 </web-app>

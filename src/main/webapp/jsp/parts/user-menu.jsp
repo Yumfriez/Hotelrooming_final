@@ -12,27 +12,27 @@
 
         <div class="col-md-4">
             <div class="list-group">
-                <form action="/hotelrooming" method="post" accept-charset="UTF-8">
+                <form action="hotelrooming" method="post" accept-charset="UTF-8">
                     <input type="hidden" name="command" value="show_hotelrooms"/>
                     <input type="submit" class="list-group-item" value="${show_hotelrooms_label}"/>
                 </form>
-                <form action="/hotelrooming" method="post" accept-charset="UTF-8">
+                <form action="hotelrooming" method="post" accept-charset="UTF-8">
                     <input type="hidden" name="command" value="show_page_for_make_order"/>
                     <input type="submit" class="list-group-item" value="${make_order_label}"/>
                 </form>
-                <form action="/hotelrooming" method="post" accept-charset="UTF-8">
+                <form action="hotelrooming" method="post" accept-charset="UTF-8">
                     <input type="hidden" name="command" value="show_orders"/>
                     <input type="submit" class="list-group-item" value="${sent_orders_label}"/>
                 </form>
-                <form action="/hotelrooming" method="post" accept-charset="UTF-8">
+                <form action="hotelrooming" method="post" accept-charset="UTF-8">
                     <input type="hidden" name="command" value="show_new_offers"/>
                     <input type="submit" class="list-group-item" value="${new_offers_label}"/>
                 </form>
-                <form action="/hotelrooming" method="post" accept-charset="UTF-8">
+                <form action="hotelrooming" method="post" accept-charset="UTF-8">
                     <input type="hidden" name="command" value="show_user_contracts"/>
                     <input type="submit" class="list-group-item" value="${current_contracts_label}"/>
                 </form>
-                <form action="/hotelrooming" method="post" accept-charset="UTF-8">
+                <form action="hotelrooming" method="post" accept-charset="UTF-8">
                     <input type="hidden" name="command" value="exit"/>
                     <input type="submit" class="list-group-item" value="${log_out_label}"/>
                 </form>

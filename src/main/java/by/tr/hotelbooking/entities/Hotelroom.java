@@ -68,4 +68,32 @@ public class Hotelroom implements Identified{
     public void setImageName(String imageName) {
         this.imageName = imageName;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Hotelroom hotelroom = (Hotelroom) o;
+
+        if (number != hotelroom.number) return false;
+        if (placesCount != hotelroom.placesCount) return false;
+        if (floor != hotelroom.floor) return false;
+        if (!id.equals(hotelroom.id)) return false;
+        if (!dailyPrice.equals(hotelroom.dailyPrice)) return false;
+        if (!roomType.equals(hotelroom.roomType)) return false;
+        return imageName.equals(hotelroom.imageName);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id.hashCode();
+        result = 31 * result + number;
+        result = 31 * result + placesCount;
+        result = 31 * result + floor;
+        result = 31 * result + dailyPrice.hashCode();
+        result = 31 * result + roomType.hashCode();
+        result = 31 * result + imageName.hashCode();
+        return result;
+    }
 }

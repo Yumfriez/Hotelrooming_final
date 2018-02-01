@@ -59,4 +59,30 @@ public class Comment implements Identified{
     public void setText(String text) {
         this.text = text;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Comment comment = (Comment) o;
+
+        if (id != comment.id) return false;
+        if (!accountLogin.equals(comment.accountLogin)) return false;
+        if (!userName.equals(comment.userName)) return false;
+        if (!userSurname.equals(comment.userSurname)) return false;
+        if (!commentDate.equals(comment.commentDate)) return false;
+        return text.equals(comment.text);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id;
+        result = 31 * result + accountLogin.hashCode();
+        result = 31 * result + userName.hashCode();
+        result = 31 * result + userSurname.hashCode();
+        result = 31 * result + commentDate.hashCode();
+        result = 31 * result + text.hashCode();
+        return result;
+    }
 }

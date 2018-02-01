@@ -50,7 +50,7 @@
                     <c:if test="${command eq(show_hotelrooms)}">
                     <div class="col-md-4">
                         <div class="list-group">
-                            <form action="/hotelrooming" method="get" accept-charset="UTF-8">
+                            <form action="hotelrooming" method="get" accept-charset="UTF-8">
                                 <input type="hidden" name="command" value="show_page_for_add_hotelroom"/>
                                 <input type="submit" class="list-group-item" value="${add_hotelroom}"/>
                             </form>
@@ -71,13 +71,13 @@
                     <c:forEach var="hotelroom" items="${requestScope.hotelroomsList}">
                         <div class="col-sm-6">
                             <div class="product">
-                                <form action="/hotelrooming" method="post">
+                                <form action="hotelrooming" method="post">
                                     <input type="hidden" name="command" value="show_hotelroom"/>
                                     <input type="hidden" name="hotelroom_id" value="${hotelroom.id}"/>
                                     <input id="room_number" type="submit" value="${hotelroom_number}: ${hotelroom.number}"/>
                                 </form>
                                 <div class="product-img">
-                                <form action="/hotelrooming" method="post">
+                                <form action="hotelrooming" method="post">
                                     <input type="hidden" name="command" value="show_hotelroom"/>
                                     <input type="hidden" name="hotelroom_id" value="${hotelroom.id}"/>
                                     <input class="hotelroom_image" type="image"
@@ -96,12 +96,12 @@
                                         <c:when test="${command eq(show_hotelrooms)}">
                                             <c:choose>
                                                 <c:when test="${role eq(admin)}">
-                                                    <form class="button" action="/hotelrooming" method="post">
+                                                    <form class="button" action="hotelrooming" method="post">
                                                         <input type="hidden" name="hotelroom_id" value="${hotelroom.id}"/>
                                                         <input type="hidden" name="command" value="show_edit_hotelroom_page"/>
                                                         <input class="all-btns" type="submit" value="${edit_button}"/>
                                                     </form>
-                                                    <form class="button" action="/hotelrooming" method="post">
+                                                    <form class="button" action="hotelrooming" method="post">
                                                         <input type="hidden" name="hotelroom_id" value="${hotelroom.id}"/>
                                                         <input type="hidden" name="command" value="remove_hotelroom"/>
                                                         <input class="all-btns" type="submit" value="${delete_button}" onclick="confirm('Вы уверены?')"/>
@@ -117,7 +117,7 @@
                                         <c:when test="${command eq(find_hotelrooms)}">
                                             <c:choose>
                                                 <c:when test="${role eq(admin)}">
-                                                    <form class="button" action="/hotelrooming" method="post">
+                                                    <form class="button" action="hotelrooming" method="post">
                                                         <input type="hidden" name="hotelroom_id" value="${hotelroom.id}"/>
                                                         <input type="hidden" name="order_id" value="${requestScope.order_id}">
                                                         <input type="hidden" name="command" value="add_contract"/>

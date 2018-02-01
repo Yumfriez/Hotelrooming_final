@@ -61,14 +61,14 @@
                                         <td>
                                             <c:choose>
                                                 <c:when test="${user.isBlocked == true}">
-                                                    <form class="button" action="/hotelrooming" method="post">
+                                                    <form class="button" action="hotelrooming" method="post">
                                                         <input type="hidden" name="login" value="${user.login}"/>
                                                         <input type="hidden" name="command" value="unblock_user"/>
                                                         <input class="green-butt" type="submit" value="${unblock_button}"/>
                                                     </form>
                                                 </c:when>
                                                 <c:when test="${user.isBlocked == false}">
-                                                    <form class="button" action="/hotelrooming" method="post">
+                                                    <form class="button" action="hotelrooming" method="post">
                                                         <input type="hidden" name="login" value="${user.login}"/>
                                                         <input type="hidden" name="command" value="block_user"/>
                                                         <input class="red-butt" type="submit" value="${block_button}"/>

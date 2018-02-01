@@ -38,7 +38,7 @@
             <div class="main_label">${edit_hotelroom_word}: ${hotelroom.number}</div>
             <div class="inputs-wrapper">
                 <h1>${parameters_label}</h1>
-                <form action="/hotelrooming" method="post" accept-charset="utf-8" enctype="multipart/form-data">
+                <form action="hotelrooming" method="post" accept-charset="utf-8" enctype="multipart/form-data">
                     <input type="hidden" name="command" value="edit_hotelroom"/>
                     <input type="hidden" name="number" value="${hotelroom.number}">
                     <input type="hidden" name="hotelroom_id" value="${hotelroom.id}"><br/>

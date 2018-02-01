@@ -36,7 +36,7 @@
             <div class="main_label">${add_hotelroom_word}</div>
                 <div class="inputs-wrapper">
                     <h1>${parameters_label}</h1>
-                    <form action="/hotelrooming" method="post" accept-charset="utf-8" enctype="multipart/form-data">
+                    <form action="hotelrooming" method="post" accept-charset="utf-8" enctype="multipart/form-data">
                         <input type="hidden" name="command" value="add_hotelroom"/><br/>
                         <div class="field-wrap">
                             <label>

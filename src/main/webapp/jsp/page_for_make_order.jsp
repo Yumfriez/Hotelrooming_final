@@ -36,7 +36,7 @@
             <div class="main_label">${make_order_label}</div>
             <div class="inputs-wrapper">
                 <h1>${parameters_label}</h1>
-                <form action="/hotelrooming" method="post" accept-charset="utf-8">
+                <form action="hotelrooming" method="post" accept-charset="utf-8">
                     <input type="hidden" name="command" value="make_order"/><br/>
                     <div class="field-wrap">
                         <label>
