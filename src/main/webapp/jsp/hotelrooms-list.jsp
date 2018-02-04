@@ -73,20 +73,11 @@
                     <c:forEach var="hotelroom" items="${requestScope.hotelroomsList}">
                         <div class="col-sm-6">
                             <div class="product">
-                                <form action="hotelrooming" method="post">
-                                    <input type="hidden" name="command" value="show_hotelroom"/>
-                                    <input type="hidden" name="hotelroom_id" value="${hotelroom.id}"/>
-                                    <input id="room_number" type="submit" value="${hotelroom_number}: ${hotelroom.number}"/>
-                                </form>
+                                <div class="main_label">${hotelroom_number}: ${hotelroom.number}</div>
                                 <div class="product-img">
-                                <form action="hotelrooming" method="post">
-                                    <input type="hidden" name="command" value="show_hotelroom"/>
-                                    <input type="hidden" name="hotelroom_id" value="${hotelroom.id}"/>
-                                    <input class="hotelroom_image" type="image"
-                                           src="${pageContext.request.contextPath}${files_directory}${hotelroom.imageName}"
-                                           alt="${hotelroom.roomType.name}"/>
-                                </form>
-                            </div>
+                                    <img class="hotelroom_image" src="${pageContext.request.contextPath}${files_directory}${hotelroom.imageName}"
+                                         alt="${hotelroom.roomType.name}">
+                                </div>
                                 <p class="product-title">
                                     <b>${places_count}: </b>${hotelroom.placesCount}<br/>
                                     <b>${floor}:</b> ${hotelroom.floor}<br/>
@@ -106,7 +97,7 @@
                                                     <form class="button" action="hotelrooming" method="post">
                                                         <input type="hidden" name="hotelroom_id" value="${hotelroom.id}"/>
                                                         <input type="hidden" name="command" value="remove_hotelroom"/>
-                                                        <input class="all-btns" type="submit" value="${delete_button}" onclick="confirm('Вы уверены?')"/>
+                                                        <input class="all-btns" type="submit" value="${delete_button}"/>
                                                     </form>
                                                 </c:when>
                                                 <c:when test="${role eq(user)}">
