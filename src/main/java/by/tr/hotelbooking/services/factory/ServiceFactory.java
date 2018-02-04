@@ -1,21 +1,11 @@
 package by.tr.hotelbooking.services.factory;
 
 
-import by.tr.hotelbooking.services.CommentService;
-import by.tr.hotelbooking.services.ContractService;
-import by.tr.hotelbooking.services.OrderService;
+import by.tr.hotelbooking.services.*;
 import by.tr.hotelbooking.services.impl.*;
 
 public class ServiceFactory {
     private static final ServiceFactory instance = new ServiceFactory();
-
-    private final UserServiceImpl userService = UserServiceImpl.getInstance();
-    private final HotelroomServiceImpl hotelroomService = HotelroomServiceImpl.getInstance();
-    private final RoomTypeServiceImpl roomTypeService = RoomTypeServiceImpl.getInstance();
-    private final OrderService orderService = new OrderServiceImpl();
-    private final CommentService commentService = new CommentServiceImpl();
-    private final ContractService contractService = new ContractServiceImpl();
-
 
     private ServiceFactory() {
 
@@ -25,23 +15,21 @@ public class ServiceFactory {
         return instance;
     }
 
-    public RoomTypeServiceImpl getRoomTypeService() {
-        return roomTypeService;
+    public RoomTypeService getRoomTypeService() {
+        return new RoomTypeServiceImpl();
     }
-
-    public UserServiceImpl getUserService() {
-        return userService;
+    public UserService getUserService() {
+        return new UserServiceImpl();
     }
-    public HotelroomServiceImpl getHotelroomService(){ return hotelroomService;}
+    public HotelroomService getHotelroomService(){ return new HotelroomServiceImpl();}
     public OrderService getOrderService() {
-        return orderService;
+        return new OrderServiceImpl();
     }
     public CommentService getCommentService(){
-        return commentService;
+        return new CommentServiceImpl();
     }
-
     public ContractService getContractService() {
-        return contractService;
+        return new ContractServiceImpl();
     }
 }
 

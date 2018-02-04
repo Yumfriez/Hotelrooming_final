@@ -4,6 +4,8 @@ import by.tr.hotelbooking.dao.exception.DAOException;
 import by.tr.hotelbooking.dao.factory.DaoFactory;
 import by.tr.hotelbooking.dao.impl.CommentDAO;
 import by.tr.hotelbooking.entities.Comment;
+import by.tr.hotelbooking.resource.DataParameter;
+import by.tr.hotelbooking.resource.DataResourceManager;
 import by.tr.hotelbooking.services.CommentService;
 import by.tr.hotelbooking.services.exception.ServiceException;
 
@@ -70,7 +72,8 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public int getPagesCount(int recordsCount) throws ServiceException {
-        return (int) Math.ceil(recordsCount * 1.0 / 10);
+        int recordsOnPageCount = getRecordsOnPageCount();
+        return (int) Math.ceil(recordsCount * 1.0 / recordsOnPageCount);
     }
 
     @Override
@@ -78,10 +81,23 @@ public class CommentServiceImpl implements CommentService {
         List<Comment> commentList;
         try {
             CommentDAO commentDAO = daoFactory.getCommentDAO();
-            commentList = commentDAO.getRecordsWithOffset((page-1)*10,10);
+            int recordsOnPageCount = getRecordsOnPageCount();
+            commentList = commentDAO.getRecordsWithOffset((page-1)*recordsOnPageCount, recordsOnPageCount);
         }  catch (DAOException e) {
             throw new ServiceException(e);
         }
         return commentList;
+    }
+
+    private int getRecordsOnPageCount(){
+            DataResourceManager manager = DataResourceManager.getInstance();
+            String recordsOnPageString = manager.getValue(DataParameter.COMMENTS_ON_PAGE_COUNT);
+            int recordsOnPage;
+            try {
+                recordsOnPage = Integer.parseInt(recordsOnPageString);
+            } catch (NumberFormatException e) {
+                recordsOnPage = 10;
+            }
+            return recordsOnPage;
     }
 }

@@ -3,7 +3,6 @@ package by.tr.hotelbooking.services.impl;
 import by.tr.hotelbooking.dao.Dao;
 import by.tr.hotelbooking.dao.exception.DAOException;
 import by.tr.hotelbooking.dao.factory.DaoFactory;
-import by.tr.hotelbooking.dao.impl.RoomTypeDAO;
 import by.tr.hotelbooking.entities.RoomType;
 import by.tr.hotelbooking.services.RoomTypeService;
 import by.tr.hotelbooking.services.exception.ServiceException;
@@ -13,14 +12,8 @@ import java.util.List;
 public class RoomTypeServiceImpl implements RoomTypeService {
     private final DaoFactory daoFactory = DaoFactory.getInstance();
 
-    private final static RoomTypeServiceImpl instance = new RoomTypeServiceImpl();
+    public RoomTypeServiceImpl(){
 
-    private RoomTypeServiceImpl(){
-
-    }
-
-    public static RoomTypeServiceImpl getInstance() {
-        return instance;
     }
 
     @Override

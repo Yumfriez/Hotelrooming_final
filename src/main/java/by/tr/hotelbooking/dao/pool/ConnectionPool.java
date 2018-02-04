@@ -34,11 +34,11 @@ public class ConnectionPool {
     private ConnectionPool() throws ConnectionPoolException {
         try {
             DBResourceManager dbResourceManager = DBResourceManager.getInstance();
-            this.driverName = dbResourceManager.getValue(DBParametr.DB_DRIVER);
-            this.user = dbResourceManager.getValue(DBParametr.DB_USER);
-            this.url = dbResourceManager.getValue(DBParametr.DB_URL);
-            this.password = dbResourceManager.getValue(DBParametr.DB_PASSWORD);
-            this.poolSize = Integer.parseInt(dbResourceManager.getValue((DBParametr.DN_POOL_SIZE)));
+            this.driverName = dbResourceManager.getValue(DBParameter.DB_DRIVER);
+            this.user = dbResourceManager.getValue(DBParameter.DB_USER);
+            this.url = dbResourceManager.getValue(DBParameter.DB_URL);
+            this.password = dbResourceManager.getValue(DBParameter.DB_PASSWORD);
+            this.poolSize = Integer.parseInt(dbResourceManager.getValue((DBParameter.DB_POOL_SIZE)));
             Class.forName(driverName);
         } catch (NumberFormatException e) {
             logger.error(e);

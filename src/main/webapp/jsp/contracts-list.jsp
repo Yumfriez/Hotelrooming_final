@@ -21,6 +21,7 @@
 <fmt:message bundle="${loc}" key="local.word.expired" var="expired_label"/>
 <fmt:message bundle="${loc}" key="local.word.not_confirmed" var="not_confirmed_label"/>
 <fmt:message bundle="${loc}" key="local.word.confirmed" var="confirmed_label"/>
+<fmt:message bundle="${loc}" key="local.menu.current_contracts" var="current_contracts"/>
 <c:set var="command" value="${requestScope.command}"/>
 <!DOCTYPE html>
 <html>
@@ -33,10 +34,7 @@
     <link rel="stylesheet" href="../styles/orders-table/style.css" type="text/css">
 
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" pageEncoding="utf-8">
-    <title>Hotelrooming</title>
-
-
-
+    <title>${current_contracts}</title>
 </head>
 <body onload="$('#table').stacktable();">
 <div class="content">

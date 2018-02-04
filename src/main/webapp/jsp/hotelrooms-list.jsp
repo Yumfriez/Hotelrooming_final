@@ -23,6 +23,7 @@
 <fmt:message bundle="${loc}" key="local.word.floor" var="floor"/>
 <fmt:message bundle="${loc}" key="local.word.daily_price" var="daily_price"/>
 <fmt:message bundle="${loc}" key="local.word.room_type" var="room_type"/>
+<fmt:message bundle="${loc}" key="local.word.hotelrooms" var="hotelrooms"/>
 <fmt:message bundle="${loc}" key="local.word.hotelroom_reserved" var="hotelroom_reserved"/>
 <fmt:message bundle="${loc}" key="local.button.order_hotelroom" var="order_hotelroom_button"/>
 <fmt:message bundle="${loc}" key="local.button.send_contract" var="send_contract_button"/>
@@ -37,6 +38,7 @@
     <link rel="stylesheet" href="../styles/datatables.min.css" type="text/css"/>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="../js/datatables.min.js" type="text/javascript"></script>
+    <title>${hotelrooms}</title>
 </head>
 <body>
 

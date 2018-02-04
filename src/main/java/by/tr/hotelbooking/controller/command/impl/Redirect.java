@@ -81,7 +81,7 @@ public class Redirect implements Command {
     private void setWelcomePageLocale(HttpServletRequest request,Cookie[] cookies){
         for (Cookie cookie : cookies) {
             if (cookie.getName().equals(RequestParameter.WELCOME_LOCALE.getValue())) {
-                request.getSession().setAttribute(RequestParameter.WELCOME_LOCALE.getValue(), cookie.getName());
+                request.getSession().setAttribute(RequestParameter.WELCOME_LOCALE.getValue(), cookie.getValue());
                 break;
             }
         }

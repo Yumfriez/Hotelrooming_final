@@ -40,6 +40,7 @@
     <link rel="stylesheet" href="../styles/datatables.min.css" type="text/css"/>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="../js/datatables.min.js" type="text/javascript"></script>
+    <title>${new_offers_label}</title>
 </head>
 <body>
 

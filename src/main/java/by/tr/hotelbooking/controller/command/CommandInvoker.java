@@ -16,7 +16,7 @@ public class CommandInvoker {
 
     private CommandInvoker() {
         repository.put(CommandName.SIGN_IN, SignIn.getInstance());
-        repository.put((CommandName.SIGN_UP), SignUp.getInstance());
+        repository.put(CommandName.SIGN_UP, SignUp.getInstance());
         repository.put(CommandName.REDIRECT, Redirect.getInstance());
         repository.put(CommandName.CHANGE_LOCALE, ChangeLocale.getInstance());
         repository.put(CommandName.EXIT, ExitFromAccount.getInstance());
@@ -53,7 +53,7 @@ public class CommandInvoker {
     public Command getCommand(HttpServletRequest request) {
         Command command;
         String requestCommand = request.getParameter(RequestParameter.COMMAND.getValue());
-        logger.info("Command from cliend: " + requestCommand);
+        logger.info("Command from client: " + requestCommand);
         CommandName commandName = CommandName.valueOf(requestCommand.toUpperCase().replace('-', '_'));
         command = repository.get(commandName);
         return command;

@@ -19,6 +19,7 @@
 <fmt:message bundle="${loc}" key="local.word.user_login" var="user_login_label"/>
 <fmt:message bundle="${loc}" key="local.word.date_in" var="date_in_label"/>
 <fmt:message bundle="${loc}" key="local.word.days_count" var="days_count_label"/>
+<fmt:message bundle="${loc}" key="local.word.orders" var="orders"/>
 <c:set var="command" value="${requestScope.command}"/>
 <!DOCTYPE html>
 <html>
@@ -31,10 +32,7 @@
     <link rel="stylesheet" href="../styles/orders-table/style.css" type="text/css">
 
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" pageEncoding="utf-8">
-    <title>Hotelrooming</title>
-
-
-
+    <title>${orders}</title>
 </head>
 <body onload="$('#table').stacktable();">
 <div class="content">

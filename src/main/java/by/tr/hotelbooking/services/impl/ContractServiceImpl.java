@@ -9,6 +9,8 @@ import by.tr.hotelbooking.entities.Contract;
 import by.tr.hotelbooking.entities.ContractDTO;
 import by.tr.hotelbooking.entities.Hotelroom;
 import by.tr.hotelbooking.entities.Order;
+import by.tr.hotelbooking.resource.DataParameter;
+import by.tr.hotelbooking.resource.DataResourceManager;
 import by.tr.hotelbooking.services.ContractService;
 import by.tr.hotelbooking.services.exception.ServiceException;
 
@@ -26,8 +28,8 @@ public class ContractServiceImpl implements ContractService {
         List<Contract> contracts = null;
         try {
             ContractDAO contractDAO = daoFactory.getContractDAO();
-            int recordsCount = 10;
-            contracts = contractDAO.getAcceptedContractsForPageByLogin((page-1)*recordsCount,recordsCount, userLogin);
+            int recordsOnPageCount = getRecordsOnPageCount();
+            contracts = contractDAO.getAcceptedContractsForPageByLogin((page-1)*recordsOnPageCount,recordsOnPageCount, userLogin);
         }  catch (DAOException e) {
             throw new ServiceException(e);
         }
@@ -39,8 +41,8 @@ public class ContractServiceImpl implements ContractService {
         List<ContractDTO> contracts = null;
         try {
             ContractDAO contractDAO = daoFactory.getContractDAO();
-            int recordsCount = 10;
-            contracts = contractDAO.getNonAcceptedContractsForPageByLogin((page-1)*recordsCount,recordsCount, userLogin);
+            int recordsOnPageCount = getRecordsOnPageCount();
+            contracts = contractDAO.getNonAcceptedContractsForPageByLogin((page-1)*recordsOnPageCount,recordsOnPageCount, userLogin);
         }  catch (DAOException e) {
             throw new ServiceException(e);
         }
@@ -52,7 +54,8 @@ public class ContractServiceImpl implements ContractService {
         List<Contract> contracts = null;
         try {
             ContractDAO contractDAO = daoFactory.getContractDAO();
-            contracts = contractDAO.getRecordsWithOffset((page-1)*10,10);
+            int recordsOnPageCount = getRecordsOnPageCount();
+            contracts = contractDAO.getRecordsWithOffset((page-1)*recordsOnPageCount, recordsOnPageCount);
         }  catch (DAOException e) {
             throw new ServiceException(e);
         }
@@ -61,7 +64,8 @@ public class ContractServiceImpl implements ContractService {
 
     @Override
     public int getPagesCount(int recordsCount) throws ServiceException {
-        return (int) Math.ceil(recordsCount * 1.0 / 10);
+        int recordsOnPageCount = getRecordsOnPageCount();
+        return (int) Math.ceil(recordsCount * 1.0 / recordsOnPageCount);
     }
 
     @Override
@@ -153,5 +157,17 @@ public class ContractServiceImpl implements ContractService {
         int hotelroomNumber = hotelroom.getNumber();
         contract.setHotelroomNumber(hotelroomNumber);
         return contract;
+    }
+
+    private int getRecordsOnPageCount(){
+        DataResourceManager manager = DataResourceManager.getInstance();
+        String recordsOnPageString = manager.getValue(DataParameter.CONTRACTS_ON_PAGE_COUNT);
+        int recordsOnPage;
+        try {
+            recordsOnPage = Integer.parseInt(recordsOnPageString);
+        } catch (NumberFormatException e) {
+            recordsOnPage = 10;
+        }
+        return recordsOnPage;
     }
 }

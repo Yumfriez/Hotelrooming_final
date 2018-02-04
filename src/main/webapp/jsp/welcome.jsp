@@ -3,6 +3,21 @@
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <c:set value="alert" var="alert"/>
 <c:set var="command" value="${requestScope.command}"/>
+<fmt:setLocale scope="session" value="${sessionScope.welcomeLocale}"/>
+<fmt:setBundle basename="by.tr.hotelbooking.localization.front-end" scope="session" var="loc"/>
+<fmt:message bundle="${loc}" key="local.word.signIn" var="word_sign_in"/>
+<fmt:message bundle="${loc}" key="local.word.signUp" var="word_sign_up"/>
+<fmt:message bundle="${loc}" key="local.word.sign_in_on_website" var="sign_in_on_website"/>
+<fmt:message bundle="${loc}" key="local.word.lastname" var="lastname"/>
+<fmt:message bundle="${loc}" key="local.word.name" var="name"/>
+<fmt:message bundle="${loc}" key="local.word.email" var="email"/>
+<fmt:message bundle="${loc}" key="local.word.pickUsername" var="pick_username"/>
+<fmt:message bundle="${loc}" key="local.word.hotelbooking" var="hotelbooking"/>
+<fmt:message bundle="${loc}" key="local.word.createPassword" var="create_password"/>
+<fmt:message bundle="${loc}" key="local.word.sign_up_on_website" var="sign_up_on_website"/>
+<fmt:message bundle="${loc}" key="local.word.pass_reset" var="pass_reset"/>
+<fmt:message bundle="${loc}" key="local.word.sign_in_label" var="in_label"/>
+<fmt:message bundle="${loc}" key="local.word.sign_up_label" var="up_label"/>
 <!DOCTYPE html>
 <html>
 <head>
@@ -11,24 +26,8 @@
     <link rel="stylesheet" href="../styles/headerstyle.css" type="text/css"/>
 
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" pageEncoding="utf-8">
-    <title>Hotelrooming</title>
-    <fmt:setLocale scope="session" value="${sessionScope.welcomeLocale}"/>
-    <fmt:setLocale scope="request" value="${welcomeLocale}"/>
-    <fmt:setBundle basename="by.tr.hotelbooking.localization.front-end" scope="session" var="loc"/>
-    <fmt:message bundle="${loc}" key="local.word.signIn" var="word_sign_in"/>
-    <fmt:message bundle="${loc}" key="local.word.signUp" var="word_sign_up"/>
-    <fmt:message bundle="${loc}" key="local.word.sign_in_on_website" var="sign_in_on_website"/>
-    <fmt:message bundle="${loc}" key="local.word.lastname" var="lastname"/>
-    <fmt:message bundle="${loc}" key="local.word.name" var="name"/>
-    <fmt:message bundle="${loc}" key="local.word.email" var="email"/>
-    <fmt:message bundle="${loc}" key="local.word.pickUsername" var="pick_username"/>
-    <fmt:message bundle="${loc}" key="local.word.createPassword" var="create_password"/>
-    <fmt:message bundle="${loc}" key="local.word.sign_up_on_website" var="sign_up_on_website"/>
-    <fmt:message bundle="${loc}" key="local.word.pass_reset" var="pass_reset"/>
-    <fmt:message bundle="${loc}" key="local.word.sign_in_label" var="in_label"/>
-    <fmt:message bundle="${loc}" key="local.word.sign_up_label" var="up_label"/>
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-
+    <title>${hotelbooking}</title>
 </head>
 <body>
 <div class="content">

@@ -3,6 +3,9 @@
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <c:set var="command" value="${requestScope.command}"/>
 <fmt:setLocale scope="session" value="${sessionScope.userLocale}"/>
+<c:if test="${empty sessionScope.userLocale}">
+    <fmt:setLocale scope="session" value="${sessionScope.welcomeLocale}"/>
+</c:if>
 <c:set var="login" value="${sessionScope.login}"/>
 <c:set var="role" value="${sessionScope.role}"/>
 <c:set var="admin" value="ADMINISTRATOR"/>
@@ -19,6 +22,7 @@
     <link rel="stylesheet" href="../styles/headerstyle.css" type="text/css"/>
     <link rel="stylesheet" href="../styles/comments.css" type="text/css"/>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <title>${comments}</title>
 </head>
 <body class="comment-body">
 <c:choose>

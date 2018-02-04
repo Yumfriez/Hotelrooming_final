@@ -7,6 +7,8 @@ import by.tr.hotelbooking.dao.impl.HotelroomDAO;
 import by.tr.hotelbooking.entities.Hotelroom;
 import by.tr.hotelbooking.entities.HotelroomDTO;
 import by.tr.hotelbooking.entities.RoomType;
+import by.tr.hotelbooking.resource.DataParameter;
+import by.tr.hotelbooking.resource.DataResourceManager;
 import by.tr.hotelbooking.services.HotelroomService;
 import by.tr.hotelbooking.services.exception.ServiceException;
 import by.tr.hotelbooking.services.utils.LogicException;
@@ -28,16 +30,9 @@ import java.util.List;
 public class HotelroomServiceImpl implements HotelroomService {
     private final DaoFactory daoFactory = DaoFactory.getInstance();
 
-    private static final HotelroomServiceImpl instance = new HotelroomServiceImpl();
-
-    private HotelroomServiceImpl() {
+    public HotelroomServiceImpl() {
 
     }
-
-    public static HotelroomServiceImpl getInstance() {
-        return instance;
-    }
-
 
     @Override
     public void addHotelroom(int number, int placesCount, int floor, BigDecimal dailyPrice,
@@ -147,7 +142,8 @@ public class HotelroomServiceImpl implements HotelroomService {
 
     @Override
     public int getPagesCount(int recordsCount) throws ServiceException {
-        return (int) Math.ceil(recordsCount * 1.0 / 4);
+        int recordsOnPageCount = getRecordsOnPageCount();
+        return (int) Math.ceil(recordsCount * 1.0 / recordsOnPageCount);
     }
 
     @Override
@@ -155,7 +151,8 @@ public class HotelroomServiceImpl implements HotelroomService {
         List<Hotelroom> hotelrooms = null;
         try {
             HotelroomDAO hotelroomDAO = daoFactory.getHotelroomDAO();
-            hotelrooms = hotelroomDAO.getRecordsWithOffset((page-1)*4,4);
+            int recordsOnPageCount = getRecordsOnPageCount();
+            hotelrooms = hotelroomDAO.getRecordsWithOffset((page-1)*recordsOnPageCount,recordsOnPageCount);
         }  catch (DAOException e) {
             throw new ServiceException(e);
         }
@@ -173,7 +170,7 @@ public class HotelroomServiceImpl implements HotelroomService {
         LogicValidator.checkDaysCount(daysCount);
         LogicValidator.checkDateIn(dateIn);
 
-        List<Hotelroom> hotelrooms = null;
+
         HotelroomDAO hotelroomDAO = daoFactory.getHotelroomDAO();
         HotelroomDTO hotelroomDTO = new HotelroomDTO();
         hotelroomDTO.setMinPrice(minPrice);
@@ -189,9 +186,10 @@ public class HotelroomServiceImpl implements HotelroomService {
         cal.add(Calendar.DAY_OF_YEAR,daysCount);
         Date dateOut = new Date(cal.getTimeInMillis());
         hotelroomDTO.setDateOut(dateOut);
+        List<Hotelroom> hotelrooms;
         try {
-
-            hotelrooms = hotelroomDAO.getHotelroomsByParameters(hotelroomDTO, (page-1)*4,4);
+            int recordsOnPageCount = getRecordsOnPageCount();
+            hotelrooms = hotelroomDAO.getHotelroomsByParameters(hotelroomDTO, (page-1)*recordsOnPageCount,recordsOnPageCount);
         }  catch (DAOException e) {
             throw new ServiceException(e);
         }
@@ -263,6 +261,18 @@ public class HotelroomServiceImpl implements HotelroomService {
         } catch (DAOException e) {
             throw new ServiceException(e);
         }
+    }
+
+    private int getRecordsOnPageCount(){
+        DataResourceManager manager = DataResourceManager.getInstance();
+        String recordsOnPageString = manager.getValue(DataParameter.HOTELROOMS_ON_PAGE_COUNT);
+        int recordsOnPage;
+        try {
+            recordsOnPage = Integer.parseInt(recordsOnPageString);
+        } catch (NumberFormatException e) {
+            recordsOnPage = 4;
+        }
+        return recordsOnPage;
     }
 
     private void uploadImage(Part filePart, String fileName, String uploadDir) throws ServiceException {

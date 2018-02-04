@@ -6,6 +6,13 @@
 <c:set var="user" value="USER"/>
 <c:set value="alert" var="alert"/>
 <c:set var="command" value="${requestScope.command}"/>
+<fmt:setLocale scope="session" value="${sessionScope.userLocale}"/>
+<fmt:setBundle basename="by.tr.hotelbooking.localization.front-end" scope="session" var="loc"/>
+<fmt:message bundle="${loc}" key="local.menu.accounts_control" var="accounts_control"/>
+<fmt:message bundle="${loc}" key="local.menu.new_orders" var="new_orders"/>
+<fmt:message bundle="${loc}" key="local.menu.current_contracts" var="current_contracts"/>
+<fmt:message bundle="${loc}" key="local.menu.hotelrooms_control" var="hotelrooms_control"/>
+<fmt:message bundle="${loc}" key="local.menu.log_out" var="log_out"/>
 <!DOCTYPE html>
 <html>
 <head>
@@ -13,19 +20,12 @@
     <link rel="stylesheet" href="../styles/style.css" type="text/css"/>
     <link rel="stylesheet" href="../styles/headerstyle.css" type="text/css"/>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" pageEncoding="utf-8">
-    <fmt:setLocale scope="session" value="${sessionScope.userLocale}"/>
-    <fmt:setBundle basename="by.tr.hotelbooking.localization.front-end" scope="session" var="loc"/>
-    <fmt:message bundle="${loc}" key="local.menu.accounts_control" var="accounts_control"/>
-    <fmt:message bundle="${loc}" key="local.menu.new_orders" var="new_orders"/>
-    <fmt:message bundle="${loc}" key="local.menu.current_contracts" var="current_contracts"/>
-    <fmt:message bundle="${loc}" key="local.menu.hotelrooms_control" var="hotelrooms_control"/>
-    <fmt:message bundle="${loc}" key="local.menu.log_out" var="log_out"/>
    <c:choose>
        <c:when test="${role eq(admin)}">
-           <title>administrator</title>
+           <title>Administrator</title>
        </c:when>
        <c:when test="${role eq(user)}">
-           <title>user</title>
+           <title>User</title>
        </c:when>
        <c:otherwise>
            ERROR

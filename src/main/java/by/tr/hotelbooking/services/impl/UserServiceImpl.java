@@ -10,20 +10,11 @@ import by.tr.hotelbooking.services.exception.ServiceException;
 import java.util.List;
 
 public class UserServiceImpl implements UserService {
-
-    private static final UserServiceImpl instance = new UserServiceImpl();
-
     private DaoFactory daoFactory = DaoFactory.getInstance();
 
-    private UserServiceImpl() {
+    public UserServiceImpl() {
 
     }
-
-    public static UserServiceImpl getInstance() {
-        return instance;
-    }
-
-
 
     @Override
     public User signUp(String login, String password, String name, String surname, String email, String locale) throws ServiceException {

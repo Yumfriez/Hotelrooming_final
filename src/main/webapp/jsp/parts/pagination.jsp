@@ -6,7 +6,6 @@
                 <form action="hotelrooming" method="post">
                     <input type="hidden" name="command" value="${command}"/>
                     <input type="hidden" name="pagination" value="${currentPageNumber - 1}"/>
-                    <input type="hidden" name="page" value="user_page"/>
                     <input type="submit" value="Prev" class="other_button"/>
                 </form>
             </td>
@@ -21,7 +20,6 @@
                         <form action="hotelrooming" method="post">
                             <input type="hidden" name="command" value="${command}"/>
                             <input type="hidden" name="pagination" value="${i}"/>
-                            <input type="hidden" name="page" value="user_page"/>
                             <input type="submit" value="${i}" class="other_button"/>
                         </form>
                     </td>
@@ -33,7 +31,6 @@
                 <form action="hotelrooming" method="post">
                     <input type="hidden" name="command" value="${command}"/>
                     <input type="hidden" name="pagination" value="${currentPageNumber + 1}"/>
-                    <input type="hidden" name="page" value="user_page"/>
                     <input type="submit" value="Next" class="other_button"/>
                 </form>
             </td>

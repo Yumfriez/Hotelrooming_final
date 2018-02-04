@@ -33,7 +33,7 @@ public class ChangeLocale implements Command {
 
         String locale = request.getParameter(RequestParameter.LOCALE.getValue());
         String login = (String) request.getSession().getAttribute(RequestParameter.LOGIN.getValue());
-        JspPageName page = JspPageName.valueOf((request.getParameter("page")).toUpperCase());
+        JspPageName page = JspPageName.valueOf(RequestParameter.PAGE.getValue().toUpperCase());
 
         try {
             Validator.checkIsNotEmpty(locale);

@@ -3,31 +3,32 @@
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <c:set var="user" value="user"/>
 <c:set var="command" value="${requestScope.command}"/>
+<fmt:setLocale scope="session" value="${sessionScope.userLocale}"/>
+<fmt:setBundle basename="by.tr.hotelbooking.localization.front-end" scope="session" var="loc"/>
+<fmt:message bundle="${loc}" key="local.word.login" var="login_word"/>
+<fmt:message bundle="${loc}" key="local.word.name" var="name_word"/>
+<fmt:message bundle="${loc}" key="local.word.lastname" var="lastname_word"/>
+<fmt:message bundle="${loc}" key="local.word.email" var="email_word"/>
+<fmt:message bundle="${loc}" key="local.word.isblocked" var="isblocked_word"/>
+<fmt:message bundle="${loc}" key="local.menu.accounts_control" var="accounts_control"/>
+<fmt:message bundle="${loc}" key="local.menu.new_orders" var="new_orders"/>
+<fmt:message bundle="${loc}" key="local.menu.current_contracts" var="current_contracts"/>
+<fmt:message bundle="${loc}" key="local.menu.hotelrooms_control" var="hotelrooms_control"/>
+<fmt:message bundle="${loc}" key="local.menu.log_out" var="log_out"/>
+<fmt:message bundle="${loc}" key="local.button.block" var="block_button"/>
+<fmt:message bundle="${loc}" key="local.button.unblock" var="unblock_button"/>
 <!DOCTYPE html>
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" pageEncoding="utf-8">
-    <fmt:setLocale scope="session" value="${sessionScope.userLocale}"/>
-    <fmt:setBundle basename="by.tr.hotelbooking.localization.front-end" scope="session" var="loc"/>
-    <fmt:message bundle="${loc}" key="local.word.login" var="login_word"/>
-    <fmt:message bundle="${loc}" key="local.word.name" var="name_word"/>
-    <fmt:message bundle="${loc}" key="local.word.lastname" var="lastname_word"/>
-    <fmt:message bundle="${loc}" key="local.word.email" var="email_word"/>
-    <fmt:message bundle="${loc}" key="local.word.isblocked" var="isblocked_word"/>
-    <fmt:message bundle="${loc}" key="local.menu.accounts_control" var="accounts_control"/>
-    <fmt:message bundle="${loc}" key="local.menu.new_orders" var="new_orders"/>
-    <fmt:message bundle="${loc}" key="local.menu.current_contracts" var="current_contracts"/>
-    <fmt:message bundle="${loc}" key="local.menu.hotelrooms_control" var="hotelrooms_control"/>
-    <fmt:message bundle="${loc}" key="local.menu.log_out" var="log_out"/>
-    <fmt:message bundle="${loc}" key="local.button.block" var="block_button"/>
-    <fmt:message bundle="${loc}" key="local.button.unblock" var="unblock_button"/>
+
     <link rel="stylesheet" href="../styles/bootstrap.css" type="text/css"/>
     <link rel="stylesheet" href="../styles/style.css" type="text/css"/>
     <link rel="stylesheet" href="../styles/headerstyle.css" type="text/css"/>
     <link rel="stylesheet" href="../styles/datatables.min.css" type="text/css"/>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="../js/datatables.min.js" type="text/javascript"></script>
-
+    <title>${accounts_control}</title>
 
 </head>
 <body>

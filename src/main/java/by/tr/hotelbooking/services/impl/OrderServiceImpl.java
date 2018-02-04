@@ -5,6 +5,8 @@ import by.tr.hotelbooking.dao.factory.DaoFactory;
 import by.tr.hotelbooking.dao.impl.OrderDAO;
 import by.tr.hotelbooking.entities.Order;
 import by.tr.hotelbooking.entities.RoomType;
+import by.tr.hotelbooking.resource.DataParameter;
+import by.tr.hotelbooking.resource.DataResourceManager;
 import by.tr.hotelbooking.services.OrderService;
 import by.tr.hotelbooking.services.exception.ServiceException;
 import by.tr.hotelbooking.services.utils.LogicException;
@@ -50,7 +52,8 @@ public class OrderServiceImpl implements OrderService{
 
     @Override
     public int getPagesCount(int recordsCount) throws ServiceException {
-        return (int) Math.ceil(recordsCount * 1.0 / 10);
+        int recordsOnPageCount = getRecordsOnPageCount();
+        return (int) Math.ceil(recordsCount * 1.0 / recordsOnPageCount);
     }
 
     @Override
@@ -58,7 +61,8 @@ public class OrderServiceImpl implements OrderService{
         List<Order> orders = null;
         try {
             OrderDAO orderDAO = daoFactory.getOrderDAO();
-            orders = orderDAO.getRecordsWithOffset((page-1)*10,10);
+            int recordsOnPageCount = getRecordsOnPageCount();
+            orders = orderDAO.getRecordsWithOffset((page-1)*recordsOnPageCount,recordsOnPageCount);
         }  catch (DAOException e) {
             throw new ServiceException(e);
         }
@@ -95,5 +99,17 @@ public class OrderServiceImpl implements OrderService{
             page = 1;
         }
         return page;
+    }
+
+    private int getRecordsOnPageCount(){
+        DataResourceManager manager = DataResourceManager.getInstance();
+        String recordsOnPageString = manager.getValue(DataParameter.ORDERS_ON_PAGE_COUNT);
+        int recordsOnPage;
+        try {
+            recordsOnPage = Integer.parseInt(recordsOnPageString);
+        } catch (NumberFormatException e) {
+            recordsOnPage = 10;
+        }
+        return recordsOnPage;
     }
 }
